@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --background: #0B0B0B;
+    --tekst: #FFFFFF;
+    --detaje: #C9A227;
+    --white: #FFFFFF;
+    --font-title: "Open Sans", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-title);
+    background-color: var(--white);
+    color: var(--background);
+}
+
+#navbar {
+    background-color: var(--white);
+    border-bottom: 1px solid #eeeeee;
+    padding: 18px 0;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.navbar-brand img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+.navbar-brand span {
+    color: var(--background);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.navbar .nav-link {
+    color: var(--background);
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    color: var(--detaje);
+}
+
+.booking-btn {
+    background-color: var(--background);
+    color: var(--tekst) !important;
+    padding: 12px 24px !important;
+    border-radius: 5px;
+    margin-left: 10px;
+    transition: 0.3s ease;
+}
+
+.booking-btn:hover {
+    background-color: var(--detaje);
+    color: var(--white) !important;
+}
+.banner {
+    background-color: var(--white);
+}
+
+.banner h1 {
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.banner h1 span {
+    color: var(--detaje);
+}
+
+.hero-subtitle {
+    color: var(--detaje);
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.hero-text {
+    color: var(--tekst2);
+    line-height: 1.7;
+}
+
+.banner img {
+    width: 100%;
+    max-width: 500px;
+}
+.hero {
+    height: calc(100vh - 92px);
+    min-height: 650px;
+}
+
+.hero-image {
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-overlay {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.hero-content {
+    z-index: 2;
+}
+
+.hero-subtitle {
+    color: var(--detaje);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+.hero-content h1 {
+    color: var(--white);
+    font-size: clamp(55px, 7vw, 100px);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 25px;
+}
+
+.hero-content h1 span {
+    color: var(--detaje);
+}
+
+.hero-text {
+    max-width: 700px;
+    color: var(--white);
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+
+.hero-btn {
+    display: inline-block;
+    background-color: var(--background);
+    color: var(--white);
+    padding: 15px 32px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.hero-btn:hover {
+    background-color: var(--detaje);
+    color: var(--white);
+}
+#our-cars {
+    background-color: var(--white);
+}
+
+.car-card {
+    background-color: var(--white);
+    border: 1px solid #eeeeee;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.car-card img {
+    height: 220px;
+    object-fit: cover;
+}
+
+.car-card-body h3 {
+    color: var(--background);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.car-card-body span {
+    color: var(--tekst2);
+    font-size: 14px;
+}
+
+.car-card-body span i {
+    color: var(--detaje);
+    margin-right: 5px;
+}
+
+.car-price {
+    color: var(--background);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.car-price small {
+    color: var(--tekst2);
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.car-btn {
+    background-color: var(--background);
+    color: var(--white);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+}
+
+.car-btn:hover {
+    background-color: var(--detaje);
+    color: var(--white);
+}
+#how-it-works {
+    background-color: var(--white);
+}
+
+.step-item {
+    padding: 20px;
+}
+
+.step-number {
+    display: block;
+    color: var(--detaje);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.step-item h3 {
+    color: var(--background);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.step-item p {
+    color: var(--tekst2);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 280px;
+    margin: 0 auto;
+}
+#testimonials {
+    background-color: var(--white);
+}
+
+.testimonial-card {
+    background-color: var(--white);
+    border: 1px solid #eeeeee;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.stars {
+    color: var(--detaje);
+    font-size: 14px;
+}
+
+.testimonial-text {
+    color: var(--tekst2);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+.customer-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--background);
+    color: var(--white);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.testimonial-card h5 {
+    color: var(--background);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.testimonial-card span {
+    color: var(--tekst2);
+    font-size: 13px;
+}
