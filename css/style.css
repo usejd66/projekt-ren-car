@@ -238,6 +238,21 @@ section h2 {
 
 
 /* =========================
+   FEATURED CARS SCROLL
+========================= */
+
+.cars-scroll {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.cars-scroll .car-card {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* =========================
    CTA
 ========================= */
 
@@ -279,7 +294,9 @@ footer img {
 }
 
 
-/* SOCIAL ICONS */
+/* =========================
+   SOCIAL ICONS
+========================= */
 
 .social-icon {
     width: 38px;
@@ -400,6 +417,22 @@ footer img {
     .cta-section {
         padding: 65px 0;
     }
+
+    /* CARS HORIZONTAL SCROLL */
+
+    .cars-scroll {
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 10px;
+    }
+
+    .cars-scroll .car-card {
+        flex: 0 0 85%;
+        min-width: 85%;
+        scroll-snap-align: start;
+    }
 }
 
 
@@ -426,16 +459,4 @@ footer img {
     .card-img-top {
         height: 200px;
     }
-}
-@media (max-width: 767.98px) {
-
-    .cars-scroll {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-    }
-
-    .cars-scroll > div {
-        flex: 0 0 85%;
-    }
-
 }
