@@ -9,6 +9,7 @@
     --light-bg: #f9f9f9;
 }
 
+
 /* =========================
    RESET & GLOBAL
 ========================= */
@@ -27,8 +28,8 @@ body {
     margin: 0;
     font-family: "Open Sans", sans-serif;
     color: var(--text);
-    overflow-x: hidden;
     background-color: #ffffff;
+    overflow-x: hidden;
 }
 
 img {
@@ -39,6 +40,7 @@ img {
 a {
     text-decoration: none;
 }
+
 
 /* =========================
    CUSTOM COLORS
@@ -56,7 +58,9 @@ a {
     background-color: var(--gold);
     color: #ffffff !important;
     border: 1px solid var(--gold);
-    transition: background-color 0.3s ease, border-color 0.3s ease,
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
         transform 0.3s ease;
 }
 
@@ -76,12 +80,15 @@ a {
     font-weight: 600;
 }
 
+
 /* =========================
    HOVER EFFECTS
 ========================= */
 
 .transition-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .transition-hover:hover {
@@ -97,20 +104,22 @@ a {
     color: var(--gold) !important;
 }
 
+
 /* =========================
    NAVBAR
 ========================= */
 
 .navbar {
     min-height: 72px;
+    background-color: #ffffff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .navbar-brand {
     color: var(--dark);
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 1px;
-    font-size: 22px;
 }
 
 .navbar-brand:hover {
@@ -139,12 +148,17 @@ a {
     white-space: nowrap;
 }
 
+
 /* =========================
    HERO
 ========================= */
+
 .hero {
     min-height: 550px;
     padding: 80px 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
@@ -157,47 +171,32 @@ a {
     line-height: 1.6;
 }
 
+
 /* =========================
    GENERAL SECTIONS
 ========================= */
 
-#why-driveon,
-#how-it-works,
-#testimonials {
-    background-color: #ffffff;
-}
-
-#our-cars {
-    background-color: var(--light-bg);
-}
-
-#why-driveon h2,
-#how-it-works h2,
-#our-cars h2,
-#testimonials h2 {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
 .section-text {
     max-width: 600px;
-    margin-right: auto;
     margin-left: auto;
+    margin-right: auto;
     line-height: 1.7;
 }
+
+section h2 {
+    font-size: 36px;
+    font-weight: 700;
+}
+
 
 /* =========================
    CAR CARDS
 ========================= */
 
-/*
-   Këto rregulla mbajnë të gjitha fotot e makinave
-   me të njëjtën madhësi dhe pa deformim.
-*/
-
 .car-card {
     overflow: hidden;
+    background-color: #ffffff;
+    border-radius: 8px;
 }
 
 .car-card img,
@@ -211,8 +210,8 @@ a {
 .car-card-body h3,
 .card-title {
     color: var(--dark);
-    font-weight: 700;
     font-size: 20px;
+    font-weight: 700;
 }
 
 .car-card-body span {
@@ -236,6 +235,22 @@ a {
     font-size: 13px;
     font-weight: 400;
 }
+
+
+/* =========================
+   CTA
+========================= */
+
+.cta-section {
+    padding: 90px 0;
+    background:
+        linear-gradient(
+            rgba(11, 11, 11, 0.85),
+            rgba(11, 11, 11, 0.85)
+        ),
+        url("../image/audi.jpg") center / cover no-repeat;
+}
+
 
 /* =========================
    FOOTER
@@ -263,6 +278,16 @@ footer img {
     object-fit: contain;
 }
 
+
+/* SOCIAL ICONS */
+
+.social-icon {
+    width: 38px;
+    height: 38px;
+    margin-left: 8px;
+}
+
+
 /* =========================
    SCROLL REVEAL
 ========================= */
@@ -270,7 +295,9 @@ footer img {
 .scroll-reveal {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
 }
 
 .scroll-reveal.show {
@@ -278,8 +305,13 @@ footer img {
     transform: translateY(0);
 }
 
-/* Nëse përdoruesi ka aktivizuar Reduce Motion */
+
+/* =========================
+   REDUCE MOTION
+========================= */
+
 @media (prefers-reduced-motion: reduce) {
+
     html {
         scroll-behavior: auto;
     }
@@ -297,17 +329,25 @@ footer img {
     }
 }
 
+
 /* =========================
-   TABLETS & MOBILE
+   TABLET
 ========================= */
 
 @media (max-width: 991.98px) {
+
     .hero {
         background-attachment: scroll;
     }
 }
 
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 767.98px) {
+
     .navbar {
         min-height: 64px;
     }
@@ -321,15 +361,15 @@ footer img {
         height: 42px;
     }
 
- .hero {
-    min-height: 420px !important;
-    padding: 60px 0 50px;
-}
+    .hero {
+        min-height: 420px;
+        padding: 60px 0 50px;
+    }
 
-.hero h1 {
-    font-size: 40px;
-    line-height: 1.15;
-}
+    .hero h1 {
+        font-size: 40px;
+        line-height: 1.15;
+    }
 
     .hero p {
         font-size: 15px !important;
@@ -339,8 +379,8 @@ footer img {
         font-size: 15px;
     }
 
-    h2 {
-        font-size: 28px !important;
+    section h2 {
+        font-size: 28px;
     }
 
     .btn-lg {
@@ -348,10 +388,6 @@ footer img {
         font-size: 15px;
     }
 
-    /*
-       Në telefon fotot janë pak më të ulëta,
-       por të gjitha përsëri kanë të njëjtën madhësi.
-    */
     .car-card img,
     .card-img-top {
         height: 215px;
@@ -360,19 +396,30 @@ footer img {
     .card {
         margin-bottom: 1rem;
     }
+
+    .cta-section {
+        padding: 65px 0;
+    }
 }
 
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
 @media (max-width: 400px) {
+
     .hero {
-        height: 300px !important;
+        min-height: 380px;
+        padding: 50px 0 40px;
     }
 
     .hero h1 {
-        font-size: 40px;
+        font-size: 36px;
     }
 
-    h2 {
-        font-size: 24px !important;
+    section h2 {
+        font-size: 24px;
     }
 
     .car-card img,
