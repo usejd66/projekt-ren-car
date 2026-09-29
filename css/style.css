@@ -427,3 +427,15 @@ footer img {
         height: 200px;
     }
 }
+@media (max-width: 767.98px) {
+
+    .cars-scroll {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .cars-scroll > div {
+        flex: 0 0 85%;
+    }
+
+}
