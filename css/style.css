@@ -213,7 +213,11 @@ section h2 {
 .car-card {
     overflow: hidden;
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
 .car-card img,
@@ -222,6 +226,13 @@ section h2 {
     height: 220px;
     object-fit: cover;
     object-position: center;
+}
+
+.car-card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.25rem;
 }
 
 .car-card-body h3,
@@ -253,17 +264,24 @@ section h2 {
     font-weight: 400;
 }
 
+.car-card-body .d-flex:last-child {
+    margin-top: auto;
+    align-items: center;
+}
+
 /* =========================
    FEATURED CARS SCROLL
 ========================= */
 
 .cars-scroll {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
     gap: 1.5rem;
+    align-items: stretch;
 }
 
 .cars-scroll .car-card {
-    flex: 1;
+    flex: none;
     min-width: 0;
 }
 
@@ -353,6 +371,10 @@ footer img {
     .hero {
         background-attachment: scroll;
     }
+
+    .cars-scroll {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+    }
 }
 
 /* =========================
@@ -414,17 +436,7 @@ footer img {
     }
 
     .cars-scroll {
-        overflow-x: auto;
-        overflow-y: hidden;
-        flex-wrap: nowrap;
-        scroll-snap-type: x mandatory;
-        padding-bottom: 10px;
-    }
-
-    .cars-scroll .car-card {
-        flex: 0 0 85%;
-        min-width: 85%;
-        scroll-snap-align: start;
+        grid-template-columns: 1fr;
     }
 }
 
