@@ -9,14 +9,7 @@
     --light-bg: #f9f9f9;
 }
 
-
-/* =========================
-   RESET & GLOBAL
-========================= */
-
-*,
-*::before,
-*::after {
+* {
     box-sizing: border-box;
 }
 
@@ -41,11 +34,6 @@ a {
     text-decoration: none;
 }
 
-
-/* =========================
-   CUSTOM COLORS
-========================= */
-
 .text-gold {
     color: var(--gold) !important;
 }
@@ -58,10 +46,7 @@ a {
     background-color: var(--gold);
     color: #ffffff !important;
     border: 1px solid var(--gold);
-    transition:
-        background-color 0.3s ease,
-        border-color 0.3s ease,
-        transform 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn-gold:hover,
@@ -72,23 +57,11 @@ a {
     transform: translateY(-2px);
 }
 
-.fw-500 {
-    font-weight: 500;
-}
-
-.fw-600 {
-    font-weight: 600;
-}
-
-
-/* =========================
-   HOVER EFFECTS
-========================= */
+.fw-500 { font-weight: 500; }
+.fw-600 { font-weight: 600; }
 
 .transition-hover {
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .transition-hover:hover {
@@ -103,7 +76,6 @@ a {
 .transition-text:hover {
     color: var(--gold) !important;
 }
-
 
 /* =========================
    NAVBAR
@@ -148,6 +120,53 @@ a {
     white-space: nowrap;
 }
 
+.navbar-enhanced {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.95);
+}
+
+.navbar-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.navbar-brand-text {
+    letter-spacing: 1.5px;
+    font-size: 1.2rem;
+}
+
+.nav-link-enhanced {
+    position: relative;
+    padding-bottom: 6px;
+}
+
+.nav-link-enhanced::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+}
+
+.nav-link-enhanced:hover::after,
+.nav-link-enhanced.active::after {
+    width: 100%;
+}
+
+.btn-reserve {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(201, 162, 39, 0.25);
+}
 
 /* =========================
    HERO
@@ -171,7 +190,6 @@ a {
     line-height: 1.6;
 }
 
-
 /* =========================
    GENERAL SECTIONS
 ========================= */
@@ -187,7 +205,6 @@ section h2 {
     font-size: 36px;
     font-weight: 700;
 }
-
 
 /* =========================
    CAR CARDS
@@ -236,7 +253,6 @@ section h2 {
     font-weight: 400;
 }
 
-
 /* =========================
    FEATURED CARS SCROLL
 ========================= */
@@ -251,21 +267,14 @@ section h2 {
     min-width: 0;
 }
 
-
 /* =========================
    CTA
 ========================= */
 
 .cta-section {
     padding: 90px 0;
-    background:
-        linear-gradient(
-            rgba(11, 11, 11, 0.85),
-            rgba(11, 11, 11, 0.85)
-        ),
-        url("../image/audi.jpg") center / cover no-repeat;
+    background: linear-gradient(rgba(11,11,11,0.85), rgba(11,11,11,0.85)), url("../image/audi.jpg") center / cover no-repeat;
 }
-
 
 /* =========================
    FOOTER
@@ -293,7 +302,6 @@ footer img {
     object-fit: contain;
 }
 
-
 /* =========================
    SOCIAL ICONS
 ========================= */
@@ -304,7 +312,6 @@ footer img {
     margin-left: 8px;
 }
 
-
 /* =========================
    SCROLL REVEAL
 ========================= */
@@ -312,9 +319,7 @@ footer img {
 .scroll-reveal {
     opacity: 0;
     transform: translateY(30px);
-    transition:
-        opacity 0.6s ease,
-        transform 0.6s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .scroll-reveal.show {
@@ -322,20 +327,14 @@ footer img {
     transform: translateY(0);
 }
 
-
 /* =========================
    REDUCE MOTION
 ========================= */
 
 @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
 
-    html {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
     }
@@ -346,25 +345,21 @@ footer img {
     }
 }
 
-
 /* =========================
    TABLET
 ========================= */
 
 @media (max-width: 991.98px) {
-
     .hero {
         background-attachment: scroll;
     }
 }
-
 
 /* =========================
    MOBILE
 ========================= */
 
 @media (max-width: 767.98px) {
-
     .navbar {
         min-height: 64px;
     }
@@ -418,8 +413,6 @@ footer img {
         padding: 65px 0;
     }
 
-    /* CARS HORIZONTAL SCROLL */
-
     .cars-scroll {
         overflow-x: auto;
         overflow-y: hidden;
@@ -435,13 +428,11 @@ footer img {
     }
 }
 
-
 /* =========================
    SMALL MOBILE
 ========================= */
 
 @media (max-width: 400px) {
-
     .hero {
         min-height: 380px;
         padding: 50px 0 40px;
@@ -460,6 +451,7 @@ footer img {
         height: 200px;
     }
 }
+
 /* =========================
    RESERVATION
 ========================= */
@@ -494,9 +486,6 @@ footer img {
     font-weight: 400;
 }
 
-
-/* LEGEND */
-
 .availability-header {
     display: flex;
     justify-content: space-between;
@@ -525,21 +514,9 @@ footer img {
     display: inline-block;
 }
 
-.legend-dot.available {
-    background: #fff;
-    border: 1px solid #bbb;
-}
-
-.legend-dot.partial {
-    background: #f39c12;
-}
-
-.legend-dot.unavailable {
-    background: #d00000;
-}
-
-
-/* CALENDAR */
+.legend-dot.available { background: #fff; border: 1px solid #bbb; }
+.legend-dot.partial { background: #f39c12; }
+.legend-dot.unavailable { background: #d00000; }
 
 .calendar-wrapper {
     width: 100%;
@@ -619,9 +596,6 @@ footer img {
     font-weight: 700;
 }
 
-
-/* DATES */
-
 .date-box {
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -640,9 +614,6 @@ footer img {
     color: var(--dark);
 }
 
-
-/* SUMMARY */
-
 .booking-summary {
     padding: 25px;
     border-radius: 12px;
@@ -652,11 +623,7 @@ footer img {
     align-items: center;
 }
 
-
-/* MOBILE */
-
 @media (max-width: 767.98px) {
-
     .availability-header {
         display: block;
     }
@@ -696,5 +663,4 @@ footer img {
         display: block;
         margin-top: 8px;
     }
-
 }
