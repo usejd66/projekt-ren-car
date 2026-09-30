@@ -6,6 +6,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description" content="DriveOn - Premium car rental services with modern vehicles, competitive prices, and easy booking. Rent your dream car today!">
+    <meta name="keywords" content="car rental, vehicle hire, premium cars, car booking, drive rental">
+    <meta name="author" content="DriveOn">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="DriveOn - Rent a Car | Premium Vehicle Rental Service">
+    <meta property="og:description" content="Premium car rental services with modern vehicles, competitive prices, and easy booking.">
+    <meta property="og:image" content="image/hero1.jpg">
+    <meta property="og:url" content="https://usejd66.github.io/projekt-ren-car/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DriveOn - Rent a Car | Premium Vehicle Rental Service">
+    <meta name="twitter:description" content="Premium car rental services with modern vehicles, competitive prices, and easy booking.">
+    <meta name="twitter:image" content="image/hero1.jpg">
+
     <title>DriveOn - Rent a Car | Premium Vehicle Rental Service</title>
 
     <!-- Bootstrap CSS -->
@@ -135,6 +152,12 @@
 
         <div class="container py-5">
 
+            <div class="text-center mb-5">
+                <p class="text-gold fw-bold text-uppercase" style="letter-spacing: 3px; font-size: 15px;">FEATURED VEHICLES</p>
+                <h2 class="fw-bold mb-4">Our Premium Fleet</h2>
+                <p class="text-secondary section-text">Discover our collection of luxury vehicles, carefully selected and maintained for your comfort and safety.</p>
+            </div>
+
             <div class="cars-scroll">
 
                 <!-- BMW -->
@@ -146,10 +169,10 @@
 
                         <h3 class="mb-4">BMW 5 Series</h3>
 
-                        <div class="d-flex justify-content-between mb-4 small">
+                        <div class="d-flex justify-content-between mb-4 small car-specs">
 
-                            <span><i class="fas fa-gears"></i> Automatic</span>
-                            <span><i class="fas fa-users"></i> 5 Seats</span>
+                            <span><i class="fas fa-gears"></i> <span class="spec-text">Automatic</span></span>
+                            <span><i class="fas fa-users"></i> <span class="spec-text">5 Seats</span></span>
 
                         </div>
 
@@ -157,7 +180,7 @@
 
                             <p class="mb-0 fw-bold">€120 <small>/ day</small></p>
 
-                            <a href="car-details.html" class="btn btn-gold btn-sm px-3">Details</a>
+                            <a href="car-details.html?car=bmw5" class="btn btn-gold btn-sm px-3">Details</a>
 
                         </div>
 
@@ -174,10 +197,10 @@
 
                         <h3 class="mb-4">Audi RS Q8</h3>
 
-                        <div class="d-flex justify-content-between mb-4 small">
+                        <div class="d-flex justify-content-between mb-4 small car-specs">
 
-                            <span><i class="fas fa-gears"></i> Automatic</span>
-                            <span><i class="fas fa-users"></i> 5 Seats</span>
+                            <span><i class="fas fa-gears"></i> <span class="spec-text">Automatic</span></span>
+                            <span><i class="fas fa-users"></i> <span class="spec-text">5 Seats</span></span>
 
                         </div>
 
@@ -185,7 +208,7 @@
 
                             <p class="mb-0 fw-bold">€180 <small>/ day</small></p>
 
-                            <a href="car-details.html" class="btn btn-gold btn-sm px-3">Details</a>
+                            <a href="car-details.html?car=audi-rsq8" class="btn btn-gold btn-sm px-3">Details</a>
 
                         </div>
 
@@ -202,10 +225,10 @@
 
                         <h3 class="mb-4">Mercedes C-Class</h3>
 
-                        <div class="d-flex justify-content-between mb-4 small">
+                        <div class="d-flex justify-content-between mb-4 small car-specs">
 
-                            <span><i class="fas fa-gears"></i> Automatic</span>
-                            <span><i class="fas fa-users"></i> 5 Seats</span>
+                            <span><i class="fas fa-gears"></i> <span class="spec-text">Automatic</span></span>
+                            <span><i class="fas fa-users"></i> <span class="spec-text">5 Seats</span></span>
 
                         </div>
 
@@ -213,7 +236,7 @@
 
                             <p class="mb-0 fw-bold">€110 <small>/ day</small></p>
 
-                            <a href="car-details.html" class="btn btn-gold btn-sm px-3">Details</a>
+                            <a href="car-details.html?car=mercedes-cclass" class="btn btn-gold btn-sm px-3">Details</a>
 
                         </div>
 
@@ -230,10 +253,10 @@
 
                         <h3 class="mb-4">Range Rover Sport</h3>
 
-                        <div class="d-flex justify-content-between mb-4 small">
+                        <div class="d-flex justify-content-between mb-4 small car-specs">
 
-                            <span><i class="fas fa-gears"></i> Automatic</span>
-                            <span><i class="fas fa-users"></i> 5 Seats</span>
+                            <span><i class="fas fa-gears"></i> <span class="spec-text">Automatic</span></span>
+                            <span><i class="fas fa-users"></i> <span class="spec-text">5 Seats</span></span>
 
                         </div>
 
@@ -241,7 +264,7 @@
 
                             <p class="mb-0 fw-bold">€160 <small>/ day</small></p>
 
-                            <a href="car-details.html" class="btn btn-gold btn-sm px-3">Details</a>
+                            <a href="car-details.html?car=range-rover" class="btn btn-gold btn-sm px-3">Details</a>
 
                         </div>
 
@@ -267,43 +290,118 @@
             <div class="text-center mb-5">
 
                 <p class="text-gold fw-bold text-uppercase" style="letter-spacing: 3px; font-size: 15px;">WHY CHOOSE US</p>
-                <h2 class="fw-bold mb-4">Why Choose DriveOn?</h2>
-                <p class="text-secondary section-text">Everything you need for a simple, comfortable and reliable car rental experience.</p>
+
+                <h2 class="fw-bold mb-4">
+                    Why Choose DriveOn?
+                </h2>
+
+                <p class="text-secondary section-text">
+                    Everything you need for a simple, comfortable and reliable
+                    car rental experience.
+                </p>
 
             </div>
 
+
             <div class="row g-4">
 
+                <!-- Wide Selection -->
                 <div class="col-12 col-md-6 col-lg-3">
+
                     <div class="card h-100 border-0 shadow-sm text-center p-4 transition-hover">
-                        <div class="mb-4 text-gold" style="font-size: 48px;"><i class="fas fa-car"></i></div>
-                        <h3 class="fw-bold mb-3">Wide Selection</h3>
-                        <p class="text-secondary mb-0">Choose from a wide range of modern and well-maintained vehicles for every journey.</p>
+
+                        <div class="mb-4 text-gold" style="font-size: 48px;">
+
+                            <i class="fas fa-car"></i>
+
+                        </div>
+
+                        <h3 class="fw-bold mb-3">
+                            Wide Selection
+                        </h3>
+
+                        <p class="text-secondary mb-0">
+                            Choose from a wide range of modern and well-maintained
+                            vehicles for every journey.
+                        </p>
+
                     </div>
+
                 </div>
 
+
+                <!-- Easy Booking -->
                 <div class="col-12 col-md-6 col-lg-3">
+
                     <div class="card h-100 border-0 shadow-sm text-center p-4 transition-hover">
-                        <div class="mb-4 text-gold" style="font-size: 48px;"><i class="fas fa-calendar-check"></i></div>
-                        <h3 class="fw-bold mb-3">Easy Booking</h3>
-                        <p class="text-secondary mb-0">Book your car quickly with our simple and seamless reservation process.</p>
+
+                        <div class="mb-4 text-gold" style="font-size: 48px;">
+
+                            <i class="fas fa-calendar-check"></i>
+
+                        </div>
+
+                        <h3 class="fw-bold mb-3">
+                            Easy Booking
+                        </h3>
+
+                        <p class="text-secondary mb-0">
+                            Book your car quickly with our simple and seamless
+                            reservation process.
+                        </p>
+
                     </div>
+
                 </div>
 
+
+                <!-- Best Prices -->
                 <div class="col-12 col-md-6 col-lg-3">
+
                     <div class="card h-100 border-0 shadow-sm text-center p-4 transition-hover">
-                        <div class="mb-4 text-gold" style="font-size: 48px;"><i class="fas fa-tags"></i></div>
-                        <h3 class="fw-bold mb-3">Best Prices</h3>
-                        <p class="text-secondary mb-0">Enjoy competitive rental prices with no unnecessary complications.</p>
+
+                        <div class="mb-4 text-gold" style="font-size: 48px;">
+
+                            <i class="fas fa-tags"></i>
+
+                        </div>
+
+                        <h3 class="fw-bold mb-3">
+                            Best Prices
+                        </h3>
+
+                        <p class="text-secondary mb-0">
+                            Enjoy competitive rental prices with no unnecessary
+                            complications.
+                        </p>
+
                     </div>
+
                 </div>
 
+
+                <!-- 24/7 Support -->
                 <div class="col-12 col-md-6 col-lg-3">
+
                     <div class="card h-100 border-0 shadow-sm text-center p-4 transition-hover">
-                        <div class="mb-4 text-gold" style="font-size: 48px;"><i class="fas fa-headset"></i></div>
-                        <h3 class="fw-bold mb-3">24/7 Support</h3>
-                        <p class="text-secondary mb-0">Our support team is available whenever you need assistance during your rental.</p>
+
+                        <div class="mb-4 text-gold" style="font-size: 48px;">
+
+                            <i class="fas fa-headset"></i>
+
+                        </div>
+
+                        <h3 class="fw-bold mb-3">
+                            24/7 Support
+                        </h3>
+
+                        <p class="text-secondary mb-0">
+                            Our support team is available whenever you need
+                            assistance during your rental.
+                        </p>
+
                     </div>
+
                 </div>
 
             </div>
@@ -318,82 +416,154 @@
         <div class="container py-5">
 
             <div class="text-center mb-5">
-                <p class="text-gold fw-bold text-uppercase mb-3">FAQ</p>
-                <h2 class="fw-bold mb-4">Frequently Asked Questions</h2>
-                <p class="text-secondary section-text">Find answers to the most common questions about renting a car with DriveOn.</p>
+
+                <p class="text-gold fw-bold text-uppercase mb-3">
+                    FAQ
+                </p>
+
+                <h2 class="fw-bold mb-4">
+                    Frequently Asked Questions
+                </h2>
+
+                <p class="text-secondary section-text">
+                    Find answers to the most common questions about
+                    renting a car with DriveOn.
+                </p>
+
             </div>
 
+
             <div class="row justify-content-center">
+
                 <div class="col-12 col-lg-9">
+
                     <div class="accordion" id="faqAccordion">
 
                         <div class="accordion-item border-0 mb-3 shadow-sm">
+
                             <h2 class="accordion-header">
-                                <button class="accordion-button fw-600" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne" aria-expanded="true" aria-controls="faqOne">
+
+                                <button class="accordion-button fw-600" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faqOne" aria-expanded="true" aria-controls="faqOne">
+
                                     What documents do I need to rent a car?
+
                                 </button>
+
                             </h2>
+
                             <div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+
                                 <div class="accordion-body text-secondary">
+
                                     You need a valid driving license and identification document. Additional requirements may apply depending on the vehicle and rental conditions.
+
                                 </div>
+
                             </div>
+
                         </div>
 
                         <div class="accordion-item border-0 mb-3 shadow-sm">
+
                             <h2 class="accordion-header">
+
                                 <button class="accordion-button collapsed fw-600" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo" aria-expanded="false" aria-controls="faqTwo">
+
                                     How can I book a car?
+
                                 </button>
+
                             </h2>
+
                             <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
                                 <div class="accordion-body text-secondary">
+
                                     You can choose a vehicle from our Cars page and use the reservation page to submit your booking request.
+
                                 </div>
+
                             </div>
+
                         </div>
 
                         <div class="accordion-item border-0 mb-3 shadow-sm">
+
                             <h2 class="accordion-header">
+
                                 <button class="accordion-button collapsed fw-600" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree" aria-expanded="false" aria-controls="faqThree">
+
                                     Can I choose a specific car?
+
                                 </button>
+
                             </h2>
+
                             <div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
                                 <div class="accordion-body text-secondary">
+
                                     Yes. You can browse our available vehicles and select the car that best matches your needs.
+
                                 </div>
+
                             </div>
+
                         </div>
 
                         <div class="accordion-item border-0 mb-3 shadow-sm">
+
                             <h2 class="accordion-header">
+
                                 <button class="accordion-button collapsed fw-600" type="button" data-bs-toggle="collapse" data-bs-target="#faqFour" aria-expanded="false" aria-controls="faqFour">
+
                                     Can I cancel my reservation?
+
                                 </button>
+
                             </h2>
+
                             <div id="faqFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
                                 <div class="accordion-body text-secondary">
+
                                     Cancellation depends on the rental conditions associated with your booking. Please contact us for more information.
+
                                 </div>
+
                             </div>
+
                         </div>
 
                         <div class="accordion-item border-0 shadow-sm">
+
                             <h2 class="accordion-header">
+
                                 <button class="accordion-button collapsed fw-600" type="button" data-bs-toggle="collapse" data-bs-target="#faqFive" aria-expanded="false" aria-controls="faqFive">
+
                                     How can I contact DriveOn?
+
                                 </button>
+
                             </h2>
+
                             <div id="faqFive" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
                                 <div class="accordion-body text-secondary">
+
                                     You can contact us through our Contact page by phone or email. Our team will be happy to assist you.
+
                                 </div>
+
                             </div>
+
                         </div>
 
                     </div>
+
                 </div>
+
             </div>
 
         </div>
@@ -464,7 +634,7 @@
                     <h5 class="fw-bold mb-4">Contact Us</h5>
                     <p class="mb-3"><i class="fas fa-location-dot text-gold me-3"></i><span class="text-secondary">Tirana, Albania</span></p>
                     <p class="mb-3"><i class="fas fa-phone text-gold me-3"></i><span class="text-secondary">+355 69 000 0000</span></p>
-                    <p class="mb-0"><i class="fas fa-envelope text-gold me-3"></i><span class="text-secondary">info@driveon.al</span></p>
+                    <p class="mb-0"><i class="fas fa-envelope text-gold me-3"></i><span class="text-secondary"><a href="mailto:info@driveon.al" class="text-secondary transition-text">info@driveon.al</a></span></p>
                 </div>
 
             </div>
@@ -475,9 +645,9 @@
                 </div>
 
                 <div class="col-12 col-md-6 text-md-end mt-3 mt-md-0">
-                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; margin-left: 8px;" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; margin-left: 8px;" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; margin-left: 8px;" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; margin-left: 8px;" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; margin-left: 8px;" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://wa.me/355690000000" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; margin-left: 8px;" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
 
