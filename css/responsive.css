@@ -1,0 +1,179 @@
+/* ========================================
+   RESPONSIVE - INDEX.HTML
+======================================== */
+
+/* TABLET - 768px to 991px */
+@media (max-width: 991.98px) {
+    body { font-size: 16px; }
+
+    .hero { min-height: 580px; padding: 90px 0 50px; }
+    .hero-title { font-size: clamp(40px, 6.5vw, 60px); line-height: 1.15; margin-bottom: 18px; }
+    .hero-description { font-size: 17px; line-height: 1.6; margin-bottom: 24px; }
+    .hero-actions { flex-direction: column; }
+    .hero-actions .btn { width: 100%; min-height: 50px; font-size: 15px; }
+    .hero-stats { flex-direction: column; gap: 16px; margin-top: 40px !important; }
+    .hero-stat { flex-direction: row; align-items: center; gap: 8px; }
+    .hero-stat strong { font-size: 20px; }
+    .hero-stat span { font-size: 13px; }
+    .hero-stat-divider { display: none; }
+
+    .process-section { padding: 70px 0 60px; }
+    .process-section .container { max-width: 950px; }
+    .process-section .text-center h2 { font-size: clamp(36px, 5vw, 50px); margin-bottom: 16px; }
+    .process-section .text-center p { font-size: 16px; }
+    .process-icon { width: 100px; height: 100px; font-size: 36px; margin-bottom: 16px !important; }
+    .process-section h4 { font-size: 20px; margin-bottom: 10px; }
+    .process-section .row p { font-size: 15px; }
+
+    .why-section { padding: 80px 0; }
+    .why-image { height: 420px; margin-bottom: 32px; }
+    .why-title { font-size: clamp(36px, 5vw, 50px); margin-bottom: 16px; }
+    .why-description { font-size: 16px; margin-bottom: 32px; }
+    .why-text-item h4 { font-size: 18px; margin-bottom: 10px; }
+    .why-text-item p { font-size: 15px; }
+    .why-text-list { gap: 28px; }
+}
+
+/* MOBILE - 576px to 767px */
+@media (max-width: 767.98px) {
+    .container { padding-left: 14px; padding-right: 14px; }
+
+    .hero { min-height: 520px; padding: 70px 0 40px; background-position: 55% center !important; }
+    .hero-eyebrow { font-size: 11px; margin-bottom: 12px; }
+    .hero-line { width: 22px; }
+    .hero-title { font-size: clamp(32px, 7vw, 44px); line-height: 1.2; margin-bottom: 14px; }
+    .hero-title br { display: none; }
+    .hero-description { font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+    .hero-actions { flex-direction: column; gap: 10px; }
+    .hero-actions .btn { width: 100%; min-height: 46px; font-size: 14px; }
+    .hero-stats { flex-direction: column; gap: 12px; margin-top: 28px !important; }
+    .hero-stat { flex-direction: row; align-items: center; gap: 6px; }
+    .hero-stat strong { font-size: 17px; }
+    .hero-stat span { font-size: 11px; }
+
+    .process-section { padding: 60px 0 50px; }
+    .process-section .container { max-width: 100%; }
+    .process-section .text-center h2 { font-size: clamp(30px, 6vw, 40px); margin-bottom: 12px; }
+    .process-section .text-center p { font-size: 14px; padding: 0 8px; }
+    .process-icon { width: 80px; height: 80px; font-size: 28px; margin-bottom: 12px !important; }
+    .process-section h4 { font-size: 17px; margin-bottom: 8px; }
+    .process-section .row p { font-size: 13px; }
+
+    .why-section { padding: 70px 0; }
+    .why-image { height: 320px; margin-bottom: 24px; }
+    .why-label { font-size: 11px; margin-bottom: 12px; }
+    .why-title { font-size: clamp(28px, 6vw, 36px); margin-bottom: 12px; }
+    .why-description { font-size: 15px; margin-bottom: 24px; }
+    .why-text-list { gap: 20px; }
+    .why-text-item h4 { font-size: 16px; margin-bottom: 6px; }
+    .why-text-item p { font-size: 13px; }
+}
+
+/* SMALL MOBILE - under 576px */
+@media (max-width: 575.98px) {
+    .container { padding-left: 12px; padding-right: 12px; }
+
+    .hero { min-height: 480px; padding: 60px 0 30px; background-position: 50% center !important; }
+    .hero-eyebrow { font-size: 10px; margin-bottom: 10px; }
+    .hero-line { width: 18px; }
+    .hero-title { font-size: clamp(28px, 6.5vw, 38px); line-height: 1.2; margin-bottom: 12px; }
+    .hero-description { font-size: 14px; line-height: 1.5; margin-bottom: 16px; }
+    .hero-actions { flex-direction: column; gap: 8px; }
+    .hero-actions .btn { width: 100%; min-height: 44px; font-size: 13px; }
+    .hero-actions .btn i { display: none; }
+    .hero-stats { flex-direction: column; gap: 10px; margin-top: 22px !important; }
+    .hero-stat { flex-direction: row; align-items: center; gap: 5px; }
+    .hero-stat strong { font-size: 16px; }
+    .hero-stat span { font-size: 10px; }
+
+    .process-section { padding: 50px 0 40px; }
+    .process-section .container { max-width: 100%; }
+    .process-section .text-center h2 { font-size: clamp(26px, 5.5vw, 34px); margin-bottom: 10px; }
+    .process-section .text-center p { font-size: 13px; padding: 0 4px; }
+    .process-icon { width: 70px; height: 70px; font-size: 24px; margin-bottom: 10px !important; }
+    .process-section h4 { font-size: 15px; margin-bottom: 6px; }
+    .process-section .row p { font-size: 12px; }
+
+    .why-section { padding: 60px 0; }
+    .why-image { height: 260px; margin-bottom: 20px; }
+    .why-label { font-size: 10px; margin-bottom: 10px; }
+    .why-title { font-size: clamp(24px, 5.5vw, 32px); margin-bottom: 10px; }
+    .why-description { font-size: 14px; margin-bottom: 20px; }
+    .why-text-list { gap: 16px; }
+    .why-text-item h4 { font-size: 15px; margin-bottom: 5px; }
+    .why-text-item p { font-size: 12px; }
+}
+
+
+/* ========================================
+   RESPONSIVE - CARS.HTML
+======================================== */
+
+/* TABLET - 768px to 991px */
+@media (max-width: 991.98px) {
+    .cars-section { padding-top: 90px; }
+    .car-card > img { height: 240px; }
+    .car-card-body h3 { font-size: 18px; }
+    .car-card-body .small { font-size: 13px; }
+}
+
+/* MOBILE - 576px to 767px */
+@media (max-width: 767.98px) {
+    .cars-section { padding-top: 80px; }
+    .car-card > img { height: 220px; }
+    .car-card-body h3 { font-size: 18px; margin-bottom: 16px; }
+    .car-card-body .small { font-size: 12px; }
+
+    .car-meta-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+    .car-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .car-footer p {
+        font-size: 20px;
+    }
+}
+
+/* SMALL MOBILE - under 576px */
+@media (max-width: 575.98px) {
+    .cars-section { padding-top: 70px; }
+    .car-card > img { height: 200px; }
+    .car-card-body h3 { font-size: 17px; margin-bottom: 14px; }
+    .car-card-body .small { font-size: 11px; }
+}
+
+
+/* ========================================
+   RESPONSIVE - REVIEWS SECTION (INDEX & CARS)
+======================================== */
+
+/* TABLET - 768px to 991px */
+@media (max-width: 991.98px) {
+    .reviews-section { padding: 80px 0; }
+    .reviews-section h2 { font-size: clamp(32px, 5vw, 48px); }
+    .review-text { font-size: 14px; }
+}
+
+/* MOBILE - 576px to 767px */
+@media (max-width: 767.98px) {
+    .reviews-section { padding: 70px 0; }
+    .reviews-section h2 { font-size: clamp(28px, 5vw, 42px); }
+    .review-card { padding: 20px !important; }
+    .review-text { font-size: 14px; }
+    .rating-stat h3 { font-size: 28px; }
+}
+
+/* SMALL MOBILE - under 576px */
+@media (max-width: 575.98px) {
+    .reviews-section { padding: 60px 0; }
+    .reviews-section h2 { font-size: 26px; }
+    .review-card { padding: 16px !important; }
+    .review-text { font-size: 13px; }
+    .rating-stat h3 { font-size: 24px; }
+}

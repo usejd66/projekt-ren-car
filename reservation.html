@@ -4,18 +4,16 @@
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Reservation | DriveOn</title>
+    <title>DriveOn | Reservation</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -25,545 +23,103 @@
 
 <body>
 
-
-<!-- =========================
+    <!-- =========================
      NAVBAR
 ========================= -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top navbar-enhanced">
 
-    <div class="container">
+        <div class="container">
 
-        <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
 
-            <img src="image/logo.png" alt="DriveOn Logo">
+                <img src="image/logo.png" alt="DriveOn Logo" class="navbar-logo">
 
-            <span>DRIVEON</span>
-
-        </a>
-
-
-        <button class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNavbar">
-
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-
-        <div class="collapse navbar-collapse" id="mainNavbar">
-
-            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">
-                        Home
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="cars.html">
-                        Cars
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">
-                        About Us
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.html">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
-
-        </div>
-
-    </div>
-
-</nav>
-
-
-
-<!-- =========================
-     RESERVATION
-========================= -->
-
-<section class="reservation-section py-5">
-
-    <div class="container py-4">
-
-
-        <!-- HEADER -->
-
-        <div class="mb-5">
-
-            <p class="text-gold fw-bold text-uppercase mb-2"
-                style="letter-spacing: 3px;">
-
-                RESERVATION
-
-            </p>
-
-            <h1 class="fw-bold mb-2">
-                Book Your Car
-            </h1>
-
-            <p class="text-secondary mb-0">
-                Select your rental dates and check vehicle availability.
-            </p>
-
-        </div>
-
-
-
-        <!-- =========================
-             SELECTED CAR
-        ========================== -->
-
-        <div class="selected-car p-3 p-md-4 mb-5">
-
-            <div class="row align-items-center g-4">
-
-                <div class="col-12 col-md-3">
-
-                    <img
-                        id="carImage"
-                        src="image/cars/bmw5.jpg"
-                        alt="BMW 5 Series"
-                        class="selected-car-image">
-
-                </div>
-
-
-                <div class="col-12 col-md-6">
-
-                    <p class="text-gold fw-semibold mb-1">
-                        SELECTED VEHICLE
-                    </p>
-
-                    <h2 id="carName" class="fw-bold mb-3">
-                        BMW 5 Series
-                    </h2>
-
-                    <div class="d-flex flex-wrap gap-4 text-secondary">
-
-                        <span>
-                            <i class="fas fa-gears text-gold me-2"></i>
-                            Automatic
-                        </span>
-
-                        <span>
-                            <i class="fas fa-users text-gold me-2"></i>
-                            5 Seats
-                        </span>
-
-                        <span>
-                            <i class="fas fa-gas-pump text-gold me-2"></i>
-                            Petrol
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="col-12 col-md-3 text-md-end">
-
-                    <div class="car-price">
-
-                        <span id="carPrice">
-                            €120
-                        </span>
-
-                        <small>
-                            / day
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =========================
-             AVAILABILITY
-        ========================== -->
-
-        <div class="availability-header mb-4">
-
-            <div>
-
-                <h3 class="fw-bold mb-1">
-                    Select Your Dates
-                </h3>
-
-                <p class="text-secondary mb-0">
-                    Click on an available date to select your rental period.
-                </p>
-
-            </div>
-
-
-            <div class="availability-legend">
-
-                <span>
-                    <i class="legend-dot available"></i>
-                    Available
+                <span class="navbar-brand-text">
+                    DRIVE<span>ON</span>
                 </span>
 
-                <span>
-                    <i class="legend-dot partial"></i>
-                    Partially Reserved
-                </span>
-
-                <span>
-                    <i class="legend-dot unavailable"></i>
-                    Not Available
-                </span>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =========================
-             CALENDAR
-        ========================== -->
-
-        <div class="calendar-wrapper">
-
-            <div class="calendar-scroll">
-
-
-                <!-- SEPTEMBER -->
-
-                <div class="calendar">
-
-                    <div class="calendar-title">
-                        September 2026
-                    </div>
-
-                    <div class="calendar-week">
-
-                        <span>Sun</span>
-                        <span>Mon</span>
-                        <span>Tue</span>
-                        <span>Wed</span>
-                        <span>Thu</span>
-                        <span>Fri</span>
-                        <span>Sat</span>
-
-                    </div>
-
-
-                    <div class="calendar-days">
-
-                        <span></span>
-                        <span></span>
-
-                        <button>1</button>
-                        <button>2</button>
-                        <button>3</button>
-                        <button>4</button>
-                        <button>5</button>
-
-                        <button>6</button>
-                        <button>7</button>
-                        <button>8</button>
-                        <button>9</button>
-                        <button>10</button>
-                        <button>11</button>
-                        <button>12</button>
-
-                        <button>13</button>
-                        <button>14</button>
-                        <button>15</button>
-                        <button>16</button>
-                        <button>17</button>
-                        <button>18</button>
-                        <button>19</button>
-
-                        <button>20</button>
-                        <button>21</button>
-
-                        <button class="partial">22</button>
-                        <button class="partial">23</button>
-                        <button class="partial">24</button>
-                        <button class="partial">25</button>
-                        <button class="partial">26</button>
-
-                        <button class="partial">27</button>
-                        <button>28</button>
-                        <button>29</button>
-                        <button class="unavailable">30</button>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- OCTOBER -->
-
-                <div class="calendar">
-
-                    <div class="calendar-title">
-                        October 2026
-                    </div>
-
-                    <div class="calendar-week">
-
-                        <span>Sun</span>
-                        <span>Mon</span>
-                        <span>Tue</span>
-                        <span>Wed</span>
-                        <span>Thu</span>
-                        <span>Fri</span>
-                        <span>Sat</span>
-
-                    </div>
-
-
-                    <div class="calendar-days">
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                        <button class="unavailable">1</button>
-                        <button class="unavailable">2</button>
-                        <button class="unavailable">3</button>
-
-                        <button class="unavailable">4</button>
-                        <button class="unavailable">5</button>
-                        <button class="unavailable">6</button>
-                        <button class="unavailable">7</button>
-                        <button class="unavailable">8</button>
-                        <button class="partial">9</button>
-                        <button>10</button>
-
-                        <button>11</button>
-                        <button>12</button>
-                        <button>13</button>
-                        <button>14</button>
-                        <button>15</button>
-                        <button>16</button>
-                        <button>17</button>
-
-                        <button>18</button>
-                        <button>19</button>
-                        <button>20</button>
-                        <button>21</button>
-                        <button>22</button>
-                        <button>23</button>
-                        <button>24</button>
-
-                        <button>25</button>
-                        <button>26</button>
-                        <button>27</button>
-                        <button>28</button>
-                        <button>29</button>
-                        <button>30</button>
-                        <button>31</button>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- NOVEMBER -->
-
-                <div class="calendar">
-
-                    <div class="calendar-title">
-                        November 2026
-                    </div>
-
-                    <div class="calendar-week">
-
-                        <span>Sun</span>
-                        <span>Mon</span>
-                        <span>Tue</span>
-                        <span>Wed</span>
-                        <span>Thu</span>
-                        <span>Fri</span>
-                        <span>Sat</span>
-
-                    </div>
-
-
-                    <div class="calendar-days">
-
-                        <button>1</button>
-                        <button>2</button>
-                        <button>3</button>
-                        <button>4</button>
-                        <button>5</button>
-                        <button>6</button>
-                        <button>7</button>
-
-                        <button>8</button>
-                        <button>9</button>
-                        <button>10</button>
-                        <button>11</button>
-                        <button>12</button>
-                        <button>13</button>
-                        <button>14</button>
-
-                        <button>15</button>
-                        <button>16</button>
-                        <button>17</button>
-                        <button>18</button>
-                        <button>19</button>
-                        <button>20</button>
-                        <button>21</button>
-
-                        <button>22</button>
-                        <button>23</button>
-                        <button>24</button>
-                        <button>25</button>
-                        <button>26</button>
-                        <button>27</button>
-                        <button>28</button>
-
-                        <button>29</button>
-                        <button>30</button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =========================
-             SELECTED DATES
-        ========================== -->
-
-        <div class="row g-4 mt-5">
-
-
-            <div class="col-12 col-md-6">
-
-                <div class="date-box">
-
-                    <span>
-                        <i class="fas fa-calendar-check text-gold"></i>
-                        Pick-up Date
-                    </span>
-
-                    <strong id="pickupDate">
-                        Select a date
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-12 col-md-6">
-
-                <div class="date-box">
-
-                    <span>
-                        <i class="fas fa-calendar-check text-gold"></i>
-                        Return Date
-                    </span>
-
-                    <strong id="returnDate">
-                        Select a date
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =========================
-             BOOKING SUMMARY
-        ========================== -->
-
-        <div class="booking-summary mt-5">
-
-            <div>
-
-                <p class="text-secondary mb-1">
-                    Rental Summary
-                </p>
-
-                <h3 class="fw-bold mb-0">
-                    <span id="summaryCar">
-                        BMW 5 Series
-                    </span>
-                </h3>
-
-            </div>
-
-
-            <div class="text-md-end">
-
-                <p class="text-secondary mb-1">
-                    Estimated Total
-                </p>
-
-                <h3 class="fw-bold text-gold mb-0">
-                    €<span id="totalPrice">0</span>
-                </h3>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- BUTTON -->
-
-        <div class="text-end mt-4">
-
-            <button
-                id="continueBtn"
-                class="btn btn-gold btn-lg px-5 fw-600">
-
-                Continue
-
-                <i class="fas fa-arrow-right ms-2"></i>
-
+            </a>
+
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler navbar-toggler-modern" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
 
+
+            <!-- Navigation -->
+            <div class="collapse navbar-collapse" id="mainNavbar">
+
+                <!-- Links -->
+                <ul class="navbar-nav mx-auto navbar-links">
+
+                    <li class="nav-item">
+                        <a class="nav-link active nav-link-enhanced" href="index.html">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-enhanced" href="cars.html">
+                            Cars
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-enhanced" href="about.html">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-enhanced" href="contact.html">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!-- Actions -->
+                <div class="navbar-actions">
+
+                    <!-- Sign In -->
+                    <a href="login.html" class="btn btn-signin">
+                        Sign In
+                    </a>
+
+
+                    <!-- Reserve -->
+                    <a href="reservation.html" class="btn btn-gold btn-reserve">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Reserve Now</span>
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
 
-
-    </div>
-
-</section>
+    </nav>
+    
 
 
 
-<!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="js/reservation.js"></script>
+    <script src="js/script.js"></script>
+
+    <script src="js/reservation.js"></script>
+
 
 </body>
 
