@@ -688,3 +688,94 @@ footer .btn-outline-secondary:hover {
     font-size: 16px;
     margin: 0 2px;
 }
+.car-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+/* CAR SELECTION */
+#carDropdown {
+    min-height: 56px;
+    background: #fff;
+}
+
+#carDropdown:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+
+#carDropdown i {
+    transition: transform .2s ease;
+}
+
+.dropdown.show #carDropdown i {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.dropdown-item {
+    transition: background .2s ease;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+.selected-car-image {
+    height: 280px;
+    object-fit: cover;
+    object-position: center;
+}
+
+#selectedCarWrapper {
+    animation: carFade .25s ease;
+}
+
+@keyframes carFade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ========================================
+   EXPLORE FLEET - IMAGES
+======================================== */
+
+.fleet-image {
+    height: 420px;
+    border-radius: 16px;
+}
+
+.fleet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Tablet */
+@media (max-width: 991.98px) {
+    .fleet-image {
+        height: 360px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767.98px) {
+    .fleet-image {
+        height: 280px;
+        border-radius: 12px;
+    }
+}
