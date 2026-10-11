@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +17,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=7">
 
 </head>
 
@@ -27,8 +28,8 @@
 
     <div class="container">
 
-        <a class="navbar-brand d-flex align-items-center" href="index.html">
-            <img src="image/logo.png" alt="DriveOn Logo" class="navbar-logo">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+            <img src="{% static 'image/logo.png' %}" alt="DriveOn Logo" class="navbar-logo">
             <span class="navbar-brand-text">DRIVE<span>ON</span></span>
         </a>
 
@@ -51,31 +52,31 @@
             <ul class="navbar-nav mx-auto navbar-links">
 
                 <li class="nav-item">
-                    <a class="nav-link nav-link-enhanced" href="index.html">
+                    <a class="nav-link nav-link-enhanced" href="{% url 'index' %}">
                         Home
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link nav-link-enhanced" href="cars.html">
+                    <a class="nav-link nav-link-enhanced" href="{% url 'cars' %}">
                         Cars
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link active nav-link-enhanced" href="fleet.html">
+                    <a class="nav-link active nav-link-enhanced" href="{% url 'explorefleet' %}">
                         Explore Fleet
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link nav-link-enhanced" href="about.html">
+                    <a class="nav-link nav-link-enhanced" href="{% url 'about' %}">
                         About Us
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link nav-link-enhanced" href="contact.html">
+                    <a class="nav-link nav-link-enhanced" href="{% url 'contact' %}">
                         Contact
                     </a>
                 </li>
@@ -84,11 +85,11 @@
 
             <div class="navbar-actions">
 
-                <a href="login.html" class="btn btn-signin">
+                <a href="{% url 'login' %}" class="btn btn-signin">
                     Sign In
                 </a>
 
-                <a href="reservation.html" class="btn btn-gold btn-reserve">
+                <a href="{% url 'reservation' %}" class="btn btn-gold btn-reserve">
                     <i class="fas fa-calendar-check"></i>
                     <span>Reserve Now</span>
                 </a>
@@ -150,7 +151,7 @@
 
                     <div class="fleet-image overflow-hidden">
 
-                        <img src="image/cars/bmw5.jpg"
+                        <img src="{% static 'image/cars/bmw5.jpg' %}"
                             class="img-fluid w-100"
                             alt="BMW 5 Series">
 
@@ -189,7 +190,7 @@
                                 </small>
                             </span>
 
-                            <a href="reservation.html"
+                            <a href="{% url 'reservation' %}"
                                 class="btn btn-gold px-4">
                                 Reserve
                                 <i class="fas fa-arrow-right ms-2"></i>
@@ -215,7 +216,7 @@
 
                     <div class="fleet-image overflow-hidden">
 
-                        <img src="image/cars/rsq8.jpg"
+                        <img src="{% static 'image/cars/rsq8.jpg' %}"
                             class="img-fluid w-100"
                             alt="Audi RS Q8">
 
@@ -254,7 +255,7 @@
                                 </small>
                             </span>
 
-                            <a href="reservation.html"
+                            <a href="{% url 'reservation' %}"
                                 class="btn btn-gold px-4">
                                 Reserve
                                 <i class="fas fa-arrow-right ms-2"></i>
@@ -280,7 +281,7 @@
 
                     <div class="fleet-image overflow-hidden">
 
-                        <img src="image/cars/mb.jpg"
+                        <img src="{% static 'image/cars/mb.jpg' %}"
                             class="img-fluid w-100"
                             alt="Mercedes C-Class">
 
@@ -319,7 +320,7 @@
                                 </small>
                             </span>
 
-                            <a href="reservation.html"
+                            <a href="{% url 'reservation' %}"
                                 class="btn btn-gold px-4">
                                 Reserve
                                 <i class="fas fa-arrow-right ms-2"></i>
@@ -345,7 +346,7 @@
 
                     <div class="fleet-image overflow-hidden">
 
-                        <img src="image/cars/range.jpg"
+                        <img src="{% static 'image/cars/range.jpg' %}"
                             class="img-fluid w-100"
                             alt="Range Rover Sport">
 
@@ -384,7 +385,7 @@
                                 </small>
                             </span>
 
-                            <a href="reservation.html"
+                            <a href="{% url 'reservation' %}"
                                 class="btn btn-gold px-4">
                                Reserve
                                 <i class="fas fa-arrow-right ms-2"></i>
@@ -408,7 +409,7 @@
 
             <div class="fleet-image overflow-hidden">
 
-                <img src="image/cars/rs6.jpg"
+                <img src="{% static 'image/cars/rs6.jpg' %}"
                     class="img-fluid w-100"
                     alt="Audi RS6">
 
@@ -445,7 +446,7 @@
                         </small>
                     </span>
 
-                    <a href="reservation.html"
+                    <a href="{% url 'reservation' %}"
                         class="btn btn-gold px-4">
                         Reserve
                         <i class="fas fa-arrow-right ms-2"></i>
@@ -471,7 +472,7 @@
 
             <div class="fleet-image overflow-hidden">
 
-                <img src="image/cars/g63.jpg"
+                <img src="{% static 'image/cars/g63.jpg' %}"
                     class="img-fluid w-100"
                     alt="Mercedes-AMG G63">
 
@@ -508,7 +509,7 @@
                         </small>
                     </span>
 
-                    <a href="reservation.html"
+                    <a href="{% url 'reservation' %}"
                         class="btn btn-gold px-4">
                         Reserve
                         <i class="fas fa-arrow-right ms-2"></i>
@@ -552,7 +553,7 @@
                     reservation process.
                 </p>
 
-                <a href="reservation.html"
+                <a href="{% url 'reservation' %}"
                     class="btn btn-gold btn-lg px-5">
 
                     Reserve Now
@@ -573,8 +574,8 @@
     <div class="container py-5">
         <div class="row g-4 mb-4">
             <div class="col-12 col-lg-4">
-                <a href="index.html" class="d-inline-flex align-items-center gap-2 text-decoration-none mb-3">
-                    <img src="image/logo.png" alt="DriveOn Logo">
+                <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 text-decoration-none mb-3">
+                    <img src="{% static 'image/logo.png' %}" alt="DriveOn Logo">
                     <span class="text-white fw-bold">DRIVEON</span>
                 </a>
                 <p class="text-secondary">Premium car rental services with modern vehicles, competitive prices and a simple booking experience.</p>
@@ -582,19 +583,19 @@
             <div class="col-6 col-lg-2">
                 <h5 class="fw-bold mb-4">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-3"><a href="index.html" class="text-secondary transition-text">Home</a></li>
-                    <li class="mb-3"><a href="cars.html" class="text-secondary transition-text">Cars</a></li>
-                    <li class="mb-3"><a href="about.html" class="text-secondary transition-text">About Us</a></li>
-                    <li class="mb-3"><a href="contact.html" class="text-secondary transition-text">Contact</a></li>
+                    <li class="mb-3"><a href="{% url 'index' %}" class="text-secondary transition-text">Home</a></li>
+                    <li class="mb-3"><a href="{% url 'cars' %}" class="text-secondary transition-text">Cars</a></li>
+                    <li class="mb-3"><a href="{% url 'about' %}" class="text-secondary transition-text">About Us</a></li>
+                    <li class="mb-3"><a href="{% url 'contact' %}" class="text-secondary transition-text">Contact</a></li>
                 </ul>
             </div>
             <div class="col-6 col-lg-3">
                 <h5 class="fw-bold mb-4">Services</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-3"><a href="cars.html" class="text-secondary transition-text">Car Rental</a></li>
-                    <li class="mb-3"><a href="reservation.html" class="text-secondary transition-text">Easy Booking</a></li>
-                    <li class="mb-3"><a href="cars.html" class="text-secondary transition-text">Premium Cars</a></li>
-                    <li class="mb-3"><a href="contact.html" class="text-secondary transition-text">24/7 Support</a></li>
+                    <li class="mb-3"><a href="{% url 'cars' %}" class="text-secondary transition-text">Car Rental</a></li>
+                    <li class="mb-3"><a href="{% url 'reservation' %}" class="text-secondary transition-text">Easy Booking</a></li>
+                    <li class="mb-3"><a href="{% url 'cars' %}" class="text-secondary transition-text">Premium Cars</a></li>
+                    <li class="mb-3"><a href="{% url 'contact' %}" class="text-secondary transition-text">24/7 Support</a></li>
                 </ul>
             </div>
             <div class="col-12 col-lg-3">
@@ -620,6 +621,7 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/script.js' %}?v=6"></script>
 
 </body>
 

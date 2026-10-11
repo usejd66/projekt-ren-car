@@ -198,8 +198,15 @@ img { max-width: 100%; }
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    
 }
 
+ .hero-home {
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.52) 45%, rgba(0, 0, 0, 0.20) 100%), url("{% static 'image/hero1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 .hero-eyebrow { animation: fadeInUp 0.8s ease 0.2s both; }
 
 .hero-line {
@@ -777,5 +784,323 @@ footer .btn-outline-secondary:hover {
     .fleet-image {
         height: 280px;
         border-radius: 12px;
+    }
+}
+
+
+/* =========================================================
+   DRIVEON - ANIMACIONET
+   Ngjite këtë kod në FUND të static/css/style.css
+   (Nëse ngjyra nuk të përputhet, ndrysho fallback-un pas "var(--gold, ...)")
+========================================================= */
+
+
+/* ---------- HERO: hyrja kur hapet faqja ---------- */
+
+@keyframes heroIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lineGrow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+.hero-eyebrow,
+.hero-title,
+.hero-description,
+.hero-actions,
+.hero-stats {
+    opacity: 0;
+    animation: heroIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+.hero-eyebrow     { animation-delay: 0.10s; }
+.hero-title       { animation-delay: 0.30s; }
+.hero-description { animation-delay: 0.55s; }
+.hero-actions     { animation-delay: 0.75s; }
+.hero-stats       { animation-delay: 0.95s; }
+
+.hero-line {
+    display: inline-block;
+    transform-origin: left center;
+    animation: lineGrow 0.9s 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-stat {
+    transition: transform 0.3s ease;
+}
+
+.hero-stat:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ---------- SHFAQJE ME SCROLL ---------- */
+
+.reveal {
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+                transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-up    { transform: translateY(45px); }
+.reveal-left  { transform: translateX(-55px); }
+.reveal-right { transform: translateX(55px); }
+.reveal-zoom  { transform: scale(0.88); }
+
+.reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+
+/* ---------- KARTAT: hover lift + zoom i fotos ---------- */
+
+.card:not(.reveal) {
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 22px 45px rgba(0, 0, 0, 0.16) !important;
+}
+
+.card .card-img-top {
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.08);
+}
+
+
+/* ---------- BUTONAT: shkëlqim që kalon + shigjeta që lëviz ---------- */
+
+.btn-gold {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-gold::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.7s ease;
+}
+
+.btn-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.btn-gold:hover::after {
+    left: 140%;
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.fa-arrow-right {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.btn:hover .fa-arrow-right {
+    transform: translateX(6px);
+}
+
+
+/* ---------- HOW IT WORKS: ikonat lundrojnë ---------- */
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+
+.process-icon {
+    animation: floatIcon 4s ease-in-out infinite;
+    transition: box-shadow 0.4s ease;
+}
+
+.process-section .row > :nth-child(2) .process-icon { animation-delay: 0.6s; }
+.process-section .row > :nth-child(3) .process-icon { animation-delay: 1.2s; }
+
+.process-icon:hover {
+    box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ---------- FAQ ACCORDION ---------- */
+
+.accordion-item:not(.reveal) {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.accordion-item:hover {
+    transform: translateX(6px);
+}
+
+.accordion-collapse {
+    transition: height 0.4s ease;
+}
+
+
+/* ---------- WHY SECTION ---------- */
+
+.why-image:not(.reveal) {
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.why-image:hover {
+    transform: scale(1.03) rotate(-0.6deg);
+}
+
+.why-text-item:not(.reveal) {
+    transition: transform 0.35s ease;
+}
+
+.why-text-item:hover {
+    transform: translateX(10px);
+}
+
+
+/* ---------- NAVBAR ---------- */
+
+.navbar-enhanced {
+    transition: box-shadow 0.4s ease, padding 0.4s ease, background-color 0.4s ease;
+}
+
+.navbar-enhanced.scrolled {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-logo {
+    transition: transform 0.4s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+    transform: rotate(-8deg) scale(1.08);
+}
+
+
+/* ---------- FOOTER: ikonat sociale ---------- */
+
+footer .btn-outline-secondary {
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+footer .btn-outline-secondary:hover {
+    transform: translateY(-5px) rotate(8deg);
+}
+
+
+/* ---------- SCROLL PROGRESS BAR ---------- */
+
+#scrollProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0;
+    background: var(--gold, #c8102e);
+    z-index: 2000;
+    pointer-events: none;
+}
+
+
+/* ---------- BACK TO TOP ---------- */
+
+#backToTop {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 52px;
+    height: 52px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--gold, #c8102e);
+    color: #fff;
+    font-size: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    z-index: 1500;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+}
+
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+#backToTop:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ---------- RESPEKTO ATË QË E KËRKON PËRDORUESI ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-eyebrow,
+    .hero-title,
+    .hero-description,
+    .hero-actions,
+    .hero-stats,
+    .hero-line {
+        animation: none;
+        opacity: 1;
+    }
+
+    .process-icon {
+        animation: none;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+
+/* ---------- HAPJA E FAQES: fade i butë + navbar që zbret ---------- */
+
+@keyframes pageIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes navDrop {
+    from { transform: translateY(-100%); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+body {
+    animation: pageIn 0.7s ease backwards;
+}
+
+.navbar-enhanced {
+    animation: navDrop 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body,
+    .navbar-enhanced {
+        animation: none;
     }
 }
