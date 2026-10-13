@@ -53,7 +53,14 @@
                 </ul>
 
                 <div class="navbar-actions">
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-signin">Sign Out</button>
+                    </form>
+                    {% else %}
                     <a href="{% url 'login' %}" class="btn btn-signin">Sign In</a>
+                    {% endif %}
 
                     <a href="{% url 'reservation' %}" class="btn btn-gold btn-reserve">
                         <i class="fas fa-calendar-check"></i>
@@ -64,36 +71,102 @@
         </div>
     </nav>
 
-   
+    {% include "_messages.html" %}
+
+
 <!-- CARS GRID -->
 <section class="cars-section py-5">
     <div class="container">
+
+        <!-- CATEGORY TABS -->
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            <a href="?q={{ filters.q|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}"
+               class="btn px-4 {% if not filters.category %}btn-gold{% else %}btn-outline-secondary{% endif %}">All</a>
+            {% for value, label in categories %}
+            <a href="?category={{ value }}&q={{ filters.q|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}"
+               class="btn px-4 {% if filters.category == value %}btn-gold{% else %}btn-outline-secondary{% endif %}">{{ label }}</a>
+            {% endfor %}
+        </div>
+
+        <!-- FILTERS -->
+        <form method="get" action="{% url 'cars' %}" class="row g-3 mb-4 align-items-end">
+
+            <!-- kategoria e zgjedhur ruhet kur përdoren filtrat e tjerë -->
+            <input type="hidden" name="category" value="{{ filters.category }}">
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <label for="filterQ" class="form-label small fw-semibold">Search</label>
+                <input type="text" name="q" id="filterQ" class="form-control"
+                    placeholder="Brand or model" value="{{ filters.q }}">
+            </div>
+
+            <div class="col-6 col-lg-2">
+                <label for="filterTransmission" class="form-label small fw-semibold">Transmission</label>
+                <select name="transmission" id="filterTransmission" class="form-select" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    {% for value, label in transmissions %}
+                    <option value="{{ value }}" {% if filters.transmission == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-6 col-lg-2">
+                <label for="filterPrice" class="form-label small fw-semibold">Max price (€/day)</label>
+                <input type="number" name="max_price" id="filterPrice" class="form-control"
+                    min="0" placeholder="e.g. 300" value="{{ filters.max_price }}">
+            </div>
+
+            <div class="col-6 col-lg-2">
+                <label for="filterSort" class="form-label small fw-semibold">Sort by</label>
+                <select name="sort" id="filterSort" class="form-select" onchange="this.form.submit()">
+                    <option value="newest" {% if filters.sort == 'newest' %}selected{% endif %}>Newest</option>
+                    <option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>Price: low to high</option>
+                    <option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>Price: high to low</option>
+                </select>
+            </div>
+
+            <div class="col-6 col-lg-2 d-flex gap-2">
+                <button type="submit" class="btn btn-gold flex-fill">Filter</button>
+                <a href="{% url 'cars' %}" class="btn btn-outline-secondary flex-fill">Reset</a>
+            </div>
+
+        </form>
+
+        <p class="text-secondary small mb-4">
+            {{ page_obj.paginator.count }} car{{ page_obj.paginator.count|pluralize }} found
+        </p>
+
         <div class="row g-4">
 
-            <!-- CAR 1 - BMW 5 SERIES -->
+            {% for car in cars %}
+            <!-- CAR -->
             <div class="col-12 col-md-4 col-lg-4">
                 <div class="car-card h-100 shadow-sm overflow-hidden">
 
-                    <img src="{% static 'image/cars/bmw5.jpg' %}" alt="BMW 5 Series">
+                    {% if car.image %}
+                    <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.name }}">
+                    {% else %}
+                    <img src="{% static 'image/hero.jpg' %}" alt="{{ car.brand }} {{ car.name }}">
+                    {% endif %}
 
                     <div class="car-card-body p-4">
 
-                        <h3>BMW 5 Series</h3>
+                        <h3>{{ car.brand }} {{ car.name }}</h3>
 
                         <div class="car-meta-grid">
                             <span>
                                 <i class="fas fa-gears me-1"></i>
-                                Automatic
+                                {{ car.get_transmission_display }}
                             </span>
 
                             <span>
                                 <i class="fas fa-users me-1"></i>
-                                5 Seats
+                                {{ car.seats }} Seats
                             </span>
 
                             <span>
                                 <i class="fas fa-gas-pump me-1"></i>
-                                Petrol
+                                {{ car.get_fuel_display }}
                             </span>
 
                             <span>
@@ -106,11 +179,11 @@
 
                             <div>
                                 <p class="mb-0 fw-bold">
-                                    €360 <small>/ day</small>
+                                    €{{ car.price_per_day|floatformat:"-2" }} <small>/ day</small>
                                 </p>
                             </div>
 
-                            <a href="{% url 'reservation' %}?car=bmw5"
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}"
                                 class="btn btn-gold btn-sm px-3">
                                 Rent Now
                             </a>
@@ -120,363 +193,83 @@
                     </div>
                 </div>
             </div>
-
-
-            <!-- CAR 2 - AUDI RS Q8 -->
-            <div class="col-12 col-md-4 col-lg-4">
-                <div class="car-card h-100 shadow-sm overflow-hidden">
-
-                    <img src="{% static 'image/cars/rsq8.jpg' %}" alt="Audi RS Q8">
-
-                    <div class="car-card-body p-4">
-
-                        <h3>Audi RS Q8</h3>
-
-                        <div class="car-meta-grid">
-                            <span>
-                                <i class="fas fa-gears me-1"></i>
-                                Automatic
-                            </span>
-
-                            <span>
-                                <i class="fas fa-users me-1"></i>
-                                5 Seats
-                            </span>
-
-                            <span>
-                                <i class="fas fa-gas-pump me-1"></i>
-                                Petrol
-                            </span>
-
-                            <span>
-                                <i class="fas fa-road me-1"></i>
-                                Unlimited
-                            </span>
-                        </div>
-
-                        <div class="car-footer">
-
-                            <div>
-                                <p class="mb-0 fw-bold">
-                                    €390 <small>/ day</small>
-                                </p>
-                            </div>
-
-                            <a href="{% url 'reservation' %}?car=audi-rsq8"
-                                class="btn btn-gold btn-sm px-3">
-                                Rent Now
-                            </a>
-
-                        </div>
-
-                    </div>
-                </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-secondary mb-3">No cars match your search.</p>
+                <a href="{% url 'cars' %}" class="btn btn-gold">Clear filters</a>
             </div>
-
-
-            <!-- CAR 3 - MERCEDES C-CLASS -->
-            <div class="col-12 col-md-4 col-lg-4">
-                <div class="car-card h-100 shadow-sm overflow-hidden">
-
-                    <img src="{% static 'image/cars/mb.jpg' %}" alt="Mercedes C-Class">
-
-                    <div class="car-card-body p-4">
-
-                        <h3>Mercedes C-Class</h3>
-
-                        <div class="car-meta-grid">
-                            <span>
-                                <i class="fas fa-gears me-1"></i>
-                                Automatic
-                            </span>
-
-                            <span>
-                                <i class="fas fa-users me-1"></i>
-                                5 Seats
-                            </span>
-
-                            <span>
-                                <i class="fas fa-gas-pump me-1"></i>
-                                Petrol
-                            </span>
-
-                            <span>
-                                <i class="fas fa-road me-1"></i>
-                                Unlimited
-                            </span>
-                        </div>
-
-                        <div class="car-footer">
-
-                            <div>
-                                <p class="mb-0 fw-bold">
-                                    €230 <small>/ day</small>
-                                </p>
-                            </div>
-
-                            <a href="{% url 'reservation' %}?car=mercedes-cclass"
-                                class="btn btn-gold btn-sm px-3">
-                                Rent Now
-                            </a>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- CAR 4 - RANGE ROVER SPORT -->
-            <div class="col-12 col-md-4 col-lg-4">
-                <div class="car-card h-100 shadow-sm overflow-hidden">
-
-                    <img src="{% static 'image/cars/range.jpg' %}" alt="Range Rover Sport">
-
-                    <div class="car-card-body p-4">
-
-                        <h3>Range Rover Sport</h3>
-
-                        <div class="car-meta-grid">
-                            <span>
-                                <i class="fas fa-gears me-1"></i>
-                                Automatic
-                            </span>
-
-                            <span>
-                                <i class="fas fa-users me-1"></i>
-                                5 Seats
-                            </span>
-
-                            <span>
-                                <i class="fas fa-gas-pump me-1"></i>
-                                Petrol
-                            </span>
-
-                            <span>
-                                <i class="fas fa-road me-1"></i>
-                                Unlimited
-                            </span>
-                        </div>
-
-                        <div class="car-footer">
-
-                            <div>
-                                <p class="mb-0 fw-bold">
-                                    €200 <small>/ day</small>
-                                </p>
-                            </div>
-
-                            <a href="{% url 'reservation' %}?car=range-rover"
-                                class="btn btn-gold btn-sm px-3">
-                                Rent Now
-                            </a>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- CAR 5 - AUDI RS6 -->
-            <div class="col-12 col-md-4 col-lg-4">
-                <div class="car-card h-100 shadow-sm overflow-hidden">
-
-                    <img src="{% static 'image/cars/rs6.jpg' %}" alt="Audi RS6">
-
-                    <div class="car-card-body p-4">
-
-                        <h3>Audi RS6</h3>
-
-                        <div class="car-meta-grid">
-                            <span>
-                                <i class="fas fa-gears me-1"></i>
-                                Automatic
-                            </span>
-
-                            <span>
-                                <i class="fas fa-users me-1"></i>
-                                5 Seats
-                            </span>
-
-                            <span>
-                                <i class="fas fa-gas-pump me-1"></i>
-                                Petrol
-                            </span>
-
-                            <span>
-                                <i class="fas fa-road me-1"></i>
-                                Unlimited
-                            </span>
-                        </div>
-
-                        <div class="car-footer">
-
-                            <div>
-                                <p class="mb-0 fw-bold">
-                                    €450 <small>/ day</small>
-                                </p>
-                            </div>
-
-                            <a href="{% url 'reservation' %}?car=audi-rs6"
-                                class="btn btn-gold btn-sm px-3">
-                                Rent Now
-                            </a>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- CAR 6 - MERCEDES G63 -->
-            <div class="col-12 col-md-4 col-lg-4">
-                <div class="car-card h-100 shadow-sm overflow-hidden">
-
-                    <img src="{% static 'image/cars/g63.jpg' %}" alt="Mercedes G63">
-
-                    <div class="car-card-body p-4">
-
-                        <h3>Mercedes G63</h3>
-
-                        <div class="car-meta-grid">
-                            <span>
-                                <i class="fas fa-gears me-1"></i>
-                                Automatic
-                            </span>
-
-                            <span>
-                                <i class="fas fa-users me-1"></i>
-                                5 Seats
-                            </span>
-
-                            <span>
-                                <i class="fas fa-gas-pump me-1"></i>
-                                Petrol
-                            </span>
-
-                            <span>
-                                <i class="fas fa-road me-1"></i>
-                                Unlimited
-                            </span>
-                        </div>
-
-                        <div class="car-footer">
-
-                            <div>
-                                <p class="mb-0 fw-bold">
-                                    €500 <small>/ day</small>
-                                </p>
-                            </div>
-
-                            <a href="{% url 'reservation' %}?car=mercedes-g63"
-                                class="btn btn-gold btn-sm px-3">
-                                Rent Now
-                            </a>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
 
         </div>
+
+        <!-- PAGINATION -->
+        {% if page_obj.has_other_pages %}
+        <nav class="mt-5" aria-label="Cars pagination">
+            <ul class="pagination justify-content-center">
+
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ filters.q|urlencode }}&category={{ filters.category|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ filters.q|urlencode }}&category={{ filters.category|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+
+            </ul>
+        </nav>
+        {% endif %}
+
     </div>
 </section>
 
 <!-- REVIEWS SECTION -->
 <section class="reviews-section">
     <div class="container">
-        
 
+        {% if reviews %}
         <div class="row g-4">
 
-            <!-- REVIEW 1 -->
+            {% for review in reviews %}
+            <!-- REVIEW -->
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="review-card h-100 p-4">
                     <div class="review-stars mb-3">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        {% for i in "12345" %}
+                        <i class="{% if forloop.counter <= review.rating %}fas{% else %}far{% endif %} fa-star"></i>
+                        {% endfor %}
                     </div>
 
                     <p class="review-text mb-4">
-                        "Excellent service! The car was clean, modern and in perfect condition. 
-                        The booking process was simple and the staff very helpful. Highly recommended!"
+                        "{{ review.text }}"
                     </p>
 
                     <div class="review-author">
-                        <div class="review-avatar">
-                            <img src="{% static 'image/user/user1.png' %}" alt="John Smith">
+                        <div class="review-avatar d-flex align-items-center justify-content-center fw-bold text-white bg-dark">
+                            {{ review.name|first|upper }}
                         </div>
                         <div>
-                            <h4 class="mb-0">John Smith</h4>
+                            <h4 class="mb-0">{{ review.name }}</h4>
                             <small>Verified Customer</small>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- REVIEW 2 -->
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="review-card h-100 p-4">
-                    <div class="review-stars mb-3">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-
-                    <p class="review-text mb-4">
-                        "Best rental experience ever! Fast booking, amazing car selection 
-                        and competitive prices. Will definitely rent again next time!"
-                    </p>
-
-                    <div class="review-author">
-                        <div class="review-avatar">
-                            <img src="{% static 'image/user/user2.png' %}" alt="Sarah Johnson">
-                        </div>
-                        <div>
-                            <h4 class="mb-0">Sarah Johnson</h4>
-                            <small>Verified Customer</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- REVIEW 3 -->
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="review-card h-100 p-4">
-                    <div class="review-stars mb-3">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-
-                    <p class="review-text mb-4">
-                        "Professional, reliable and trustworthy. 24/7 support is fantastic. 
-                        The entire process from booking to return was smooth and hassle-free."
-                    </p>
-
-                    <div class="review-author">
-                        <div class="review-avatar">
-                            <img src="{% static 'image/user/user3.png' %}" alt="Mike Davis">
-                        </div>
-                        <div>
-                            <h4 class="mb-0">Mike Davis</h4>
-                            <small>Verified Customer</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
 
         </div>
+        {% endif %}
 
         <!-- RATING STATS -->
         <div class="row g-4 mt-5 text-center">
@@ -510,7 +303,7 @@
         </div>
     </div>
 </section>
-    
+
 
  <!--Footer-->
 
@@ -523,6 +316,16 @@
                     <span class="text-white fw-bold">DRIVEON</span>
                 </a>
                 <p class="text-secondary">Premium car rental services with modern vehicles, competitive prices and a simple booking experience.</p>
+
+                <!-- Subscribe -->
+                <form method="post" action="{% url 'subscribe' %}" class="subscribe-form mt-4">
+                    {% csrf_token %}
+                    <label for="subscribeEmail" class="form-label fw-bold small">Subscribe to our newsletter</label>
+                    <div class="input-group">
+                        <input type="email" name="email" id="subscribeEmail" class="form-control" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-gold">Subscribe</button>
+                    </div>
+                </form>
             </div>
             <div class="col-6 col-lg-2">
                 <h5 class="fw-bold mb-4">Quick Links</h5>

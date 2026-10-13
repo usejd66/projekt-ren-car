@@ -50,7 +50,7 @@
                 <ul class="navbar-nav mx-auto navbar-links">
 
                     <li class="nav-item">
-                        <a class="nav-link active nav-link-enhanced" href="{% url 'index' %}">Home</a>
+                        <a class="nav-link nav-link-enhanced" href="{% url 'index' %}">Home</a>
                     </li>
 
                     <li class="nav-item">
@@ -62,16 +62,25 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link nav-link-enhanced" href="{% url 'contact' %}">Contact</a>
+                        <a class="nav-link active nav-link-enhanced" href="{% url 'contact' %}">Contact</a>
                     </li>
 
                 </ul>
 
                 <div class="navbar-actions">
 
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-signin">
+                            Sign Out
+                        </button>
+                    </form>
+                    {% else %}
                     <a href="{% url 'login' %}" class="btn btn-signin">
                         Sign In
                     </a>
+                    {% endif %}
 
                     <a href="{% url 'reservation' %}" class="btn btn-gold btn-reserve">
                         <i class="fas fa-calendar-check"></i>
@@ -83,6 +92,8 @@
             </div>
         </div>
     </nav>
+
+    {% include "_messages.html" %}
 
 
     <!-- CONTACT SECTION -->
@@ -165,38 +176,58 @@
 
                         <h2 class="fw-bold mb-4">Send Us a Message</h2>
 
-                        <form>
+                        <form method="post" action="{% url 'contact' %}">
+                            {% csrf_token %}
 
                             <!-- Name -->
                             <div class="mb-4">
-                                <label for="name" class="form-label fw-600">Full Name</label>
+                                <label for="id_name" class="form-label fw-600">Full Name</label>
 
-                                <input type="text" class="form-control form-control-lg" id="name"
-                                    placeholder="Enter your name" required>
+                                <input type="text" name="name" class="form-control form-control-lg" id="id_name"
+                                    placeholder="Enter your name" maxlength="100"
+                                    value="{{ form.name.value|default:'' }}" required>
+
+                                {% for error in form.name.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
                             </div>
 
                             <!-- Email -->
                             <div class="mb-4">
-                                <label for="email" class="form-label fw-600">Email Address</label>
+                                <label for="id_email" class="form-label fw-600">Email Address</label>
 
-                                <input type="email" class="form-control form-control-lg" id="email"
-                                    placeholder="Enter your email" required>
+                                <input type="email" name="email" class="form-control form-control-lg" id="id_email"
+                                    placeholder="Enter your email"
+                                    value="{{ form.email.value|default:'' }}" required>
+
+                                {% for error in form.email.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
                             </div>
 
                             <!-- Subject -->
                             <div class="mb-4">
-                                <label for="subject" class="form-label fw-600">Subject</label>
+                                <label for="id_subject" class="form-label fw-600">Subject</label>
 
-                                <input type="text" class="form-control form-control-lg" id="subject"
-                                    placeholder="Enter subject" required>
+                                <input type="text" name="subject" class="form-control form-control-lg" id="id_subject"
+                                    placeholder="Enter subject" maxlength="150"
+                                    value="{{ form.subject.value|default:'' }}" required>
+
+                                {% for error in form.subject.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
                             </div>
 
                             <!-- Message -->
                             <div class="mb-4">
-                                <label for="message" class="form-label fw-600">Message</label>
+                                <label for="id_message" class="form-label fw-600">Message</label>
 
-                                <textarea class="form-control" id="message" rows="6"
-                                    placeholder="Write your message..." required></textarea>
+                                <textarea class="form-control" name="message" id="id_message" rows="6"
+                                    placeholder="Write your message..." maxlength="2000" required>{{ form.message.value|default:'' }}</textarea>
+
+                                {% for error in form.message.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
                             </div>
 
                             <!-- Submit -->
@@ -254,6 +285,16 @@
                     <span class="text-white fw-bold">DRIVEON</span>
                 </a>
                 <p class="text-secondary">Premium car rental services with modern vehicles, competitive prices and a simple booking experience.</p>
+
+                <!-- Subscribe -->
+                <form method="post" action="{% url 'subscribe' %}" class="subscribe-form mt-4">
+                    {% csrf_token %}
+                    <label for="subscribeEmail" class="form-label fw-bold small">Subscribe to our newsletter</label>
+                    <div class="input-group">
+                        <input type="email" name="email" id="subscribeEmail" class="form-control" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-gold">Subscribe</button>
+                    </div>
+                </form>
             </div>
             <div class="col-6 col-lg-2">
                 <h5 class="fw-bold mb-4">Quick Links</h5>
