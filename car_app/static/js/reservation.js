@@ -1,164 +1,96 @@
-/* ========== ELEMENTET ========== */
-const carDropdownText = document.getElementById("carDropdownText");
-const selectedCarWrapper = document.getElementById("selectedCarWrapper");
-const selectedCarImage = document.getElementById("selectedCarImage");
-const selectedCarName = document.getElementById("selectedCarName");
-const selectedCarType = document.getElementById("selectedCarType");
-const selectedCarCategory = document.getElementById("selectedCarCategory");
-const selectedCarTransmission = document.getElementById("selectedCarTransmission");
-const selectedCarSeats = document.getElementById("selectedCarSeats");
-const selectedCarFuel = document.getElementById("selectedCarFuel");
-const selectedCarLuggage = document.getElementById("selectedCarLuggage");
-const selectedCarPrice = document.getElementById("selectedCarPrice");
+(() => {
+"use strict";
 
-const pickupLocationText = document.getElementById("pickupLocationText");
-const pickupLocation = document.getElementById("pickupLocation");
-const returnLocationText = document.getElementById("returnLocationText");
-const returnLocation = document.getElementById("returnLocation");
-const pickupDate = document.getElementById("pickupDate");
-const returnDate = document.getElementById("returnDate");
+const $ = (id) => document.getElementById(id);
+const set = (id, text) => ($(id).textContent = text);
+const [form, carSel, pickup, ret, pickLoc, retLoc, err] =
+    ["reservationForm", "carSelect", "pickupDate", "returnDate", "id_pickup_location", "returnLocation", "formError"].map($);
+const booked = JSON.parse($("bookedData").textContent); // {car_id: [{from, to}]}
+const MS_DAY = 864e5;
 
-const summaryVehicle = document.getElementById("summaryVehicle");
-const summaryDays = document.getElementById("summaryDays");
-const summaryPickup = document.getElementById("summaryPickup");
-const summaryReturn = document.getElementById("summaryReturn");
-const summaryTotal = document.getElementById("summaryTotal");
-const confirmReservation = document.getElementById("confirmReservation");
-
-let selectedCar = null;
-
-/* ========== MAKINAT ========== */
-const cars = {
-    bmw5: { name: "BMW 5 Series", type: "Luxury Sedan", category: "Luxury", image: "image/cars/bmw5.jpg", transmission: "Automatic", seats: "5 Seats", fuel: "Petrol", luggage: "Unlimited", price: "€360" },
-    "audi-rsq8": { name: "Audi RS Q8", type: "Performance SUV", category: "Performance", image: "image/cars/rsq8.jpg", transmission: "Automatic", seats: "5 Seats", fuel: "Petrol", luggage: "Unlimited", price: "€390" },
-    "mercedes-cclass": { name: "Mercedes C-Class", type: "Premium Sedan", category: "Premium", image: "image/cars/mb.jpg", transmission: "Automatic", seats: "5 Seats", fuel: "Petrol", luggage: "Unlimited", price: "€230" },
-    "range-rover": { name: "Range Rover Sport", type: "Luxury SUV", category: "Luxury", image: "image/cars/range.jpg", transmission: "Automatic", seats: "5 Seats", fuel: "Petrol", luggage: "Unlimited", price: "€200" },
-    "audi-rs6": { name: "Audi RS6", type: "Performance Sedan", category: "Performance", image: "image/cars/rs6.jpg", transmission: "Automatic", seats: "5 Seats", fuel: "Petrol", luggage: "Unlimited", price: "€450" },
-    "mercedes-g63": { name: "Mercedes G63", type: "Luxury SUV", category: "Luxury", image: "image/cars/g63.jpg", transmission: "Automatic", seats: "5 Seats", fuel: "Petrol", luggage: "Unlimited", price: "€500" }
+/* ---------- Ndihmëse ---------- */
+const car = () => {
+    const o = carSel.selectedOptions[0];
+    return o && o.value ? { ...o.dataset, price: parseFloat(o.dataset.price) || 0, booked: booked[o.value] || [] } : null;
 };
+// Skajet përfshihen, njësoj si Reservation.overlapping() në server
+const conflict = (c) => c && pickup.value && ret.value &&
+    c.booked.find((b) => pickup.value <= b.to && ret.value >= b.from);
+const isBooked = (iso) => (car()?.booked || []).some((b) => iso >= b.from && iso <= b.to);
+const fmt = (iso) => iso.split("-").reverse().join("/");
+const nextDay = (iso) => new Date(Date.parse(iso) + MS_DAY).toISOString().slice(0, 10);
+const showError = (msg) => { err.textContent = msg; err.classList.toggle("d-none", !msg); };
 
-/* ========== PËRMBLEDHJA ========== */
-function updateSummary() {
-    summaryVehicle.textContent = selectedCar ? selectedCar.name : "Select a vehicle";
-    summaryPickup.textContent = pickupLocation.value || "—";
-    summaryReturn.textContent = returnLocation.value || "—";
+/* ---------- Përmbledhja ---------- */
+function update() {
+    const c = car(), hit = conflict(c);
+    const days = pickup.value && ret.value
+        ? Math.max(0, Math.round((Date.parse(ret.value) - Date.parse(pickup.value)) / MS_DAY)) : 0;
 
-    let days = 0;
-
-    if (pickupDate.value && returnDate.value) {
-        const diff = new Date(returnDate.value) - new Date(pickupDate.value);
-        if (diff >= 0) {
-            // e njëjta ditë = 1 ditë qiraje
-            days = Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
-        }
+    showError(hit ? `Makina është e zënë nga ${fmt(hit.from)} deri më ${fmt(hit.to)}. Zgjidhni data të tjera.` : "");
+    $("selectedCarWrapper").classList.toggle("d-none", !c);
+    if (c) {
+        $("selectedCarImage").src = c.image;
+        $("selectedCarImage").alt = c.name;
+        set("selectedCarName", c.name);
+        set("selectedCarCategory", c.category);
+        set("selectedCarTransmission", c.transmission);
+        set("selectedCarPrice", `€${c.price}`);
     }
+    set("summaryVehicle", c ? c.name : "Select a vehicle");
+    set("summaryDays", `${days} ${days === 1 ? "day" : "days"}`);
+    set("summaryPickup", pickLoc.value || "—");
+    set("summaryReturn", retLoc.value || "—");
+    set("summaryTotal", `€${((c ? c.price : 0) * days).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+}
 
-    summaryDays.textContent = `${days} ${days === 1 ? "day" : "days"}`;
+/* ---------- Kalendarët ---------- */
+const base = {
+    dateFormat: "Y-m-d", // vlera që dërgohet te Django
+    altInput: true,
+    altFormat: "d/m/Y",  // si e sheh përdoruesi
+    altInputClass: "form-control form-control-lg rounded-3",
+    minDate: "today",
+    disableMobile: true,
+    locale: { firstDayOfWeek: 1 },
+    onDayCreate: (_, __, fp, el) => isBooked(fp.formatDate(el.dateObj, "Y-m-d")) && el.classList.add("booked"),
+    onChange: update,
+};
+const returnFp = flatpickr(ret, {
+    ...base,
+    onOpen: () => returnFp.set("minDate", pickup.value ? nextDay(pickup.value) : "today"),
+});
+const pickupFp = flatpickr(pickup, {
+    ...base,
+    onChange: () => { if (ret.value <= pickup.value) returnFp.clear(); update(); },
+});
 
-    if (selectedCar && days > 0) {
-        const price = parseInt(selectedCar.price.replace("€", ""), 10);
-        summaryTotal.textContent = `€${(price * days).toLocaleString()}`;
+/* ---------- Ngjarjet ---------- */
+const onCar = () => {
+    const ranges = car()?.booked || [];
+    pickupFp.set("disable", ranges);
+    returnFp.set("disable", ranges);
+    update();
+};
+carSel.addEventListener("change", onCar);
+[pickLoc, retLoc].forEach((el) => el.addEventListener("change", update));
+
+form.addEventListener("submit", (e) => {
+    const c = car();
+    const msg = !c ? "Ju lutem zgjidhni një makinë."
+        : !pickLoc.value ? "Ju lutem zgjidhni vendin e marrjes."
+        : !pickup.value || !ret.value ? "Ju lutem zgjidhni datat."
+        : ret.value <= pickup.value ? "Data e kthimit duhet të jetë pas datës së marrjes."
+        : conflict(c) ? "Makina është e zënë në datat e zgjedhura." : "";
+
+    if (msg) {
+        e.preventDefault();
+        showError(msg);
+        err.scrollIntoView({ behavior: "smooth", block: "center" });
     } else {
-        summaryTotal.textContent = "€0";
+        $("confirmReservation").disabled = true; // pengon dërgimin e dyfishtë
     }
-}
-
-/* ========== ZGJEDHJA E MAKINËS ========== */
-document.querySelectorAll("[data-car]").forEach(button => {
-    button.addEventListener("click", () => {
-        const car = cars[button.dataset.car];
-        if (!car) return;
-
-        selectedCar = car;
-
-        carDropdownText.textContent = `${car.name} — ${car.price} / day`;
-        carDropdownText.classList.remove("text-secondary");
-
-        selectedCarImage.src = "/static/" + car.image;
-        selectedCarImage.alt = car.name;
-        selectedCarName.textContent = car.name;
-        selectedCarType.textContent = car.type;
-        selectedCarCategory.textContent = car.category;
-        selectedCarTransmission.textContent = car.transmission;
-        selectedCarSeats.textContent = car.seats;
-        selectedCarFuel.textContent = car.fuel;
-        selectedCarLuggage.textContent = car.luggage;
-        selectedCarPrice.textContent = car.price;
-
-        selectedCarWrapper.classList.remove("d-none");
-        updateSummary();
-    });
 });
 
-/* ========== LOKACIONET ========== */
-document.querySelectorAll("[data-pickup-location]").forEach(item => {
-    item.addEventListener("click", function () {
-        const location = this.dataset.pickupLocation;
-        pickupLocationText.textContent = location;
-        pickupLocationText.classList.remove("text-secondary");
-        pickupLocation.value = location;
-        updateSummary();
-    });
-});
-
-document.querySelectorAll("[data-return-location]").forEach(item => {
-    item.addEventListener("click", function () {
-        const location = this.dataset.returnLocation;
-        returnLocationText.textContent = location;
-        returnLocationText.classList.remove("text-secondary");
-        returnLocation.value = location;
-        updateSummary();
-    });
-});
-
-/* ========== DATAT ========== */
-const today = new Date().toISOString().split("T")[0];
-pickupDate.min = today;
-returnDate.min = today;
-
-pickupDate.addEventListener("change", function () {
-    returnDate.min = this.value;
-    if (returnDate.value && returnDate.value < this.value) {
-        returnDate.value = "";
-    }
-    updateSummary();
-});
-
-returnDate.addEventListener("change", updateSummary);
-
-/* ========== KONFIRMIMI ========== */
-confirmReservation.addEventListener("click", () => {
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-
-    if (!selectedCar) return alert("Ju lutem zgjidhni një makinë.");
-    if (!pickupLocation.value || !returnLocation.value) return alert("Ju lutem zgjidhni vendin e marrjes dhe të kthimit.");
-    if (!pickupDate.value || !returnDate.value) return alert("Ju lutem zgjidhni datat.");
-    if (!firstName || !lastName || !email || !phone) return alert("Ju lutem plotësoni të dhënat tuaja.");
-
-    document.getElementById("successVehicle").textContent = selectedCar.name;
-document.getElementById("successTotal").textContent = summaryTotal.textContent;
-
-new bootstrap.Modal(document.getElementById("successModal")).show();
-});
-
-/* ========== ZGJEDHJE AUTOMATIKE NGA URL (në fund!) ========== */
-const carFromURL = new URLSearchParams(window.location.search).get("car");
-if (carFromURL && cars[carFromURL]) {
-    document.querySelector(`[data-car="${carFromURL}"]`)?.click();
-}
-
-updateSummary();
-/* ========== OK → REFRESH & NË FILLIM ========== */
-document.getElementById("successModal").addEventListener("hidden.bs.modal", () => {
-    // heq ?car=... nga URL që të mos zgjidhet makina automatikisht
-    window.location.href = window.location.pathname;
-});
-
-// shfletuesi mos ta rikthejë pozicionin e vjetër të scroll-it
-if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-}
-window.scrollTo(0, 0);
+onCar(); // makina vjen e zgjedhur nga ?car=ID ose pas një gabimi të serverit
+})();
