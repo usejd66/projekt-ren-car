@@ -1,11 +1,10 @@
-
-
 {% extends "index.html" %}
 {% load static %}
 
+{% block title %}Explore Fleet - DriveOn{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="explorfleet in to your DriveOn  car rental .">
+    <meta name="description" content="Explore the DriveOn fleet: premium sedans, SUVs and performance cars available for rent.">
     <meta name="author" content="DriveOn">
 {% endblock %}
 
@@ -16,467 +15,182 @@
 
 <!-- FLEET HERO -->
 <section class="fleet-hero py-5">
-
     <div class="container py-5">
-
-        <div class="row min-vh-50 align-items-center">
-
+        <div class="row align-items-center">
             <div class="col-12 col-lg-8">
-
-                <p class="text-gold fw-bold text-uppercase mb-3">
-                    DriveOn Fleet
-                </p>
-
-                <h1 class="display-2 fw-bold mb-4">
-                    Explore Our Fleet
-                </h1>
-
+                <p class="text-gold fw-bold text-uppercase mb-3">DriveOn Fleet</p>
+                <h1 class="display-2 fw-bold mb-4">Explore Our Fleet</h1>
                 <p class="lead text-secondary mb-0">
                     Discover a collection of carefully selected vehicles
                     designed to make every journey comfortable, refined and memorable.
                 </p>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
-
-
-
 
 <!-- FLEET -->
 <section class="pb-5">
-
     <div class="container pb-5">
-
 
         <!-- BMW -->
         <article class="fleet-item border-top py-5">
-
             <div class="row align-items-center g-4 g-lg-5">
-
                 <div class="col-12 col-lg-7">
-
                     <div class="fleet-image overflow-hidden">
-
-                        <img src="{% static 'image/cars/bmw5.jpg' %}"
-                            class="img-fluid w-100"
-                            alt="BMW 5 Series">
-
+                        <img src="{% static 'image/cars/bmw5.jpg' %}" class="img-fluid w-100" alt="BMW 5 Series">
                     </div>
-
                 </div>
-
                 <div class="col-12 col-lg-5">
-
                     <div class="ps-lg-3">
-
-                        <p class="text-gold fw-semibold text-uppercase mb-2">
-                            Luxury Sedan
-                        </p>
-
-                        <h2 class="display-6 fw-bold mb-3">
-                            BMW 5 Series
-                        </h2>
-
+                        <p class="text-gold fw-semibold text-uppercase mb-2">Luxury Sedan</p>
+                        <h2 class="display-6 fw-bold mb-3">BMW 5 Series</h2>
                         <p class="text-secondary lh-lg mb-4">
-                            Experience a refined drive built around comfort,
-                            elegance and effortless performance. The BMW 5 Series
-                            creates a calm and sophisticated atmosphere from the
-                            moment you get behind the wheel. Its premium interior
-                            and smooth driving experience make it ideal for both
-                            business trips and special occasions. Choose it when
-                            you want everyday practicality with a touch of luxury.
+                            Experience a refined drive built around comfort, elegance and effortless performance. The BMW 5 Series creates a calm and sophisticated atmosphere from the moment you get behind the wheel. Its premium interior and smooth driving experience make it ideal for both business trips and special occasions. Choose it when you want everyday practicality with a touch of luxury.
                         </p>
-
                         <div class="d-flex flex-wrap align-items-center gap-3">
-
-                            <span class="fs-4 fw-bold">
-                                €360
-                                <small class="fs-6 fw-normal text-secondary">
-                                    / day
-                                </small>
-                            </span>
-
-                            <a href="{% url 'reservation' %}"
-                                class="btn btn-gold px-4">
-                                Reserve
-                                <i class="fas fa-arrow-right ms-2"></i>
-                            </a>
-
+                            <span class="fs-4 fw-bold">€360 <small class="fs-6 fw-normal text-secondary">/ day</small></span>
+                            <a href="{% url 'reservation' %}" class="btn btn-gold px-4">Reserve <i class="fas fa-arrow-right ms-2"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </article>
 
-
-        <!-- AUDI -->
+        <!-- AUDI RS Q8 -->
         <article class="fleet-item border-top py-5">
-
             <div class="row align-items-center g-4 g-lg-5">
-
                 <div class="col-12 col-lg-7 order-lg-2">
-
                     <div class="fleet-image overflow-hidden">
-
-                        <img src="{% static 'image/cars/rsq8.jpg' %}"
-                            class="img-fluid w-100"
-                            alt="Audi RS Q8">
-
+                        <img src="{% static 'image/cars/rsq8.jpg' %}" class="img-fluid w-100" alt="Audi RS Q8">
                     </div>
-
                 </div>
-
                 <div class="col-12 col-lg-5 order-lg-1">
-
                     <div class="pe-lg-3">
-
-                        <p class="text-gold fw-semibold text-uppercase mb-2">
-                            Performance SUV
-                        </p>
-
-                        <h2 class="display-6 fw-bold mb-3">
-                            Audi RS Q8
-                        </h2>
-
+                        <p class="text-gold fw-semibold text-uppercase mb-2">Performance SUV</p>
+                        <h2 class="display-6 fw-bold mb-3">Audi RS Q8</h2>
                         <p class="text-secondary lh-lg mb-4">
-                            The Audi RS Q8 delivers an experience that combines
-                            impressive performance with unmistakable luxury.
-                            Its commanding presence makes every arrival feel
-                            special, while the refined cabin keeps the journey
-                            comfortable. It is built for drivers who want power
-                            without giving up sophistication. Choose it when your
-                            journey deserves something more dynamic.
+                            The Audi RS Q8 delivers an experience that combines impressive performance with unmistakable luxury. Its commanding presence makes every arrival feel special, while the refined cabin keeps the journey comfortable. It is built for drivers who want power without giving up sophistication. Choose it when your journey deserves something more dynamic.
                         </p>
-
                         <div class="d-flex flex-wrap align-items-center gap-3">
-
-                            <span class="fs-4 fw-bold">
-                                €390
-                                <small class="fs-6 fw-normal text-secondary">
-                                    / day
-                                </small>
-                            </span>
-
-                            <a href="{% url 'reservation' %}"
-                                class="btn btn-gold px-4">
-                                Reserve
-                                <i class="fas fa-arrow-right ms-2"></i>
-                            </a>
-
+                            <span class="fs-4 fw-bold">€390 <small class="fs-6 fw-normal text-secondary">/ day</small></span>
+                            <a href="{% url 'reservation' %}" class="btn btn-gold px-4">Reserve <i class="fas fa-arrow-right ms-2"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </article>
-
 
         <!-- MERCEDES -->
         <article class="fleet-item border-top py-5">
-
             <div class="row align-items-center g-4 g-lg-5">
-
                 <div class="col-12 col-lg-7">
-
                     <div class="fleet-image overflow-hidden">
-
-                        <img src="{% static 'image/cars/mb.jpg' %}"
-                            class="img-fluid w-100"
-                            alt="Mercedes C-Class">
-
+                        <img src="{% static 'image/cars/mb.jpg' %}" class="img-fluid w-100" alt="Mercedes C-Class">
                     </div>
-
                 </div>
-
                 <div class="col-12 col-lg-5">
-
                     <div class="ps-lg-3">
-
-                        <p class="text-gold fw-semibold text-uppercase mb-2">
-                            Premium Sedan
-                        </p>
-
-                        <h2 class="display-6 fw-bold mb-3">
-                            Mercedes C-Class
-                        </h2>
-
+                        <p class="text-gold fw-semibold text-uppercase mb-2">Premium Sedan</p>
+                        <h2 class="display-6 fw-bold mb-3">Mercedes C-Class</h2>
                         <p class="text-secondary lh-lg mb-4">
-                            Step into a driving experience focused on comfort,
-                            elegance and modern luxury. The Mercedes C-Class
-                            offers a sophisticated environment that feels at home
-                            in the city and on longer journeys. Its balanced
-                            character makes it easy to enjoy without compromising
-                            on style. Choose it when you want premium comfort
-                            with effortless everyday usability.
+                            Step into a driving experience focused on comfort, elegance and modern luxury. The Mercedes C-Class offers a sophisticated environment that feels at home in the city and on longer journeys. Its balanced character makes it easy to enjoy without compromising on style. Choose it when you want premium comfort with effortless everyday usability.
                         </p>
-
                         <div class="d-flex flex-wrap align-items-center gap-3">
-
-                            <span class="fs-4 fw-bold">
-                                €230
-                                <small class="fs-6 fw-normal text-secondary">
-                                    / day
-                                </small>
-                            </span>
-
-                            <a href="{% url 'reservation' %}"
-                                class="btn btn-gold px-4">
-                                Reserve
-                                <i class="fas fa-arrow-right ms-2"></i>
-                            </a>
-
+                            <span class="fs-4 fw-bold">€230 <small class="fs-6 fw-normal text-secondary">/ day</small></span>
+                            <a href="{% url 'reservation' %}" class="btn btn-gold px-4">Reserve <i class="fas fa-arrow-right ms-2"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </article>
-
 
         <!-- RANGE ROVER -->
-        <article class="fleet-item border-top border-bottom py-5">
-
+        <article class="fleet-item border-top py-5">
             <div class="row align-items-center g-4 g-lg-5">
-
                 <div class="col-12 col-lg-7 order-lg-2">
-
                     <div class="fleet-image overflow-hidden">
-
-                        <img src="{% static 'image/cars/range.jpg' %}"
-                            class="img-fluid w-100"
-                            alt="Range Rover Sport">
-
+                        <img src="{% static 'image/cars/range.jpg' %}" class="img-fluid w-100" alt="Range Rover Sport">
                     </div>
-
                 </div>
-
                 <div class="col-12 col-lg-5 order-lg-1">
-
                     <div class="pe-lg-3">
-
-                        <p class="text-gold fw-semibold text-uppercase mb-2">
-                            Luxury SUV
-                        </p>
-
-                        <h2 class="display-6 fw-bold mb-3">
-                            Range Rover Sport
-                        </h2>
-
+                        <p class="text-gold fw-semibold text-uppercase mb-2">Luxury SUV</p>
+                        <h2 class="display-6 fw-bold mb-3">Range Rover Sport</h2>
                         <p class="text-secondary lh-lg mb-4">
-                            Experience a combination of presence, comfort and
-                            confidence with the Range Rover Sport. Its spacious
-                            and refined character makes longer journeys feel
-                            relaxed and effortless. The elevated driving position
-                            gives the experience a distinctive sense of control.
-                            Choose it when you want luxury with a stronger sense
-                            of adventure.
+                            Experience a combination of presence, comfort and confidence with the Range Rover Sport. Its spacious and refined character makes longer journeys feel relaxed and effortless. The elevated driving position gives the experience a distinctive sense of control. Choose it when you want luxury with a stronger sense of adventure.
                         </p>
-
                         <div class="d-flex flex-wrap align-items-center gap-3">
-
-                            <span class="fs-4 fw-bold">
-                                €200
-                                <small class="fs-6 fw-normal text-secondary">
-                                    / day
-                                </small>
-                            </span>
-
-                            <a href="{% url 'reservation' %}"
-                                class="btn btn-gold px-4">
-                               Reserve
-                                <i class="fas fa-arrow-right ms-2"></i>
-                            </a>
-
+                            <span class="fs-4 fw-bold">€200 <small class="fs-6 fw-normal text-secondary">/ day</small></span>
+                            <a href="{% url 'reservation' %}" class="btn btn-gold px-4">Reserve <i class="fas fa-arrow-right ms-2"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </article>
+
         <!-- AUDI RS6 -->
-<article class="fleet-item border-top border-bottom py-5">
-
-    <div class="row align-items-center g-4 g-lg-5">
-
-        <div class="col-12 col-lg-7">
-
-            <div class="fleet-image overflow-hidden">
-
-                <img src="{% static 'image/cars/rs6.jpg' %}"
-                    class="img-fluid w-100"
-                    alt="Audi RS6">
-
-            </div>
-
-        </div>
-
-        <div class="col-12 col-lg-5">
-
-            <div class="pe-lg-3">
-
-                <p class="text-gold fw-semibold text-uppercase mb-2">
-                    Performance Wagon
-                </p>
-
-                <h2 class="display-6 fw-bold mb-3">
-                    Audi RS6
-                </h2>
-
-                <p class="text-secondary lh-lg mb-4">
-                    Experience the perfect balance of performance, practicality
-                    and premium comfort with the Audi RS6. Its powerful character
-                    delivers an exciting driving experience while the refined
-                    interior keeps every journey comfortable. Choose it when you
-                    want everyday practicality without giving up performance.
-                </p>
-
-                <div class="d-flex flex-wrap align-items-center gap-3">
-
-                    <span class="fs-4 fw-bold">
-                        €450
-                        <small class="fs-6 fw-normal text-secondary">
-                            / day
-                        </small>
-                    </span>
-
-                    <a href="{% url 'reservation' %}"
-                        class="btn btn-gold px-4">
-                        Reserve
-                        <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
-
+        <article class="fleet-item border-top py-5">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-12 col-lg-7">
+                    <div class="fleet-image overflow-hidden">
+                        <img src="{% static 'image/cars/rs6.jpg' %}" class="img-fluid w-100" alt="Audi RS6">
+                    </div>
                 </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</article>
-
-
-<!-- MERCEDES G63 -->
-<article class="fleet-item border-top border-bottom py-5">
-
-    <div class="row align-items-center g-4 g-lg-5">
-
-        <div class="col-12 col-lg-7 order-lg-2">
-
-            <div class="fleet-image overflow-hidden">
-
-                <img src="{% static 'image/cars/g63.jpg' %}"
-                    class="img-fluid w-100"
-                    alt="Mercedes-AMG G63">
-
-            </div>
-
-        </div>
-
-        <div class="col-12 col-lg-5 order-lg-1">
-
-            <div class="pe-lg-3">
-
-                <p class="text-gold fw-semibold text-uppercase mb-2">
-                    Luxury Performance SUV
-                </p>
-
-                <h2 class="display-6 fw-bold mb-3">
-                    Mercedes-AMG G63
-                </h2>
-
-                <p class="text-secondary lh-lg mb-4">
-                    Discover the unmistakable presence of the Mercedes-AMG G63,
-                    combining luxury, power and iconic design. Its commanding
-                    position and premium interior create a distinctive driving
-                    experience on every journey. Choose it when you want
-                    performance and luxury with a strong road presence.
-                </p>
-
-                <div class="d-flex flex-wrap align-items-center gap-3">
-
-                    <span class="fs-4 fw-bold">
-                        €500
-                        <small class="fs-6 fw-normal text-secondary">
-                            / day
-                        </small>
-                    </span>
-
-                    <a href="{% url 'reservation' %}"
-                        class="btn btn-gold px-4">
-                        Reserve
-                        <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
-
+                <div class="col-12 col-lg-5">
+                    <div class="ps-lg-3">
+                        <p class="text-gold fw-semibold text-uppercase mb-2">Performance Wagon</p>
+                        <h2 class="display-6 fw-bold mb-3">Audi RS6</h2>
+                        <p class="text-secondary lh-lg mb-4">
+                            Experience the perfect balance of performance, practicality and premium comfort with the Audi RS6. Its powerful character delivers an exciting driving experience while the refined interior keeps every journey comfortable. Choose it when you want everyday practicality without giving up performance.
+                        </p>
+                        <div class="d-flex flex-wrap align-items-center gap-3">
+                            <span class="fs-4 fw-bold">€450 <small class="fs-6 fw-normal text-secondary">/ day</small></span>
+                            <a href="{% url 'reservation' %}" class="btn btn-gold px-4">Reserve <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
                 </div>
-
             </div>
+        </article>
 
-        </div>
+        <!-- MERCEDES G63 -->
+        <article class="fleet-item border-top border-bottom py-5">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-12 col-lg-7 order-lg-2">
+                    <div class="fleet-image overflow-hidden">
+                        <img src="{% static 'image/cars/g63.jpg' %}" class="img-fluid w-100" alt="Mercedes-AMG G63">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5 order-lg-1">
+                    <div class="pe-lg-3">
+                        <p class="text-gold fw-semibold text-uppercase mb-2">Luxury Performance SUV</p>
+                        <h2 class="display-6 fw-bold mb-3">Mercedes-AMG G63</h2>
+                        <p class="text-secondary lh-lg mb-4">
+                            Discover the unmistakable presence of the Mercedes-AMG G63, combining luxury, power and iconic design. Its commanding position and premium interior create a distinctive driving experience on every journey. Choose it when you want performance and luxury with a strong road presence.
+                        </p>
+                        <div class="d-flex flex-wrap align-items-center gap-3">
+                            <span class="fs-4 fw-bold">€500 <small class="fs-6 fw-normal text-secondary">/ day</small></span>
+                            <a href="{% url 'reservation' %}" class="btn btn-gold px-4">Reserve <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
 
     </div>
-
-</article>
-
-    </div>
-    
-
 </section>
-
 
 <!-- CTA -->
 <section class="py-5 bg-light">
-
     <div class="container py-5">
-
         <div class="row justify-content-center text-center">
-
             <div class="col-12 col-lg-7">
-
-                <p class="text-gold fw-bold text-uppercase mb-2">
-                    Ready to drive?
-                </p>
-
-                <h2 class="display-6 fw-bold mb-3">
-                    Your next journey starts here.
-                </h2>
-
-                <p class="text-secondary mb-4">
-                    Choose your vehicle and continue to our simple
-                    reservation process.
-                </p>
-
-                <a href="{% url 'reservation' %}"
-                    class="btn btn-gold btn-lg px-5">
-
-                    Reserve Now
-                    <i class="fas fa-arrow-right ms-2"></i>
-
-                </a>
-
+                <p class="text-gold fw-bold text-uppercase mb-2">Ready to drive?</p>
+                <h2 class="display-6 fw-bold mb-3">Your next journey starts here.</h2>
+                <p class="text-secondary mb-4">Choose your vehicle and continue to our simple reservation process.</p>
+                <a href="{% url 'reservation' %}" class="btn btn-gold btn-lg px-5">Reserve Now <i class="fas fa-arrow-right ms-2"></i></a>
             </div>
-
         </div>
-
     </div>
-
 </section>
 {% endblock %}

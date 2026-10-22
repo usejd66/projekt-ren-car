@@ -7,14 +7,14 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import LOCATIONS, ContactForm, ReservationForm, SignUpForm, SubscribeForm
+from .forms import ContactForm, ReservationForm, SignUpForm, SubscribeForm
 from .models import ACTIVE_STATUSES, Car, Reservation, Review
 
 SORT_OPTIONS = {"newest": "-created_at", "price_asc": "price_per_day", "price_desc": "-price_per_day"}
 
 
 def _filtered_cars(request):
-    """Filtrimi i përbashkët për cars.html dhe explorefleet.html."""
+    """Filtrimi dhe paginimi për cars.html."""
     get = request.GET
     q, category, transmission = get.get("q", "").strip(), get.get("category", ""), get.get("transmission", "")
     max_price, sort = get.get("max_price", ""), get.get("sort", "newest")
@@ -62,7 +62,7 @@ def cars(request):
 
 
 def explore_fleet(request):
-    return render(request, "explorefleet.html", _filtered_cars(request))
+    return render(request, "explorefleet.html")
 
 
 def contact(request):
@@ -103,8 +103,7 @@ def reservation(request):
     for car_id, start, end in rows:
         booked.setdefault(car_id, []).append({"from": start.isoformat(), "to": end.isoformat()})
 
-    return render(request, "reservation.html",
-                  {"form": form, "cars": cars_qs, "booked": booked, "locations": LOCATIONS})
+        return render(request, "reservation.html", {"form": form, "cars": cars_qs, "booked": booked})
 
 
 def signup(request):

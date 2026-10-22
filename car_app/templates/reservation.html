@@ -42,7 +42,7 @@
         {% csrf_token %}
 
         <!-- 01. VEHICLE -->
-        <section class="bg-white rounded-4 shadow-sm p-4 p-lg-5 mb-4">
+        <section class="bg-white rounded-4 shadow-sm p-3 p-md-4 p-lg-5 mb-4">
             <div class="d-flex align-items-start gap-3 mb-4">
                 <span class="badge text-bg-dark rounded-circle p-3">01</span>
                 <div>
@@ -105,7 +105,7 @@
         </section>
 
         <!-- 02. RENTAL DETAILS -->
-        <section class="bg-white rounded-4 shadow-sm p-4 p-lg-5 mb-4">
+        <section class="bg-white rounded-4 shadow-sm p-3 p-md-4 p-lg-5 mb-4">
             <div class="d-flex align-items-start gap-3 mb-4">
                 <span class="badge text-bg-dark rounded-circle p-3">02</span>
                 <div>
@@ -118,27 +118,21 @@
 
             <div class="row g-4">
                 <div class="col-12 col-lg-6">
-                    <div class="border rounded-4 p-4 h-100">
+                    <div class="border rounded-4 p-3 p-md-4 h-100">
                         <h3 class="h6 fw-bold mb-4"><i class="fas fa-location-dot text-gold me-2"></i>Pickup</h3>
                         <label class="form-label fw-semibold" for="id_pickup_location">Pickup Location</label>
                         <div class="mb-4">{{ form.pickup_location }}</div>
-                        <label class="form-label fw-semibold" for="pickupDate">Pickup Date</label>
-                        <input type="text" id="pickupDate" name="pickup_date" autocomplete="off" placeholder="Zgjidh datën"
+                        <label class="form-label fw-semibold" for="pickupDateAlt">Pickup Date</label>
+                        <input type="text" id="pickupDate" name="pickup_date" autocomplete="off" placeholder="Select date"
                                value="{{ form.pickup_date.value|default:'' }}" class="form-control form-control-lg rounded-3">
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-6">
-                    <div class="border rounded-4 p-4 h-100">
-                        <h3 class="h6 fw-bold mb-4"><i class="fas fa-location-dot text-gold me-2"></i>Return</h3>
-                        <label class="form-label fw-semibold" for="returnLocation">Return Location</label>
-                        {# pa name: forma nuk e ruan vendin e kthimit #}
-                        <select id="returnLocation" class="form-select form-select-lg mb-4">
-                            <option value="">Select return location</option>
-                            {% for loc in locations %}<option>{{ loc }}</option>{% endfor %}
-                        </select>
-                        <label class="form-label fw-semibold" for="returnDate">Return Date</label>
-                        <input type="text" id="returnDate" name="return_date" autocomplete="off" placeholder="Zgjidh datën"
+                    <div class="border rounded-4 p-3 p-md-4 h-100">
+                        <h3 class="h6 fw-bold mb-4"><i class="fas fa-calendar-check text-gold me-2"></i>Return</h3>
+                        <label class="form-label fw-semibold" for="returnDateAlt">Return Date</label>
+                        <input type="text" id="returnDate" name="return_date" autocomplete="off" placeholder="Select date"
                                value="{{ form.return_date.value|default:'' }}" class="form-control form-control-lg rounded-3">
                     </div>
                 </div>
@@ -146,7 +140,7 @@
         </section>
 
         <!-- 03. CUSTOMER DETAILS -->
-        <section class="bg-white rounded-4 shadow-sm p-4 p-lg-5 mb-4">
+        <section class="bg-white rounded-4 shadow-sm p-3 p-md-4 p-lg-5 mb-4">
             <div class="d-flex align-items-start gap-3 mb-4">
                 <span class="badge text-bg-dark rounded-circle p-3">03</span>
                 <div>
@@ -176,19 +170,19 @@
         </section>
 
         <!-- 04. SUMMARY -->
-        <section class="bg-dark text-white rounded-4 p-4 p-lg-5 mb-4">
+        <section class="bg-dark text-white rounded-4 p-3 p-md-4 p-lg-5 mb-4">
             <div class="row g-4 align-items-center">
                 <div class="col-lg-8">
                     <p class="text-gold fw-bold text-uppercase mb-2">Your Trip</p>
                     <h2 class="display-6 fw-bold mb-4">Reservation Summary</h2>
                     <div class="row g-4">
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-4 h-100">
+                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
                             <p class="text-white-50 mb-2">Vehicle</p><h3 id="summaryVehicle" class="h5 fw-bold mb-0">Select a vehicle</h3></div></div>
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-4 h-100">
+                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
                             <p class="text-white-50 mb-2">Rental Period</p><h3 id="summaryDays" class="h5 fw-bold mb-0">0 days</h3></div></div>
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-4 h-100">
+                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
                             <p class="text-white-50 mb-2">Pickup</p><h3 id="summaryPickup" class="h5 fw-bold mb-0">—</h3></div></div>
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-4 h-100">
+                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
                             <p class="text-white-50 mb-2">Return</p><h3 id="summaryReturn" class="h5 fw-bold mb-0">—</h3></div></div>
                     </div>
                 </div>
@@ -213,5 +207,5 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
-<script src="{% static 'js/reservation.js' %}?v=4"></script>
+<script src="{% static 'js/reservation.js' %}?v=5"></script>
 {% endblock %}
