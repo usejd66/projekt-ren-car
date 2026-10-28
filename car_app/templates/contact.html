@@ -1,11 +1,12 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}DriveOn - Contact Us{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="Contact DriveOn in Tirana for help choosing a car, making a reservation or any question about our car rental services.">
-    <meta name="author" content="DriveOn">
+<meta name="description"
+    content="Contact DriveOn in Tirana for help choosing a car, making a reservation or any question about our car rental services.">
+<meta name="author" content="DriveOn">
 {% endblock %}
 
 {# stili i hero-s i faqes kryesore nuk duhet këtu #}
@@ -38,10 +39,12 @@
                         <i class="fas fa-location-dot"></i>
                     </div>
 
-                    <div>
-                        <h5 class="fw-bold mb-1">Location</h5>
-                        <p class="text-secondary mb-0">Tirana, Albania</p>
-                    </div>
+                    <a href="#map" class="text-decoration-none text-dark">
+                        <div>
+                            <h5 class="fw-bold mb-1">Location</h5>
+                            <p class="text-secondary mb-0">Tirana, Albania</p>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Phone -->
@@ -52,7 +55,9 @@
 
                     <div>
                         <h5 class="fw-bold mb-1">Phone</h5>
-                        <p class="text-secondary mb-0">+355 69 000 0000</p>
+                        <a href="tel:+355690000000" class="text-secondary text-decoration-none">
+                            +355 69 000 0000
+                        </a>
                     </div>
                 </div>
 
@@ -62,10 +67,10 @@
                         <i class="fas fa-envelope"></i>
                     </div>
 
-                    <div>
+                    <a href="#contact" class="text-decoration-none text-dark">
                         <h5 class="fw-bold mb-1">Email</h5>
                         <p class="text-secondary mb-0">info@driveon.al</p>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Working Hours -->
@@ -86,7 +91,7 @@
 
 
             <!-- CONTACT FORM -->
-            <div class="col-12 col-lg-7">
+            <div id="contact" class="col-12 col-lg-7">
 
                 <div class="card border-0 shadow-sm p-4 p-md-5">
 
@@ -100,8 +105,8 @@
                             <label for="id_name" class="form-label fw-600">Full Name</label>
 
                             <input type="text" name="name" class="form-control form-control-lg" id="id_name"
-                                placeholder="Enter your name" maxlength="100"
-                                value="{{ form.name.value|default:'' }}" required>
+                                placeholder="Enter your name" maxlength="100" value="{{ form.name.value|default:'' }}"
+                                required>
 
                             {% for error in form.name.errors %}
                             <div class="text-danger small mt-1">{{ error }}</div>
@@ -113,8 +118,7 @@
                             <label for="id_email" class="form-label fw-600">Email Address</label>
 
                             <input type="email" name="email" class="form-control form-control-lg" id="id_email"
-                                placeholder="Enter your email"
-                                value="{{ form.email.value|default:'' }}" required>
+                                placeholder="Enter your email" minlength="15"  ="254" value="{{ form.email.value|default:'' }}" required>
 
                             {% for error in form.email.errors %}
                             <div class="text-danger small mt-1">{{ error }}</div>
@@ -126,8 +130,8 @@
                             <label for="id_subject" class="form-label fw-600">Subject</label>
 
                             <input type="text" name="subject" class="form-control form-control-lg" id="id_subject"
-                                placeholder="Enter subject" maxlength="150"
-                                value="{{ form.subject.value|default:'' }}" required>
+                                placeholder="Enter subject" maxlength="150" value="{{ form.subject.value|default:'' }}"
+                                required>
 
                             {% for error in form.subject.errors %}
                             <div class="text-danger small mt-1">{{ error }}</div>
@@ -139,7 +143,8 @@
                             <label for="id_message" class="form-label fw-600">Message</label>
 
                             <textarea class="form-control" name="message" id="id_message" rows="6"
-                                placeholder="Write your message..." maxlength="2000" required>{{ form.message.value|default:'' }}</textarea>
+                                placeholder="Write your message..." maxlength="2000"
+                                required>{{ form.message.value|default:'' }}</textarea>
 
                             {% for error in form.message.errors %}
                             <div class="text-danger small mt-1">{{ error }}</div>
@@ -163,7 +168,7 @@
 
 
 <!-- LOCATION -->
-<section class="py-5 bg-light">
+<section id="map" class="py-5 bg-light">
 
     <div class="container py-5">
 
@@ -181,8 +186,8 @@
         </div>
 
         <div class="ratio ratio-16x9">
-            <iframe src="https://www.google.com/maps?q=Tirana,Albania&output=embed"
-                title="DriveOn Location" allowfullscreen loading="lazy">
+            <iframe src="https://www.google.com/maps?q=Tirana,Albania&output=embed" title="DriveOn Location"
+                allowfullscreen loading="lazy">
             </iframe>
         </div>
 

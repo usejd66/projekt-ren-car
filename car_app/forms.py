@@ -3,6 +3,7 @@ import re
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.utils import timezone
 
 from .models import Car, ContactMessage, Reservation, Subscriber
 
@@ -40,6 +41,8 @@ class ReservationForm(BootstrapFormMixin, forms.ModelForm):
             "full_name": forms.TextInput(attrs={"placeholder": "First and last name", "autocomplete": "name"}),
             "email": forms.EmailInput(attrs={"placeholder": "name@example.com", "autocomplete": "email"}),
             "phone": forms.TextInput(attrs={"type": "tel", "placeholder": "+355 ...", "autocomplete": "tel"}),
+            "pickup_date": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
+            "return_date": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
             "notes": forms.Textarea(attrs={"rows": 3}),
         }
 
@@ -58,6 +61,15 @@ class ReservationForm(BootstrapFormMixin, forms.ModelForm):
         if not re.fullmatch(r"\+?[\d\s()-]+", phone) or not 7 <= len(re.sub(r"\D", "", phone)) <= 15:
             raise forms.ValidationError("Shkruani një numër telefoni të vlefshëm.")
         return phone
+
+    def clean(self):
+        data = super().clean()
+        pickup, back = data.get("pickup_date"), data.get("return_date")
+        if pickup and pickup < timezone.localdate():
+            self.add_error("pickup_date", "Data e marrjes nuk mund të jetë në të kaluarën.")
+        if pickup and back and back <= pickup:
+            self.add_error("return_date", "Data e kthimit duhet të jetë pas datës së marrjes.")
+        return data
 
 
 class ContactForm(BootstrapFormMixin, forms.ModelForm):
