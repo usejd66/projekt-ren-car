@@ -10,6 +10,7 @@ urlpatterns = [
     path("explore-fleet/", views.explore_fleet, name="explorefleet"),
     path("contact/", views.contact, name="contact"),
     path("reservation/", views.reservation, name="reservation"),
+    path("reservation/success/", views.reservation_success, name="reservation_success"),
     path("signup/", views.signup, name="signup"),
     path("subscribe/", views.subscribe, name="subscribe"),
     path("login/", auth_views.LoginView.as_view(template_name="login.html", redirect_authenticated_user=True), name="login"),

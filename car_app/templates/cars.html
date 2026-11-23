@@ -6,19 +6,40 @@
     <meta name="author" content="DriveOn">
 {% endblock %}
 
-{% block head_extra %}{% endblock %}
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+{% endblock %}
 
 {% block content %}
+<!-- KËRKIMI SIPAS DATAVE -->
+<section class="cars-trip">
+    <div class="container">
+        <h1>{% if trip.start %}Available cars{% else %}Our cars{% endif %}</h1>
+        {% include "_trip_search.html" with button="Update" %}
+
+        {% if trip.error %}
+        <div class="alert alert-warning mt-3 mb-0" role="alert">{{ trip.error }}</div>
+        {% elif trip.start %}
+        <div class="trip-summary">
+            <span><i class="fas fa-calendar"></i><strong>{{ trip.start|date:"D j M" }}</strong> &ndash; <strong>{{ trip.end|date:"D j M Y" }}</strong></span>
+            <span><i class="fas fa-clock"></i>{{ trip.days }} day{{ trip.days|pluralize }}</span>
+            {% if trip.location %}<span><i class="fas fa-location-dot"></i>Pickup: {{ trip.location }}</span>{% endif %}
+            <a href="{% url 'cars' %}" class="ms-auto small text-secondary">Clear dates</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
 <!-- CARS GRID -->
 <section class="cars-section py-5">
     <div class="container">
 
         <!-- CATEGORY TABS -->
         <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
-            <a href="?q={{ filters.q|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}"
+            <a href="?{{ qs_no_category }}"
                class="btn px-4 {% if not filters.category %}btn-gold{% else %}btn-outline-secondary{% endif %}">All</a>
             {% for value, label in categories %}
-            <a href="?category={{ value }}&q={{ filters.q|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}"
+            <a href="?{% if qs_no_category %}{{ qs_no_category }}&{% endif %}category={{ value }}"
                class="btn px-4 {% if filters.category == value %}btn-gold{% else %}btn-outline-secondary{% endif %}">{{ label }}</a>
             {% endfor %}
         </div>
@@ -28,6 +49,12 @@
 
             <!-- kategoria e zgjedhur ruhet kur përdoren filtrat e tjerë -->
             <input type="hidden" name="category" value="{{ filters.category }}">
+            {% if trip.start %}
+            <!-- ruaj edhe kërkimin sipas datave -->
+            <input type="hidden" name="pickup_location" value="{{ trip.location }}">
+            <input type="hidden" name="pickup_date" value="{{ trip.start|date:'Y-m-d' }}">
+            <input type="hidden" name="return_date" value="{{ trip.end|date:'Y-m-d' }}">
+            {% endif %}
 
             <div class="col-12 col-md-6 col-lg-4">
                 <label for="filterQ" class="form-label small fw-semibold">Search</label>
@@ -62,13 +89,13 @@
 
             <div class="col-6 col-lg-2 d-flex gap-2">
                 <button type="submit" class="btn btn-gold flex-fill">Filter</button>
-                <a href="{% url 'cars' %}" class="btn btn-outline-secondary flex-fill">Reset</a>
+                <a href="{% url 'cars' %}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-outline-secondary flex-fill">Reset</a>
             </div>
 
         </form>
 
         <p class="text-secondary small mb-4">
-            {{ page_obj.paginator.count }} car{{ page_obj.paginator.count|pluralize }} found
+            {{ page_obj.paginator.count }} car{{ page_obj.paginator.count|pluralize }} {% if trip.start %}available for your dates{% else %}found{% endif %}
         </p>
 
         <div class="row g-4">
@@ -116,9 +143,12 @@
                                 <p class="mb-0 fw-bold">
                                     €{{ car.price_per_day|floatformat:"-2" }} <small>/ day</small>
                                 </p>
+                                {% if trip.start %}
+                                <p class="car-trip-total"><strong>€{{ car.trip_total|floatformat:"-2" }}</strong> total for {{ trip.days }} day{{ trip.days|pluralize }}</p>
+                                {% endif %}
                             </div>
 
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}"
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}"
                                 class="btn btn-gold btn-sm px-3">
                                 Rent Now
                             </a>
@@ -130,7 +160,7 @@
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <p class="text-secondary mb-3">No cars match your search.</p>
+                <p class="text-secondary mb-3">{% if trip.start %}No cars are available for these dates. Try different dates or remove some filters.{% else %}No cars match your search.{% endif %}</p>
                 <a href="{% url 'cars' %}" class="btn btn-gold">Clear filters</a>
             </div>
             {% endfor %}
@@ -144,7 +174,7 @@
 
                 {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ filters.q|urlencode }}&category={{ filters.category|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}">Previous</a>
+                    <a class="page-link" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled"><span class="page-link">Previous</span></li>
@@ -156,7 +186,7 @@
 
                 {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ filters.q|urlencode }}&category={{ filters.category|urlencode }}&transmission={{ filters.transmission|urlencode }}&max_price={{ filters.max_price|urlencode }}&sort={{ filters.sort|urlencode }}">Next</a>
+                    <a class="page-link" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled"><span class="page-link">Next</span></li>
@@ -238,4 +268,9 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script src="{% static 'js/trip-search.js' %}?v=1"></script>
 {% endblock %}

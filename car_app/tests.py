@@ -84,3 +84,77 @@ class AdminConfirmTest(BaseCase):
         self.run_confirm(Reservation.objects.filter(pk=r.pk))
         r.refresh_from_db()
         self.assertEqual(r.status, "confirmed")
+
+
+class TripSearchTest(BaseCase):
+    def search(self, start, end, **extra):
+        return self.client.get(reverse("cars"), {
+            "pickup_location": "Durrës",
+            "pickup_date": (self.today + timedelta(days=start)).isoformat(),
+            "return_date": (self.today + timedelta(days=end)).isoformat(),
+            **extra,
+        })
+
+    def test_booked_car_is_hidden_and_free_car_shows_total(self):
+        free = Car.objects.create(brand="Toyota", name="Yaris", price_per_day=30)
+        self.book(2, 5)  # self.car (Audi A4) është i zënë
+        r = self.search(3, 6)
+        cars = list(r.context["cars"])
+        self.assertEqual(cars, [free])
+        self.assertEqual(cars[0].trip_total, 90)
+        self.assertContains(r, "€90")
+
+    def test_car_is_available_outside_booked_dates(self):
+        self.book(2, 5)
+        r = self.search(6, 8)
+        self.assertEqual(list(r.context["cars"]), [self.car])
+
+    def test_invalid_dates_show_error_and_do_not_filter(self):
+        self.book(2, 5)
+        r = self.search(5, 3)
+        self.assertContains(r, "The return date must be after the pickup date.")
+        self.assertEqual(list(r.context["cars"]), [self.car])
+
+    def test_rent_link_and_filters_keep_trip(self):
+        r = self.search(3, 6, transmission="manual")
+        start = (self.today + timedelta(days=3)).isoformat()
+        self.assertIn(f"pickup_date={start}", r.context["book_qs"])
+        self.assertIn(f"pickup_date={start}", r.context["qs_no_page"])
+        self.assertIn("transmission=manual", r.context["qs_no_category"])
+        self.assertNotIn("category=", r.context["qs_no_category"].replace("transmission", ""))
+
+
+class ReservationPrefillTest(BaseCase):
+    def test_search_prefills_reservation(self):
+        start = (self.today + timedelta(days=3)).isoformat()
+        end = (self.today + timedelta(days=6)).isoformat()
+        r = self.client.get(reverse("reservation"), {
+            "pickup_location": "Durrës", "pickup_date": start, "return_date": end,
+        })
+        self.assertContains(r, f'value="{start}"')
+        self.assertContains(r, f'value="{end}"')
+        self.assertContains(r, '<option value="Durrës" selected>')
+
+    def test_bad_values_are_ignored(self):
+        r = self.client.get(reverse("reservation"), {"pickup_location": "Mars", "pickup_date": "abc"})
+        self.assertEqual(r.status_code, 200)
+        self.assertNotContains(r, 'value="Mars"')
+
+
+class ReservationSuccessTest(BaseCase):
+    def test_success_page_shows_own_booking(self):
+        r = self.post_reservation(1, 4)
+        self.assertRedirects(r, reverse("reservation_success"))
+        page = self.client.get(reverse("reservation_success"))
+        self.assertContains(page, "Reservation received")
+        self.assertContains(page, "€150")
+
+    def test_success_page_without_booking_redirects(self):
+        self.book(1, 3)  # rezervim i dikujt tjetër
+        r = self.client.get(reverse("reservation_success"))
+        self.assertRedirects(r, reverse("reservation"))
+
+    def test_invalid_field_is_highlighted(self):
+        r = self.client.post(reverse("reservation"), {"car": self.car.pk, "phone": "abc"})
+        self.assertContains(r, "is-invalid")
+        self.assertContains(r, "Please enter a valid phone number.")

@@ -22,26 +22,39 @@ const nextDay = (iso) => new Date(Date.parse(iso) + MS_DAY).toISOString().slice(
 const showError = (msg) => { err.textContent = msg; err.classList.toggle("d-none", !msg); };
 
 /* ---------- Summary ---------- */
+const money = (n) => `€${n.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+
 function update() {
     const c = car(), hit = conflict(c);
     const days = pickup.value && ret.value
         ? Math.max(0, Math.round((Date.parse(ret.value) - Date.parse(pickup.value)) / MS_DAY)) : 0;
+    const total = (c ? c.price : 0) * days;
 
     showError(hit ? `This car is booked from ${fmt(hit.from)} to ${fmt(hit.to)}. Please choose different dates.` : "");
+
+    // karta e makinës së zgjedhur
     $("selectedCarWrapper").classList.toggle("d-none", !c);
     if (c) {
         $("selectedCarImage").src = c.image;
         $("selectedCarImage").alt = c.name;
         set("selectedCarName", c.name);
         set("selectedCarCategory", c.category);
+        set("selectedCarSeats", `${c.seats} seats`);
         set("selectedCarTransmission", c.transmission);
-        set("selectedCarPrice", `€${c.price}`);
+        set("selectedCarFuel", c.fuel);
+        set("selectedCarPrice", money(c.price));
     }
-    set("summaryVehicle", c ? c.name : "Select a vehicle");
-    set("summaryDays", `${days} ${days === 1 ? "day" : "days"}`);
-    set("summaryPickup", pickLoc.value ? pickLoc.value + (pickup.value ? ` · ${fmt(pickup.value)}` : "") : "—");
+
+    // përmbledhja
+    set("summaryVehicle", c ? c.name : "No car selected");
+    set("summaryPickup", pickup.value
+        ? fmt(pickup.value) + (pickLoc.value ? ` · ${pickLoc.value}` : "")
+        : (pickLoc.value || "—"));
     set("summaryReturn", ret.value ? fmt(ret.value) : "—");
-    set("summaryTotal", `€${((c ? c.price : 0) * days).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+    set("summaryRateLabel", c && days ? `${money(c.price)} × ${days} ${days === 1 ? "day" : "days"}` : "Daily rate");
+    set("summaryRate", c ? (days ? money(total) : `${money(c.price)} / day`) : "—");
+    set("summaryTotal", money(total));
+    set("summaryTotalMobile", money(total));
 }
 
 /* ---------- Calendars ---------- */
@@ -49,7 +62,7 @@ const base = {
     dateFormat: "Y-m-d", // value sent to Django
     altInput: true,
     altFormat: "d/m/Y",  // what the user sees
-    altInputClass: "form-control form-control-lg rounded-3",
+    altInputClass: "form-control",
     minDate: "today",
     disableMobile: true,
     locale: { firstDayOfWeek: 1 },
@@ -58,7 +71,12 @@ const base = {
     onDayCreate: (_, __, fp, el) => isBooked(fp.formatDate(el.dateObj, "Y-m-d")) && el.classList.add("booked"),
     onChange: update,
     // the visible flatpickr input gets an id (pickupDateAlt / returnDateAlt) so label[for] works
-    onReady: (_, __, fp) => { fp.altInput.id = `${fp.input.id}Alt`; fp.altInput.autocomplete = "off"; },
+    onReady: (_, __, fp) => {
+        fp.altInput.id = `${fp.input.id}Alt`;
+        fp.altInput.autocomplete = "off";
+        // gabimi nga serveri (is-invalid) duhet të duket te input-i i dukshëm
+        if (fp.input.classList.contains("is-invalid")) fp.altInput.classList.add("is-invalid");
+    },
 };
 const returnFp = flatpickr(ret, {
     ...base,
@@ -91,7 +109,8 @@ form.addEventListener("submit", (e) => {
         showError(msg);
         err.scrollIntoView({ behavior: "smooth", block: "center" });
     } else {
-        $("confirmReservation").disabled = true; // prevents double submit
+        // parandalon dërgimin dy herë (edhe butoni i shiritit në telefon)
+        document.querySelectorAll('button[type="submit"]').forEach((b) => { b.disabled = true; });
     }
 });
 

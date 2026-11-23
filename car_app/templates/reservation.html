@@ -1,38 +1,33 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Reservation | DriveOn{% endblock %}
+{% block title %}Reserve a Car | DriveOn{% endblock %}
 {% block meta %}
-    <meta name="description" content="Reserve your DriveOn rental car.">
+    <meta name="description" content="Reserve your DriveOn rental car online: choose your car, dates and pickup location and see the total price before you confirm.">
     <meta name="author" content="DriveOn">
+    <meta name="robots" content="noindex">
 {% endblock %}
 
 {% block head_extra %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
-<style>
-    .flatpickr-day.booked, .flatpickr-day.booked:hover {
-        background: #fde2e2; border-color: #fde2e2; color: #b42318;
-        text-decoration: line-through; cursor: not-allowed;
-    }
-    .flatpickr-calendar { font-family: inherit; }
-</style>
 {% endblock %}
 
 {% block content %}
-<div class="bg-light py-5">
-<div class="container py-lg-4">
+<section class="checkout">
+<div class="container">
 
-    <div class="text-center mb-5">
-        <span class="text-gold fw-bold text-uppercase small">DriveOn Rental</span>
-        <h1 class="display-5 fw-bold mt-2 mb-3">Reserve Your Drive</h1>
-        <p class="text-secondary">Choose your vehicle and complete your rental details.</p>
-    </div>
+    <nav class="checkout-crumbs" aria-label="Breadcrumb">
+        <a href="{% url 'cars' %}"><i class="fas fa-arrow-left me-2"></i>Back to cars</a>
+    </nav>
+
+    <header class="checkout-head">
+        <h1>Complete your reservation</h1>
+        <p>It takes about 2 minutes. No payment is taken online.</p>
+    </header>
 
     {% if form.errors %}
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            {% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}
-            {% for field in form %}{% for e in field.errors %}<li>{{ field.label }}: {{ e }}</li>{% endfor %}{% endfor %}
-        </ul>
+    <div class="alert alert-danger checkout-alert" role="alert">
+        <strong>Please check the highlighted fields.</strong>
+        {% for e in form.non_field_errors %}<div class="mt-1">{{ e }}</div>{% endfor %}
     </div>
     {% endif %}
 
@@ -40,172 +35,151 @@
 
     <form method="post" id="reservationForm" novalidate>
         {% csrf_token %}
+        <div class="row g-4 g-xl-5">
 
-        <!-- 01. VEHICLE -->
-        <section class="bg-white rounded-4 shadow-sm p-3 p-md-4 p-lg-5 mb-4">
-            <div class="d-flex align-items-start gap-3 mb-4">
-                <span class="badge text-bg-dark rounded-circle p-3">01</span>
-                <div>
-                    <h2 class="h3 fw-bold mb-1">Choose Your Vehicle</h2>
-                    <p class="text-secondary mb-0">Select the vehicle that fits your journey.</p>
-                </div>
-            </div>
+            <!-- ===== FORMULARI ===== -->
+            <div class="col-lg-7 col-xl-8">
 
-            <label class="form-label fw-semibold" for="carSelect">Select your car</label>
-            <select id="carSelect" name="car" class="form-select form-select-lg">
-                <option value="">Select your car...</option>
-                {% regroup cars by get_category_display as groups %}
-                {% for g in groups %}
-                <optgroup label="{{ g.grouper }}">
-                    {% for car in g.list %}
-                    <option value="{{ car.pk }}"
-                            {% if form.car.value|stringformat:"s" == car.pk|stringformat:"s" %}selected{% endif %}
-                            data-name="{{ car }}"
-                            data-price="{{ car.price_per_day|stringformat:'.2f' }}"
-                            data-category="{{ car.get_category_display }}"
-                            data-transmission="{{ car.get_transmission_display }}"
-                            data-image="{% if car.image %}{{ car.image.url }}{% else %}{% static 'image/hero.jpg' %}{% endif %}">
-                        {{ car }} — €{{ car.price_per_day|floatformat:"-2" }}
-                    </option>
-                    {% endfor %}
-                </optgroup>
-                {% endfor %}
-            </select>
+                <!-- Makina -->
+                <section class="checkout-card" aria-labelledby="stepCar">
+                    <h2 id="stepCar" class="checkout-card-title">Your car</h2>
 
-            <div id="selectedCarWrapper" class="row justify-content-center mt-4 d-none">
-                <div class="col-12 col-lg-8">
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                        <div class="row g-0">
-                            <div class="col-12 col-md-5">
-                                <img id="selectedCarImage" src="" alt="" class="img-fluid w-100 selected-car-image">
-                            </div>
-                            <div class="col-12 col-md-7">
-                                <div class="card-body p-4 h-100 d-flex flex-column">
-                                    <span id="selectedCarCategory" class="badge bg-light text-dark align-self-start mb-2"></span>
-                                    <h3 id="selectedCarName" class="fw-bold mb-3"></h3>
-                                    <small class="text-secondary d-block mb-1">
-                                        <i class="fas fa-gears text-gold me-1"></i> Transmission
-                                    </small>
-                                    <span id="selectedCarTransmission" class="fw-semibold small mb-4"></span>
-                                    <div class="mt-auto d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span id="selectedCarPrice" class="fs-4 fw-bold"></span>
-                                            <small class="text-secondary">/ day</small>
-                                        </div>
-                                        <span class="text-success small fw-semibold">
-                                            <i class="fas fa-circle-check me-1"></i> Available
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                    <label class="form-label" for="carSelect">Car</label>
+                    <select id="carSelect" name="car" class="form-select{% if form.car.errors %} is-invalid{% endif %}">
+                        <option value="">Select a car…</option>
+                        {% regroup cars by get_category_display as groups %}
+                        {% for g in groups %}
+                        <optgroup label="{{ g.grouper }}">
+                            {% for car in g.list %}
+                            <option value="{{ car.pk }}"
+                                    {% if form.car.value|stringformat:"s" == car.pk|stringformat:"s" %}selected{% endif %}
+                                    data-name="{{ car }}"
+                                    data-price="{{ car.price_per_day|stringformat:'.2f' }}"
+                                    data-category="{{ car.get_category_display }}"
+                                    data-transmission="{{ car.get_transmission_display }}"
+                                    data-seats="{{ car.seats }}"
+                                    data-fuel="{{ car.get_fuel_display }}"
+                                    data-image="{% if car.image %}{{ car.image.url }}{% else %}{% static 'image/hero.jpg' %}{% endif %}">
+                                {{ car }} — €{{ car.price_per_day|floatformat:"-2" }}/day
+                            </option>
+                            {% endfor %}
+                        </optgroup>
+                        {% endfor %}
+                    </select>
+                    {% for e in form.car.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+
+                    <div id="selectedCarWrapper" class="picked-car d-none">
+                        <img id="selectedCarImage" src="" alt="">
+                        <div class="picked-car-info">
+                            <p id="selectedCarCategory" class="picked-car-cat"></p>
+                            <h3 id="selectedCarName" class="picked-car-name"></h3>
+                            <ul class="picked-car-specs list-unstyled">
+                                <li><i class="fas fa-user"></i><span id="selectedCarSeats"></span></li>
+                                <li><i class="fas fa-gears"></i><span id="selectedCarTransmission"></span></li>
+                                <li><i class="fas fa-gas-pump"></i><span id="selectedCarFuel"></span></li>
+                            </ul>
+                        </div>
+                        <p class="picked-car-price"><strong id="selectedCarPrice"></strong><span>/ day</span></p>
+                    </div>
+                </section>
+
+                <!-- Udhëtimi -->
+                <section class="checkout-card" aria-labelledby="stepTrip">
+                    <h2 id="stepTrip" class="checkout-card-title">Pickup &amp; return</h2>
+
+                    <div id="formError" class="alert alert-danger d-none" role="alert"></div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label" for="id_pickup_location">Pickup location</label>
+                            {{ form.pickup_location }}
+                            {% for e in form.pickup_location.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="pickupDateAlt">Pickup date</label>
+                            <input type="text" id="pickupDate" name="pickup_date" autocomplete="off" placeholder="Select date"
+                                   value="{{ form.pickup_date.value|default:'' }}" class="form-control{% if form.pickup_date.errors %} is-invalid{% endif %}">
+                            {% for e in form.pickup_date.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="returnDateAlt">Return date</label>
+                            <input type="text" id="returnDate" name="return_date" autocomplete="off" placeholder="Select date"
+                                   value="{{ form.return_date.value|default:'' }}" class="form-control{% if form.return_date.errors %} is-invalid{% endif %}">
+                            {% for e in form.return_date.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
+                    <p class="checkout-hint"><i class="fas fa-circle-info me-2"></i>Dates that are already booked for this car are crossed out in the calendar.</p>
+                </section>
 
-        <!-- 02. RENTAL DETAILS -->
-        <section class="bg-white rounded-4 shadow-sm p-3 p-md-4 p-lg-5 mb-4">
-            <div class="d-flex align-items-start gap-3 mb-4">
-                <span class="badge text-bg-dark rounded-circle p-3">02</span>
-                <div>
-                    <h2 class="h3 fw-bold mb-1">Rental Details</h2>
-                    <p class="text-secondary mb-0">Choose your pickup and return details.</p>
-                </div>
-            </div>
-
-            <div id="formError" class="alert alert-danger d-none mb-4"></div>
-
-            <div class="row g-4">
-                <div class="col-12 col-lg-6">
-                    <div class="border rounded-4 p-3 p-md-4 h-100">
-                        <h3 class="h6 fw-bold mb-4"><i class="fas fa-location-dot text-gold me-2"></i>Pickup</h3>
-                        <label class="form-label fw-semibold" for="id_pickup_location">Pickup Location</label>
-                        <div class="mb-4">{{ form.pickup_location }}</div>
-                        <label class="form-label fw-semibold" for="pickupDateAlt">Pickup Date</label>
-                        <input type="text" id="pickupDate" name="pickup_date" autocomplete="off" placeholder="Select date"
-                               value="{{ form.pickup_date.value|default:'' }}" class="form-control form-control-lg rounded-3">
+                <!-- Shoferi -->
+                <section class="checkout-card" aria-labelledby="stepDriver">
+                    <h2 id="stepDriver" class="checkout-card-title">Driver details</h2>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="id_full_name" class="form-label">Full name</label>
+                            {{ form.full_name }}
+                            {% for e in form.full_name.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_email" class="form-label">Email</label>
+                            {{ form.email }}
+                            {% for e in form.email.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_phone" class="form-label">Phone</label>
+                            {{ form.phone }}
+                            {% for e in form.phone.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+                        </div>
+                        <div class="col-12">
+                            <label for="id_notes" class="form-label">Notes <span class="text-secondary fw-normal">(optional)</span></label>
+                            {{ form.notes }}
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-12 col-lg-6">
-                    <div class="border rounded-4 p-3 p-md-4 h-100">
-                        <h3 class="h6 fw-bold mb-4"><i class="fas fa-calendar-check text-gold me-2"></i>Return</h3>
-                        <label class="form-label fw-semibold" for="returnDateAlt">Return Date</label>
-                        <input type="text" id="returnDate" name="return_date" autocomplete="off" placeholder="Select date"
-                               value="{{ form.return_date.value|default:'' }}" class="form-control form-control-lg rounded-3">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 03. CUSTOMER DETAILS -->
-        <section class="bg-white rounded-4 shadow-sm p-3 p-md-4 p-lg-5 mb-4">
-            <div class="d-flex align-items-start gap-3 mb-4">
-                <span class="badge text-bg-dark rounded-circle p-3">03</span>
-                <div>
-                    <h2 class="h3 fw-bold mb-1">Your Details</h2>
-                    <p class="text-secondary mb-0">Enter your contact information.</p>
-                </div>
+                </section>
             </div>
 
-            <div class="row g-4">
-                <div class="col-12">
-                    <label for="id_full_name" class="form-label fw-semibold">Full Name</label>
-                    {{ form.full_name }}
-                </div>
-                <div class="col-md-6">
-                    <label for="id_email" class="form-label fw-semibold">Email Address</label>
-                    {{ form.email }}
-                </div>
-                <div class="col-md-6">
-                    <label for="id_phone" class="form-label fw-semibold">Phone Number</label>
-                    {{ form.phone }}
-                </div>
-                <div class="col-12">
-                    <label for="id_notes" class="form-label fw-semibold">Notes (optional)</label>
-                    {{ form.notes }}
-                </div>
+            <!-- ===== PËRMBLEDHJA ===== -->
+            <div class="col-lg-5 col-xl-4">
+                <aside class="summary" aria-labelledby="summaryTitle">
+                    <h2 id="summaryTitle" class="summary-title">Booking summary</h2>
+
+                    <p id="summaryVehicle" class="summary-car">No car selected</p>
+
+                    <dl class="summary-trip">
+                        <div><dt>Pickup</dt><dd id="summaryPickup">—</dd></div>
+                        <div><dt>Return</dt><dd id="summaryReturn">—</dd></div>
+                    </dl>
+
+                    <dl class="summary-price">
+                        <div><dt id="summaryRateLabel">Daily rate</dt><dd id="summaryRate">—</dd></div>
+                        <div class="summary-total"><dt>Total</dt><dd id="summaryTotal">€0</dd></div>
+                    </dl>
+
+                    <button type="submit" id="confirmReservation" class="btn btn-gold summary-btn">Confirm reservation</button>
+
+                    <ul class="summary-notes list-unstyled">
+                        <li><i class="fas fa-check"></i>No payment taken online</li>
+                        <li><i class="fas fa-check"></i>Total price shown, no hidden fees</li>
+                        <li><i class="fas fa-check"></i>We contact you to confirm the booking</li>
+                    </ul>
+                </aside>
             </div>
-        </section>
-
-        <!-- 04. SUMMARY -->
-        <section class="bg-dark text-white rounded-4 p-3 p-md-4 p-lg-5 mb-4">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-8">
-                    <p class="text-gold fw-bold text-uppercase mb-2">Your Trip</p>
-                    <h2 class="display-6 fw-bold mb-4">Reservation Summary</h2>
-                    <div class="row g-4">
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
-                            <p class="text-white-50 mb-2">Vehicle</p><h3 id="summaryVehicle" class="h5 fw-bold mb-0">Select a vehicle</h3></div></div>
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
-                            <p class="text-white-50 mb-2">Rental Period</p><h3 id="summaryDays" class="h5 fw-bold mb-0">0 days</h3></div></div>
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
-                            <p class="text-white-50 mb-2">Pickup</p><h3 id="summaryPickup" class="h5 fw-bold mb-0">—</h3></div></div>
-                        <div class="col-md-6"><div class="bg-secondary bg-opacity-25 rounded-3 p-3 p-md-4 h-100">
-                            <p class="text-white-50 mb-2">Return</p><h3 id="summaryReturn" class="h5 fw-bold mb-0">—</h3></div></div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="bg-white text-dark rounded-4 p-4 text-center">
-                        <p class="text-secondary mb-2">Total Price</p>
-                        <h3 id="summaryTotal" class="display-5 fw-bold mb-2">€0</h3>
-                        <p class="text-secondary mb-4">Final rental price</p>
-                        <button type="submit" id="confirmReservation" class="btn btn-gold btn-lg w-100 rounded-pill fw-bold">
-                            Confirm Reservation <i class="fas fa-arrow-right ms-2"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        </div>
     </form>
 </div>
+</section>
+
+<!-- Telefon: totali dhe butoni gjithmonë të dukshëm poshtë -->
+<div class="checkout-bar d-lg-none">
+    <div>
+        <span class="checkout-bar-label">Total</span>
+        <strong id="summaryTotalMobile">€0</strong>
+    </div>
+    <button type="submit" form="reservationForm" class="btn btn-gold">Confirm</button>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
-<script src="{% static 'js/reservation.js' %}?v=5"></script>
+<script src="{% static 'js/reservation.js' %}?v=6"></script>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}DriveOn - Rent a Car in Tirana | Premium Vehicle Rental Service{% endblock %}
+{% block title %}Car Rental in Tirana | DriveOn{% endblock %}
 
 {% block meta %}
 <meta name="description" content="DriveOn - Premium car rental services with modern vehicles, competitive prices, and easy booking. Rent your dream car today!">
@@ -16,142 +16,172 @@
 
 {% block head_extra %}
 <style>
-    section.hero {
-        background: linear-gradient(90deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .52) 45%, rgba(0, 0, 0, .2) 100%),
-                    url("{% static 'image/hero1.jpg' %}") center/cover no-repeat;
+    section.hero { --hero-img: url("{% static 'image/hero1.jpg' %}"); }
+    @media (max-width: 767.98px) {
+        section.hero { --hero-img: url("{% static 'image/hero1-mobile.jpg' %}"); }
     }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+<link rel="preload" as="image" href="{% static 'image/hero1.jpg' %}" media="(min-width: 768px)">
+<link rel="preload" as="image" href="{% static 'image/hero1-mobile.jpg' %}" media="(max-width: 767.98px)">
 {% endblock %}
 
 {% block content %}
 
-<!-- Hero -->
+<!-- HERO + KËRKIMI -->
 <section class="hero">
     <div class="container">
-        <div class="row"><div class="col-lg-8 col-xl-7">
-            <div class="hero-eyebrow d-flex align-items-center gap-3 mb-4">
-                <span class="hero-line"></span><span class="eyebrow">Premium Car Rental</span>
+        <div class="row">
+            <div class="col-lg-8 col-xl-7">
+                <h1 class="hero-title text-white">Car rental in Tirana,<br>made simple.</h1>
+                <p class="hero-description">Modern, well-maintained cars with clear prices. Pick up in Tirana, Durrës or at Tirana Airport.</p>
+                {% if min_price %}
+                <p class="hero-price">From <strong>€{{ min_price|floatformat:"-2" }}</strong> per day</p>
+                {% endif %}
             </div>
-            <h1 class="hero-title text-white mb-4">Drive Your<br><span class="text-gold">Journey.</span></h1>
-            <p class="hero-description mb-4">Discover premium vehicles, seamless booking, and a driving experience designed around you.</p>
-            <div class="hero-actions d-flex flex-column flex-sm-row gap-3">
-                <a href="{% url 'cars' %}" class="btn btn-gold btn-lg px-4 px-md-5">Find Your Car<i class="fas fa-arrow-right ms-2"></i></a>
-                <a href="{% url 'explorefleet' %}" class="btn hero-outline-btn btn-lg px-4 px-md-5">Explore Fleet</a>
-            </div>
-            <div class="hero-stats d-flex flex-column flex-sm-row flex-wrap gap-3 gap-sm-4 mt-5 text-white">
-                <div><strong class="d-block fs-4 text-gold">50+</strong><small class="opacity-75">Premium Vehicles</small></div>
-                <div class="vr d-none d-sm-block"></div>
-                <div><strong class="d-block fs-4 text-gold">24/7</strong><small class="opacity-75">Customer Support</small></div>
-                <div class="vr d-none d-sm-block"></div>
-                <div><strong class="d-block fs-4 text-gold">100%</strong><small class="opacity-75">Secure Booking</small></div>
-            </div>
-        </div></div>
+        </div>
+
+        <div class="hero-search">{% include "_trip_search.html" %}</div>
+
+        <ul class="hero-trust list-unstyled">
+            <li><i class="fas fa-check"></i>Total price shown before you book</li>
+            <li><i class="fas fa-check"></i>Pickup in Tirana, Durrës &amp; airport</li>
+            <li><i class="fas fa-check"></i>Book online in under 2 minutes</li>
+        </ul>
     </div>
 </section>
 
-<!-- How it works -->
-<section class="bg-light py-5">
-    <div class="container py-4 text-center">
-        <h2 class="display-5 fw-bold mb-3">How It Works</h2>
-        <p class="section-text text-secondary mb-5">Booking a car with DriveOn is simple, fast, and hassle-free. In just a few steps, you choose your car, set the dates and location, confirm your reservation, and you're ready to go.</p>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="process-icon mx-auto mb-3"><i class="fas fa-car-side"></i></div>
-                <h4 class="h5 fw-bold">Choose your car</h4>
-                <p class="text-secondary small mb-0">Browse our fleet and choose the model that suits you.</p>
+<!-- KATEGORITË + MAKINAT -->
+<section id="featured" class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">Choose your car</h2>
+                <p class="section-sub">From city cars to family vans, all with unlimited kilometres.</p>
             </div>
-            <div class="col-md-4">
-                <div class="process-icon mx-auto mb-3"><i class="fas fa-calendar-alt"></i></div>
-                <h4 class="h5 fw-bold">Set dates &amp; location</h4>
-                <p class="text-secondary small mb-0">Fill out the form with your pickup and drop-off details.</p>
-            </div>
-            <div class="col-md-4">
-                <div class="process-icon mx-auto mb-3"><i class="fas fa-check"></i></div>
-                <h4 class="h5 fw-bold">Confirm &amp; reserve</h4>
-                <p class="text-secondary small mb-0">Pay a deposit or confirm the booking, with no complicated paperwork.</p>
-            </div>
+            <a href="{% url 'cars' %}" class="link-arrow">View all cars <i class="fas fa-arrow-right"></i></a>
         </div>
-    </div>
-</section>
 
-<!-- Featured cars (nga databaza) -->
-<section class="bg-light py-5">
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <p class="eyebrow mb-2">Featured Vehicles</p>
-            <h2 class="fw-bold mb-3">Our Premium Fleet</h2>
-            <p class="section-text text-secondary mb-0">Discover our collection of luxury vehicles, carefully selected and maintained for your comfort and safety.</p>
-        </div>
-        <div class="row g-4">
-            {% for car in featured_cars %}
-            <div class="col-12 col-md-6 col-xl-3">
-                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                    <img src="{% if car.image %}{{ car.image.url }}{% else %}{% static 'image/hero.jpg' %}{% endif %}" class="card-img-top car-image" alt="{{ car }}">
-                    <div class="card-body p-4 d-flex flex-column">
-                        <h5 class="fw-bold mb-1">{{ car }}</h5>
-                        <p class="text-secondary small mb-3">{{ car.get_category_display }}</p>
-                        <div class="row g-3 mb-4 small">
-                            <div class="col-6"><span class="text-secondary d-block mb-1">Transmission</span><i class="fas fa-gears text-gold me-1"></i><b>{{ car.get_transmission_display }}</b></div>
-                            <div class="col-6"><span class="text-secondary d-block mb-1">Seats</span><i class="fas fa-users text-gold me-1"></i><b>{{ car.seats }} Seats</b></div>
-                            <div class="col-6"><span class="text-secondary d-block mb-1">Fuel</span><i class="fas fa-gas-pump text-gold me-1"></i><b>{{ car.get_fuel_display }}</b></div>
-                            <div class="col-6"><span class="text-secondary d-block mb-1">Year</span><i class="fas fa-calendar text-gold me-1"></i><b>{{ car.year|default:"-" }}</b></div>
-                        </div>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <div><span class="fs-5 fw-bold">€{{ car.price_per_day|floatformat:"-2" }}</span><small class="text-secondary"> / day</small></div>
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}" class="btn btn-gold">Details</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <p class="col-12 text-center text-secondary mb-0">No vehicles available at the moment. Please check back soon.</p>
+        <div class="category-grid">
+            {% for c in categories %}
+            <a href="{% url 'cars' %}?category={{ c.key }}" class="category-tile">
+                <span class="category-name">{{ c.label }}</span>
+                <span class="category-count">{{ c.count }} car{{ c.count|pluralize }}</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
             {% endfor %}
         </div>
-        <div class="text-center mt-5"><a href="{% url 'cars' %}" class="btn btn-gold btn-lg px-5">View All Cars</a></div>
+
+        {% if featured_cars %}
+        <div class="row g-4 mt-2">
+            {% for car in featured_cars %}
+            <div class="col-12 col-sm-6 col-xl-3">
+                <article class="car-tile h-100">
+                    <a href="{% url 'reservation' %}?car={{ car.pk }}" class="car-tile-img">
+                        <img src="{% if car.image %}{{ car.image.url }}{% else %}{% static 'image/hero.jpg' %}{% endif %}" alt="{{ car }}" loading="lazy">
+                    </a>
+                    <div class="car-tile-body">
+                        <p class="car-tile-cat">{{ car.get_category_display }}</p>
+                        <h3 class="car-tile-name">{{ car }}</h3>
+                        <ul class="car-tile-specs list-unstyled">
+                            <li><i class="fas fa-user"></i>{{ car.seats }}</li>
+                            <li><i class="fas fa-gears"></i>{{ car.get_transmission_display }}</li>
+                            <li><i class="fas fa-gas-pump"></i>{{ car.get_fuel_display }}</li>
+                        </ul>
+                        <div class="car-tile-foot">
+                            <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}" class="btn btn-gold btn-sm">Book</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 </section>
 
-<!-- Why choose us -->
-<section class="py-5">
-    <div class="container py-5">
+<!-- SI FUNKSIONON -->
+<section id="how-it-works" class="section section-muted">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">How it works</h2>
+                <p class="section-sub">Three steps, no paperwork at the counter.</p>
+            </div>
+        </div>
+        <ol class="steps list-unstyled">
+            <li class="step">
+                <span class="step-num">1</span>
+                <h3 class="step-title">Choose a car</h3>
+                <p>Browse the fleet and compare prices, seats and transmission.</p>
+            </li>
+            <li class="step">
+                <span class="step-num">2</span>
+                <h3 class="step-title">Pick dates &amp; location</h3>
+                <p>Select pickup and return dates. You see the total price right away.</p>
+            </li>
+            <li class="step">
+                <span class="step-num">3</span>
+                <h3 class="step-title">Collect your keys</h3>
+                <p>We confirm your booking and have the car ready when you arrive.</p>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<!-- PSE NE -->
+<section class="section">
+    <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <img src="{% static 'image/hero.jpg' %}" alt="Why Choose DriveOn" class="why-image w-100 object-fit-cover rounded-4 shadow">
+                <img src="{% static 'image/hero.jpg' %}" alt="A DriveOn rental car" class="why-image w-100 object-fit-cover" loading="lazy">
             </div>
             <div class="col-lg-6">
-                <p class="eyebrow mb-3">Why choose us</p>
-                <h2 class="display-5 fw-bold mb-3">Why Choose DriveOn?</h2>
-                <p class="fs-5 text-secondary mb-4">Everything you need for a simple, comfortable and reliable car rental experience.</p>
-                <div class="d-flex flex-column gap-4">
-                    <div><h4 class="h5 fw-bold">Wide Selection</h4><p class="text-secondary mb-0">Choose from a wide range of modern and well-maintained vehicles for every journey.</p></div>
-                    <div><h4 class="h5 fw-bold">Easy Booking</h4><p class="text-secondary mb-0">Book your car quickly with our simple and seamless reservation process.</p></div>
-                    <div><h4 class="h5 fw-bold">Best Prices</h4><p class="text-secondary mb-0">Enjoy competitive rental prices with no unnecessary complications.</p></div>
-                    <div><h4 class="h5 fw-bold">24/7 Support</h4><p class="text-secondary mb-0">Our support team is available whenever you need assistance during your rental.</p></div>
-                </div>
+                <h2 class="section-title mb-4">Why rent with DriveOn</h2>
+                <ul class="why-list list-unstyled">
+                    <li>
+                        <i class="fas fa-circle-check"></i>
+                        <div><h3>Well-maintained cars</h3><p>Every car is cleaned and checked before each rental.</p></div>
+                    </li>
+                    <li>
+                        <i class="fas fa-circle-check"></i>
+                        <div><h3>Clear pricing</h3><p>One daily price. The total is calculated before you confirm.</p></div>
+                    </li>
+                    <li>
+                        <i class="fas fa-circle-check"></i>
+                        <div><h3>Flexible pickup</h3><p>Collect your car in Tirana, Durrës or at Tirana Airport.</p></div>
+                    </li>
+                    <li>
+                        <i class="fas fa-circle-check"></i>
+                        <div><h3>Local support</h3><p>A real team in Tirana you can call or message during your rental.</p></div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Reviews (nga databaza) -->
+<!-- VLERËSIMET (nga databaza) -->
 {% if reviews %}
-<section class="py-5">
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <p class="eyebrow mb-2">Testimonials</p>
-            <h2 class="fw-bold mb-3">What Our Customers Say</h2>
-            {% if rating_total %}
-            <p class="text-secondary mb-0"><i class="fas fa-star text-gold me-1"></i><strong>{{ rating_avg }}</strong> / 5 &middot; {{ rating_total }} review{{ rating_total|pluralize }}</p>
-            {% endif %}
+<section class="section section-muted">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">What customers say</h2>
+                {% if rating_total %}
+                <p class="section-sub"><i class="fas fa-star text-gold me-1"></i><strong class="text-dark">{{ rating_avg }}</strong> out of 5 &middot; {{ rating_total }} review{{ rating_total|pluralize }}</p>
+                {% endif %}
+            </div>
         </div>
         <div class="row g-4">
             {% for review in reviews %}
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4">
-                    <div class="mb-3">{% for i in "12345" %}<i class="{% if forloop.counter <= review.rating %}fas{% else %}far{% endif %} fa-star text-gold"></i>{% endfor %}</div>
-                    <p class="text-secondary mb-4">{{ review.text }}</p>
-                    <h6 class="fw-bold mt-auto mb-0">{{ review.name }}</h6>
-                </div>
+            <div class="col-md-4">
+                <figure class="review h-100">
+                    <div class="review-rating" aria-label="{{ review.rating }} out of 5">{% for i in "12345" %}<i class="{% if forloop.counter <= review.rating %}fas{% else %}far{% endif %} fa-star"></i>{% endfor %}</div>
+                    <blockquote>{{ review.text }}</blockquote>
+                    <figcaption>{{ review.name }}</figcaption>
+                </figure>
             </div>
             {% endfor %}
         </div>
@@ -160,52 +190,61 @@
 {% endif %}
 
 <!-- FAQ -->
-<section class="bg-light py-5">
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <p class="eyebrow mb-3">FAQ</p>
-            <h2 class="fw-bold mb-3">Frequently Asked Questions</h2>
-            <p class="section-text text-secondary mb-0">Find answers to the most common questions about renting a car with DriveOn.</p>
-        </div>
-        <div class="accordion col-lg-9 mx-auto" id="faqAccordion">
-            <div class="accordion-item border-0 shadow-sm mb-3">
-                <h2 class="accordion-header"><button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">What documents do I need to rent a car?</button></h2>
-                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">You need a valid driving license and identification document. Additional requirements may apply depending on the vehicle and rental conditions.</div></div>
+<section class="section">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <h2 class="section-title">Questions &amp; answers</h2>
+                <p class="section-sub mb-4">Can't find what you're looking for?</p>
+                <a href="{% url 'contact' %}" class="link-arrow">Contact us <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="accordion-item border-0 shadow-sm mb-3">
-                <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">How can I book a car?</button></h2>
-                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">You can choose a vehicle from our Cars page and use the reservation page to submit your booking request.</div></div>
-            </div>
-            <div class="accordion-item border-0 shadow-sm mb-3">
-                <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">Can I choose a specific car?</button></h2>
-                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Yes. You can browse our available vehicles and select the car that best matches your needs.</div></div>
-            </div>
-            <div class="accordion-item border-0 shadow-sm mb-3">
-                <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">Can I cancel my reservation?</button></h2>
-                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Cancellation depends on the rental conditions associated with your booking. Please contact us for more information.</div></div>
-            </div>
-            <div class="accordion-item border-0 shadow-sm">
-                <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">How can I contact DriveOn?</button></h2>
-                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">You can contact us through our Contact page by phone or email. Our team will be happy to assist you.</div></div>
+            <div class="col-lg-8">
+                <div class="accordion faq" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">What documents do I need to rent a car?</button></h3>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">A valid driving licence and an identity document (ID card or passport). Additional requirements may apply depending on the vehicle.</div></div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">How do I book a car?</button></h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Choose a car on the Cars page or use the search above, select your dates and pickup location, and submit the reservation. We confirm it by email or phone.</div></div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">Can I choose a specific car?</button></h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. You book the exact model you select. The calendar shows which dates are already taken.</div></div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">Can I cancel my reservation?</button></h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Cancellation depends on the rental conditions of your booking. Contact us and we'll help you.</div></div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">How can I contact DriveOn?</button></h3>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Call us on +355 69 000 0000, email info@driveon.al, or use the form on the Contact page.</div></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section text-white py-5">
-    <div class="container py-4">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <p class="eyebrow mb-2">Explore the DriveOn fleet</p>
-                <h2 class="fw-bold mb-3">Find the Car That Fits Your Journey.</h2>
-                <p class="mb-0">Discover our carefully selected fleet of premium vehicles, from refined sedans to powerful SUVs, and find the right car for your next journey.</p>
+<section class="cta-band">
+    <div class="container">
+        <div class="cta-band-inner">
+            <div>
+                <h2>Not sure which car to pick?</h2>
+                <p>Call us and we'll help you choose the right car for your trip.</p>
             </div>
-            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                <a href="{% url 'explorefleet' %}" class="btn btn-gold btn-lg px-5">Explore Fleet<i class="fas fa-arrow-right ms-2"></i></a>
+            <div class="cta-band-actions">
+                <a href="tel:+355690000000" class="btn btn-light"><i class="fas fa-phone me-2"></i>+355 69 000 0000</a>
+                <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
             </div>
         </div>
     </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script src="{% static 'js/trip-search.js' %}?v=1"></script>
 {% endblock %}

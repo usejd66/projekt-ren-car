@@ -17,17 +17,17 @@ class Stamped(models.Model):
 
 class Car(Stamped):
     CATEGORY_CHOICES = [
-        ("economy", "Ekonomike"),
+        ("economy", "Economy"),
         ("suv", "SUV"),
-        ("luxury", "Luksoze"),
-        ("van", "Familjare / Van"),
+        ("luxury", "Luxury"),
+        ("van", "Family / Van"),
     ]
-    TRANSMISSION_CHOICES = [("manual", "Manual"), ("automatic", "Automatik")]
+    TRANSMISSION_CHOICES = [("manual", "Manual"), ("automatic", "Automatic")]
     FUEL_CHOICES = [
-        ("petrol", "Benzinë"),
-        ("diesel", "Naftë"),
-        ("hybrid", "Hibrid"),
-        ("electric", "Elektrike"),
+        ("petrol", "Petrol"),
+        ("diesel", "Diesel"),
+        ("hybrid", "Hybrid"),
+        ("electric", "Electric"),
     ]
 
     brand = models.CharField(max_length=60)
@@ -89,17 +89,17 @@ class Reservation(Stamped):
         if not (self.pickup_date and self.return_date):
             return
         if self.return_date <= self.pickup_date:
-            raise ValidationError("Data e kthimit duhet të jetë pas datës së marrjes.")
+            raise ValidationError("The return date must be after the pickup date.")
         if self._state.adding and self.pickup_date < timezone.localdate():
-            raise ValidationError("Data e marrjes nuk mund të jetë në të kaluarën.")
+            raise ValidationError("The pickup date cannot be in the past.")
         if self.days > self.MAX_DAYS:
-            raise ValidationError(f"Rezervimi nuk mund të jetë më shumë se {self.MAX_DAYS} ditë.")
+            raise ValidationError(f"A reservation cannot be longer than {self.MAX_DAYS} days.")
         if (
             self.car_id
             and self.status in ACTIVE_STATUSES
             and self.overlapping(self.car_id, self.pickup_date, self.return_date, self.pk).exists()
         ):
-            raise ValidationError("Kjo makinë është e zënë në datat e zgjedhura.")
+            raise ValidationError("This car is already booked on the selected dates.")
 
     def save(self, *args, **kwargs):
         if self.car_id:

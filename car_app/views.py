@@ -1,14 +1,16 @@
+from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth import login
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Avg, Count, Q
+from django.db.models import Avg, Count, DecimalField, ExpressionWrapper, F, Min, Q
+from django.http import QueryDict
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import ContactForm, ReservationForm, SignUpForm, SubscribeForm
+from .forms import LOCATIONS, ContactForm, ReservationForm, SignUpForm, SubscribeForm
 from .models import ACTIVE_STATUSES, Car, Reservation, Review
 
 
@@ -19,8 +21,46 @@ SORT_OPTIONS = {
 }
 
 
+def _parse_trip(get):
+    """Vendi dhe datat nga formulari i kërkimit (?pickup_location=&pickup_date=&return_date=).
+
+    Kthen {"location", "start", "end", "days", "error"}; "start"/"end" janë None nëse
+    datat mungojnë ose nuk janë të vlefshme.
+    """
+    location = get.get("pickup_location", "")
+    trip = {
+        "location": location if location in LOCATIONS else "",
+        "start": None, "end": None, "days": 0, "error": "",
+    }
+    raw_start, raw_end = get.get("pickup_date", ""), get.get("return_date", "")
+    if not (raw_start or raw_end):
+        return trip
+    try:
+        start, end = date.fromisoformat(raw_start), date.fromisoformat(raw_end)
+    except ValueError:
+        trip["error"] = "Please choose both a pickup and a return date."
+        return trip
+    if start < timezone.localdate():
+        trip["error"] = "The pickup date cannot be in the past."
+    elif end <= start:
+        trip["error"] = "The return date must be after the pickup date."
+    elif (end - start).days > Reservation.MAX_DAYS:
+        trip["error"] = f"A rental cannot be longer than {Reservation.MAX_DAYS} days."
+    else:
+        trip.update(start=start, end=end, days=(end - start).days)
+    return trip
+
+
+def _query_without(get, *keys):
+    """Query string-u aktual pa çelësat e dhënë (për linket e filtrave dhe faqosjes)."""
+    params = get.copy()
+    for key in keys:
+        params.pop(key, None)
+    return params.urlencode()
+
+
 def _filtered_cars(request):
-    """Filtrimi dhe paginimi i makinave."""
+    """Filtrimi, disponueshmëria sipas datave dhe paginimi i makinave."""
     get = request.GET
 
     q = get.get("q", "").strip()
@@ -28,6 +68,7 @@ def _filtered_cars(request):
     transmission = get.get("transmission", "")
     max_price = get.get("max_price", "")
     sort = get.get("sort", "newest")
+    trip = _parse_trip(get)
 
     cars = Car.objects.filter(is_available=True)
 
@@ -45,15 +86,42 @@ def _filtered_cars(request):
     if max_price.isdigit():
         cars = cars.filter(price_per_day__lte=int(max_price))
 
+    if trip["start"]:
+        # vetëm makinat pa rezervim aktiv që prek këto data
+        booked = Reservation.objects.filter(
+            status__in=ACTIVE_STATUSES,
+            pickup_date__lte=trip["end"],
+            return_date__gte=trip["start"],
+        ).values("car_id")
+        cars = cars.exclude(pk__in=booked).annotate(
+            trip_total=ExpressionWrapper(
+                F("price_per_day") * trip["days"],
+                output_field=DecimalField(max_digits=10, decimal_places=2),
+            )
+        )
+
     page = Paginator(
         cars.order_by(SORT_OPTIONS.get(sort, "-created_at")), 9
     ).get_page(get.get("page"))
+
+    # parametrat që i kalohen faqes së rezervimit kur shtyp "Rent Now"
+    book_params = QueryDict(mutable=True)
+    if trip["location"]:
+        book_params["pickup_location"] = trip["location"]
+    if trip["start"]:
+        book_params["pickup_date"] = trip["start"].isoformat()
+        book_params["return_date"] = trip["end"].isoformat()
 
     return {
         "page_obj": page,
         "cars": page.object_list,
         "categories": Car.CATEGORY_CHOICES,
         "transmissions": Car.TRANSMISSION_CHOICES,
+        "locations": LOCATIONS,
+        "trip": trip,
+        "qs_no_page": _query_without(get, "page"),
+        "qs_no_category": _query_without(get, "page", "category"),
+        "book_qs": book_params.urlencode(),
         "filters": {
             "q": q,
             "category": category,
@@ -70,13 +138,20 @@ def index(request):
         avg=Avg("rating"),
         total=Count("id"),
     )
+    available = Car.objects.filter(is_available=True)
+    counts = dict(
+        available.values_list("category").annotate(n=Count("id")).values_list("category", "n")
+    )
 
     return render(request, "index.html", {
-        "featured_cars": Car.objects.filter(
-            is_available=True,
-            is_featured=True,
-        )[:6],
-        "reviews": approved[:6],
+        "featured_cars": available.filter(is_featured=True)[:4],
+        "min_price": available.aggregate(m=Min("price_per_day"))["m"],
+        "categories": [
+            {"key": key, "label": label, "count": counts.get(key, 0)}
+            for key, label in Car.CATEGORY_CHOICES
+        ],
+        "locations": LOCATIONS,
+        "reviews": approved[:3],
         "rating_avg": round(stats["avg"] or 0, 1),
         "rating_total": stats["total"],
     })
@@ -106,7 +181,7 @@ def contact(request):
         form.save()
         messages.success(
             request,
-            "Mesazhi u dërgua. Do t'ju përgjigjemi sa më shpejt.",
+            "Thank you! Your message has been sent. We'll get back to you shortly.",
         )
         return redirect("contact")
 
@@ -116,6 +191,16 @@ def contact(request):
 def reservation(request):
     user = request.user
     initial = {"car": request.GET.get("car")}
+
+    # Nga formulari i kërkimit në faqen kryesore: plotëso vendin dhe datat
+    if request.GET.get("pickup_location") in LOCATIONS:
+        initial["pickup_location"] = request.GET["pickup_location"]
+    for field in ("pickup_date", "return_date"):
+        try:
+            # si tekst "YYYY-MM-DD": template-i e vendos direkt te input-i i kalendarit
+            initial[field] = date.fromisoformat(request.GET.get(field, "")).isoformat()
+        except ValueError:
+            pass
 
     if user.is_authenticated:
         initial.update({
@@ -143,20 +228,17 @@ def reservation(request):
             ).exists():
                 form.add_error(
                     None,
-                    "Kjo makinë sapo u zu në datat e zgjedhura. "
-                    "Zgjidhni data të tjera.",
+                    "This car was just booked for the selected dates. "
+                    "Please choose different dates.",
                 )
             else:
                 booking = form.save(commit=False)
                 booking.user = user if user.is_authenticated else None
                 booking.save()
 
-                messages.success(
-                    request,
-                    f"Rezervimi u regjistrua. "
-                    f"Totali: €{booking.total_price}",
-                )
-                return redirect("reservation")
+                # faqja e konfirmimit e shfaq vetëm rezervimin e këtij vizitori
+                request.session["last_booking"] = booking.pk
+                return redirect("reservation_success")
 
     cars_qs = Car.objects.filter(
         is_available=True
@@ -187,6 +269,17 @@ def reservation(request):
     })
 
 
+def reservation_success(request):
+    booking = (
+        Reservation.objects.select_related("car")
+        .filter(pk=request.session.get("last_booking"))
+        .first()
+    )
+    if booking is None:
+        return redirect("reservation")
+    return render(request, "reservation_success.html", {"booking": booking})
+
+
 def signup(request):
     if request.user.is_authenticated:
         return redirect("index")
@@ -200,7 +293,7 @@ def signup(request):
 
             messages.success(
                 request,
-                "Llogaria u krijua. Mirë se vini!",
+                "Your account has been created. Welcome to DriveOn!",
             )
             return redirect("index")
     else:
@@ -217,7 +310,7 @@ def subscribe(request):
             form.save()
             messages.success(
                 request,
-                "Faleminderit! U abonuat me sukses.",
+                "Thank you! You are now subscribed to our newsletter.",
             )
         else:
             email_errors = form.errors.get("email")

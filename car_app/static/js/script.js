@@ -28,7 +28,7 @@
         const backToTop = document.createElement("button");
         backToTop.id = "backToTop";
         backToTop.type = "button";
-        backToTop.setAttribute("aria-label", "Kthehu lart");
+        backToTop.setAttribute("aria-label", "Back to top");
         backToTop.innerHTML =
             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
             '<path d="M12 19V5M5 12l7-7 7 7"/></svg>';
