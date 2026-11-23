@@ -118,7 +118,7 @@
                             <label for="id_email" class="form-label fw-600">Email Address</label>
 
                             <input type="email" name="email" class="form-control form-control-lg" id="id_email"
-                                placeholder="Enter your email" minlength="15"  ="254" value="{{ form.email.value|default:'' }}" required>
+                                placeholder="Enter your email" maxlength="254" value="{{ form.email.value|default:'' }}" required>
 
                             {% for error in form.email.errors %}
                             <div class="text-danger small mt-1">{{ error }}</div>

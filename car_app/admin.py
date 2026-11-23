@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 
 from .models import Car, ContactMessage, Reservation, Review, Subscriber
 
@@ -22,7 +22,21 @@ class ReservationAdmin(admin.ModelAdmin):
 
     @admin.action(description="Konfirmo rezervimet e zgjedhura")
     def confirm_reservations(self, request, queryset):
-        queryset.update(status="confirmed")
+        # Një rezervim i anuluar mund të mbivendoset me një tjetër aktiv: mos e konfirmo atë.
+        skipped = []
+        for r in queryset.exclude(status="confirmed"):
+            if r.status == "cancelled" and Reservation.overlapping(
+                r.car_id, r.pickup_date, r.return_date, r.pk
+            ).exists():
+                skipped.append(f"#{r.pk}")
+                continue
+            Reservation.objects.filter(pk=r.pk).update(status="confirmed")
+        if skipped:
+            self.message_user(
+                request,
+                "Nuk u konfirmuan (makina është e zënë në ato data): " + ", ".join(skipped),
+                level=messages.WARNING,
+            )
 
     @admin.action(description="Anulo rezervimet e zgjedhura")
     def cancel_reservations(self, request, queryset):
