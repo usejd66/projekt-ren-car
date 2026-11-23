@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Avg, Count, DecimalField, ExpressionWrapper, F, Min, Q
 from django.http import JsonResponse, QueryDict
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.templatetags.static import static
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -137,6 +137,40 @@ def _filtered_cars(request):
     }
 
 
+def _booked_ranges(cars):
+    """{car_id: [{"from": "YYYY-MM-DD", "to": "YYYY-MM-DD"}, ...]} për rezervimet aktive nga sot e tutje."""
+    booked = {}
+    rows = Reservation.objects.filter(
+        car__in=cars,
+        status__in=ACTIVE_STATUSES,
+        return_date__gte=timezone.localdate(),
+    ).order_by("pickup_date").values_list("car_id", "pickup_date", "return_date")
+    for car_id, start, end in rows:
+        booked.setdefault(car_id, []).append({"from": start.isoformat(), "to": end.isoformat()})
+    return booked
+
+
+def car_detail(request, pk, slug):
+    car = get_object_or_404(Car.objects.prefetch_related("photos"), pk=pk)
+    if slug != car.slug:  # emri ndryshoi ose URL e shkruar gabim: ridrejto te URL-ja e saktë
+        query = f"?{request.GET.urlencode()}" if request.GET else ""
+        return redirect(car.get_absolute_url() + query, permanent=True)
+
+    trip = _parse_trip(request.GET)
+    similar = (
+        Car.objects.filter(is_available=True, category=car.category)
+        .exclude(pk=car.pk).order_by("price_per_day")[:3]
+    )
+    return render(request, "car_detail.html", {
+        "car": car,
+        "photos": list(car.photos.all()),
+        "booked": _booked_ranges([car]).get(car.pk, []),
+        "trip": trip,
+        "locations": LOCATIONS,
+        "similar": similar,
+    })
+
+
 def index(request):
     approved = Review.objects.filter(is_approved=True)
     stats = approved.aggregate(
@@ -245,28 +279,10 @@ def reservation(request):
         is_available=True
     ).order_by("category", "name")
 
-    booked = {}
-
-    rows = Reservation.objects.filter(
-        car__in=cars_qs,
-        status__in=ACTIVE_STATUSES,
-        return_date__gte=timezone.localdate(),
-    ).order_by("pickup_date").values_list(
-        "car_id",
-        "pickup_date",
-        "return_date",
-    )
-
-    for car_id, start, end in rows:
-        booked.setdefault(car_id, []).append({
-            "from": start.isoformat(),
-            "to": end.isoformat(),
-        })
-
     return render(request, "reservation.html", {
         "form": form,
         "cars": cars_qs,
-        "booked": booked,
+        "booked": _booked_ranges(cars_qs),
     })
 
 

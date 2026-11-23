@@ -223,3 +223,42 @@ class PwaTest(TestCase):
             self.assertNotContains(self.client.get(reverse("index")), "serviceWorker")
         with self.settings(DEBUG=False):
             self.assertContains(self.client.get(reverse("index")), "serviceWorker")
+
+
+class CarDetailTest(BaseCase):
+    def test_page_shows_car_price_and_structured_data(self):
+        r = self.client.get(self.car.get_absolute_url())
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "<h1>Audi A4</h1>", html=True)
+        self.assertContains(r, '"@type": "Car"')
+        self.assertContains(r, "Continue to booking")
+
+    def test_wrong_slug_redirects_and_keeps_dates(self):
+        r = self.client.get(f"/cars/{self.car.pk}/old-name/?pickup_date=2030-01-01")
+        self.assertRedirects(r, self.car.get_absolute_url() + "?pickup_date=2030-01-01",
+                             status_code=301, fetch_redirect_response=False)
+
+    def test_booked_dates_and_similar_cars(self):
+        self.book(2, 5)
+        same = Car.objects.create(brand="BMW", name="3 Series", price_per_day=60, category=self.car.category)
+        Car.objects.create(brand="Fiat", name="Ducato", price_per_day=80, category="van")
+        r = self.client.get(self.car.get_absolute_url())
+        start = (self.today + timedelta(days=2)).isoformat()
+        self.assertContains(r, f'"from": "{start}"')
+        self.assertEqual(list(r.context["similar"]), [same])
+
+    def test_unavailable_car_cannot_be_booked(self):
+        self.car.is_available = False
+        self.car.save()
+        r = self.client.get(self.car.get_absolute_url())
+        self.assertContains(r, "Currently unavailable")
+        self.assertNotContains(r, "Continue to booking")
+
+    def test_missing_car_is_404(self):
+        self.assertEqual(self.client.get("/cars/9999/nothing/").status_code, 404)
+
+    def test_tiles_link_to_detail_page(self):
+        self.car.is_featured = True
+        self.car.save()
+        self.assertContains(self.client.get(reverse("index")), self.car.get_absolute_url())
+        self.assertContains(self.client.get(reverse("cars")), self.car.get_absolute_url())

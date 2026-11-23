@@ -104,25 +104,26 @@
             {% for car in cars %}
             <div class="col-12 col-sm-6 col-lg-4">
                 <article class="car-tile h-100">
-                    <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}" class="car-tile-img">
+                    <a href="{{ car.get_absolute_url }}{% if book_qs %}?{{ book_qs }}{% endif %}" class="car-tile-img">
                         {% car_img car sizes="(min-width: 992px) 400px, (min-width: 576px) 50vw, 100vw" %}
                     </a>
                     <div class="car-tile-body">
                         <p class="car-tile-cat">{{ car.get_category_display }}{% if car.year %} · {{ car.year }}{% endif %}</p>
-                        <h2 class="car-tile-name">{{ car }}</h2>
+                        <h2 class="car-tile-name"><a href="{{ car.get_absolute_url }}{% if book_qs %}?{{ book_qs }}{% endif %}">{{ car }}</a></h2>
                         <ul class="car-tile-specs list-unstyled">
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{{ car.seats }} seats</li>
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>{{ car.get_transmission_display }}</li>
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>{{ car.get_fuel_display }}</li>
                         </ul>
                         <div class="car-tile-foot">
-                            <div>
-                                <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
-                                {% if trip.start %}
-                                <p class="car-tile-total">€{{ car.trip_total|floatformat:"-2" }} total · {{ trip.days }} day{{ trip.days|pluralize }}</p>
-                                {% endif %}
-                            </div>
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}" class="btn btn-gold btn-sm">Book</a>
+                            <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
+                            {% if trip.start %}
+                            <p class="car-tile-total"><strong>€{{ car.trip_total|floatformat:"-2" }}</strong> total · {{ trip.days }} day{{ trip.days|pluralize }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="car-tile-actions">
+                            <a href="{{ car.get_absolute_url }}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-nav-outline">Details</a>
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}" class="btn btn-gold">Book now</a>
                         </div>
                     </div>
                 </article>

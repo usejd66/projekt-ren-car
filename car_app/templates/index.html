@@ -77,12 +77,12 @@
             {% for car in featured_cars %}
             <div class="col-12 col-sm-6 col-xl-3">
                 <article class="car-tile h-100">
-                    <a href="{% url 'reservation' %}?car={{ car.pk }}" class="car-tile-img">
+                    <a href="{{ car.get_absolute_url }}" class="car-tile-img">
                         {% car_img car sizes="(min-width: 1200px) 300px, (min-width: 576px) 50vw, 100vw" %}
                     </a>
                     <div class="car-tile-body">
                         <p class="car-tile-cat">{{ car.get_category_display }}</p>
-                        <h3 class="car-tile-name">{{ car }}</h3>
+                        <h3 class="car-tile-name"><a href="{{ car.get_absolute_url }}">{{ car }}</a></h3>
                         <ul class="car-tile-specs list-unstyled">
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{{ car.seats }}</li>
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>{{ car.get_transmission_display }}</li>
@@ -90,7 +90,10 @@
                         </ul>
                         <div class="car-tile-foot">
                             <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}" class="btn btn-gold btn-sm">Book</a>
+                        </div>
+                        <div class="car-tile-actions">
+                            <a href="{{ car.get_absolute_url }}" class="btn btn-nav-outline">Details</a>
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}" class="btn btn-gold">Book now</a>
                         </div>
                     </div>
                 </article>

@@ -1,6 +1,12 @@
 from django.contrib import admin, messages
 
-from .models import Car, ContactMessage, Reservation, Review, Subscriber
+from .models import Car, CarPhoto, ContactMessage, Reservation, Review, Subscriber
+
+
+class CarPhotoInline(admin.TabularInline):
+    model = CarPhoto
+    extra = 1
+    fields = ("image", "order")
 
 
 @admin.register(Car)
@@ -9,6 +15,8 @@ class CarAdmin(admin.ModelAdmin):
     list_filter = ("category", "transmission", "fuel", "is_available", "is_featured")
     list_editable = ("price_per_day", "is_available", "is_featured")
     search_fields = ("brand", "name")
+    inlines = [CarPhotoInline]
+    view_on_site = True
 
 
 @admin.register(Reservation)

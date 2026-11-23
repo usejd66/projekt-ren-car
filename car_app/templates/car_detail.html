@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load static car_images %}
+
+{% block title %}{{ car }} – rent from €{{ car.price_per_day|floatformat:"-2" }}/day | DriveOn{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ car.get_absolute_url }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Rent the {{ car }} in Tirana from €{{ car.price_per_day|floatformat:'-2' }} per day. {{ car.get_transmission_display }}, {{ car.get_fuel_display|lower }}, {{ car.seats }} seats. Check availability and book online.">
+<meta property="og:title" content="{{ car }} – DriveOn car rental">
+<meta property="og:description" content="From €{{ car.price_per_day|floatformat:'-2' }} per day · {{ car.get_transmission_display }} · {{ car.seats }} seats">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% img_url car.image 960 %}">
+<meta property="og:type" content="product">
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Car",
+    "name": "{{ car|escapejs }}",
+    "brand": {"@type": "Brand", "name": "{{ car.brand|escapejs }}"},
+    "model": "{{ car.name|escapejs }}",
+    {% if car.year %}"vehicleModelDate": "{{ car.year }}",{% endif %}
+    "vehicleTransmission": "{{ car.get_transmission_display|escapejs }}",
+    "fuelType": "{{ car.get_fuel_display|escapejs }}",
+    "seatingCapacity": {{ car.seats }},
+    "image": "{{ request.scheme }}://{{ request.get_host }}{% img_url car.image 960 %}",
+    "offers": {
+        "@type": "Offer",
+        "price": "{{ car.price_per_day|stringformat:'.2f' }}",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/{% if car.is_available %}InStock{% else %}OutOfStock{% endif %}",
+        "url": "{{ request.scheme }}://{{ request.get_host }}{{ car.get_absolute_url }}"
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="car-page">
+<div class="container">
+
+    <nav class="car-crumbs" aria-label="Breadcrumb">
+        <a href="{% url 'cars' %}">Cars</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'cars' %}?category={{ car.category }}">{{ car.get_category_display }}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ car }}</span>
+    </nav>
+
+    <div class="row g-4 g-xl-5">
+        <!-- ===== GALERIA + DETAJET ===== -->
+        <div class="col-lg-7 col-xl-8">
+
+            <div class="gallery" data-gallery>
+                <div class="gallery-track" tabindex="0" aria-label="Photos of the {{ car }}">
+                    <figure class="gallery-slide">{% car_img car sizes="(min-width: 1200px) 800px, (min-width: 992px) 60vw, 100vw" loading="eager" width=1600 fetchpriority="high" %}</figure>
+                    {% for photo in photos %}
+                    <figure class="gallery-slide">{% photo_img photo.image car|stringformat:"s" sizes="(min-width: 1200px) 800px, (min-width: 992px) 60vw, 100vw" %}</figure>
+                    {% endfor %}
+                </div>
+                {% if photos %}
+                <button type="button" class="gallery-nav gallery-prev" aria-label="Previous photo"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-left"></use></svg></button>
+                <button type="button" class="gallery-nav gallery-next" aria-label="Next photo"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></button>
+                <span class="gallery-count" aria-live="polite"><span data-current>1</span> / {{ photos|length|add:1 }}</span>
+                {% endif %}
+            </div>
+
+            {% if photos %}
+            <div class="gallery-thumbs" role="tablist" aria-label="Choose photo">
+                <button type="button" class="active" data-index="0" aria-label="Photo 1">{% car_img car sizes="120px" width=480 %}</button>
+                {% for photo in photos %}
+                <button type="button" data-index="{{ forloop.counter }}" aria-label="Photo {{ forloop.counter|add:1 }}">{% photo_img photo.image car|stringformat:"s" sizes="120px" width=480 %}</button>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <header class="car-head">
+                <p class="car-head-cat">{{ car.get_category_display }}{% if car.year %} · {{ car.year }}{% endif %}</p>
+                <h1>{{ car }}</h1>
+            </header>
+
+            <ul class="car-specs list-unstyled">
+                <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg><span>Seats</span><strong>{{ car.seats }}</strong></li>
+                <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg><span>Transmission</span><strong>{{ car.get_transmission_display }}</strong></li>
+                <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg><span>Fuel</span><strong>{{ car.get_fuel_display }}</strong></li>
+                <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-calendar"></use></svg><span>Year</span><strong>{{ car.year|default:"–" }}</strong></li>
+            </ul>
+
+            {% if car.description %}
+            <section class="car-section">
+                <h2>About this car</h2>
+                <p>{{ car.description|linebreaksbr }}</p>
+            </section>
+            {% endif %}
+
+            <section class="car-section">
+                <h2>Included in the price</h2>
+                <ul class="car-included list-unstyled">
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Unlimited kilometres</li>
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Pickup in {{ locations|join:", " }}</li>
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Cleaned and checked before every rental</li>
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Local support during your rental</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- ===== REZERVIMI ===== -->
+        <div class="col-lg-5 col-xl-4">
+            <aside class="summary book-card" id="book" aria-labelledby="bookTitle">
+                <p class="book-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
+
+                {% if car.is_available %}
+                <h2 id="bookTitle" class="visually-hidden">Book the {{ car }}</h2>
+                {{ booked|json_script:"bookedData" }}
+                <form method="get" action="{% url 'reservation' %}" id="bookForm" class="checkout" data-price="{{ car.price_per_day|stringformat:'.2f' }}">
+                    <input type="hidden" name="car" value="{{ car.pk }}">
+                    <input type="hidden" id="bookPickup" name="pickup_date" value="{{ trip.start|date:'Y-m-d' }}">
+                    <input type="hidden" id="bookReturn" name="return_date" value="{{ trip.end|date:'Y-m-d' }}">
+
+                    <div class="book-dates">
+                        <div>
+                            <label class="form-label" for="bookPickupAlt">Pickup</label>
+                            <input type="text" id="bookPickupAlt" class="form-control date-field" placeholder="Add date" autocomplete="off" inputmode="none">
+                        </div>
+                        <div>
+                            <label class="form-label" for="bookReturnAlt">Return</label>
+                            <input type="text" id="bookReturnAlt" class="form-control date-field" placeholder="Add date" autocomplete="off" inputmode="none">
+                        </div>
+                    </div>
+
+                    <label class="form-label mt-3" for="bookLocation">Pickup location</label>
+                    <select id="bookLocation" name="pickup_location" class="form-select">
+                        {% for loc in locations %}<option value="{{ loc }}" {% if trip.location == loc %}selected{% endif %}>{{ loc }}</option>{% endfor %}
+                    </select>
+
+                    <p id="bookError" class="book-error d-none" role="alert"></p>
+
+                    <dl class="summary-price">
+                        <div><dt id="bookRateLabel">Choose your dates</dt><dd id="bookRate">—</dd></div>
+                        <div class="summary-total"><dt>Total</dt><dd id="bookTotal">€0</dd></div>
+                    </dl>
+
+                    <button type="submit" class="btn btn-gold summary-btn">Continue to booking</button>
+                </form>
+                <ul class="summary-notes list-unstyled">
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>No payment taken online</li>
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Booked dates are crossed out</li>
+                </ul>
+                {% else %}
+                <h2 id="bookTitle" class="h5 fw-bold mt-3">Currently unavailable</h2>
+                <p class="text-secondary">This car can't be booked right now. Have a look at similar cars below or contact us.</p>
+                <a href="{% url 'cars' %}" class="btn btn-gold summary-btn">Browse available cars</a>
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+
+    {% if similar %}
+    <section class="car-similar">
+        <div class="section-head">
+            <div><h2 class="section-title">Similar cars</h2></div>
+            <a href="{% url 'cars' %}?category={{ car.category }}" class="link-arrow">See all {{ car.get_category_display|lower }} <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+        </div>
+        <div class="row g-4">
+            {% for other in similar %}
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="car-tile h-100">
+                    <a href="{{ other.get_absolute_url }}" class="car-tile-img">{% car_img other sizes="(min-width: 992px) 400px, (min-width: 576px) 50vw, 100vw" %}</a>
+                    <div class="car-tile-body">
+                        <p class="car-tile-cat">{{ other.get_category_display }}</p>
+                        <h3 class="car-tile-name"><a href="{{ other.get_absolute_url }}">{{ other }}</a></h3>
+                        <div class="car-tile-foot">
+                            <p class="car-tile-price"><strong>€{{ other.price_per_day|floatformat:"-2" }}</strong> / day</p>
+                        </div>
+                        <div class="car-tile-actions">
+                            <a href="{{ other.get_absolute_url }}" class="btn btn-nav-outline">Details</a>
+                            <a href="{% url 'reservation' %}?car={{ other.pk }}" class="btn btn-gold">Book now</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+</div>
+
+{% if car.is_available %}
+<!-- Telefon: çmimi dhe butoni gjithmonë të dukshëm -->
+<div class="checkout-bar d-lg-none">
+    <div>
+        <span class="checkout-bar-label" id="barLabel">From</span>
+        <strong id="barTotal">€{{ car.price_per_day|floatformat:"-2" }}<small> / day</small></strong>
+    </div>
+    <a href="#book" class="btn btn-gold" id="barBtn">Check dates</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script src="{% static 'js/date-range.js' %}"></script>
+<script src="{% static 'js/car-detail.js' %}"></script>
+{% endblock %}

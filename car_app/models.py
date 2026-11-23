@@ -4,7 +4,9 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 
 from .images import make_variants
 
@@ -54,14 +56,44 @@ class Car(Stamped):
     def __str__(self):
         return f"{self.brand} {self.name}"
 
+    @property
+    def slug(self):
+        return slugify(str(self)) or "car"
+
+    def get_absolute_url(self):
+        return reverse("car_detail", args=[self.pk, self.slug])
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if self.image:
-            # versionet e vogla WebP për faqet (shih images.py)
-            try:
-                make_variants(self.image.name)
-            except (OSError, ValueError):
-                logger.exception("Could not create image variants for %s", self.image.name)
+        _make_variants_safely(self.image)
+
+
+class CarPhoto(models.Model):
+    """Foto shtesë për galerinë e faqes së makinës (shtohen te admin, poshtë makinës)."""
+
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="photos")
+    image = models.ImageField(upload_to="cars/")
+    order = models.PositiveSmallIntegerField(default=0, help_text="Renditja në galeri (më e vogla del e para).")
+
+    class Meta:
+        ordering = ["order", "pk"]
+
+    def __str__(self):
+        return f"{self.car} – photo {self.order or self.pk}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        _make_variants_safely(self.image)
+
+
+def _make_variants_safely(image):
+    """Versionet e vogla WebP për faqet (shih images.py); një foto e prishur nuk duhet të ndalë ruajtjen."""
+    if not image:
+        return
+    try:
+        make_variants(image.name)
+    except (OSError, ValueError):
+        logger.exception("Could not create image variants for %s", image.name)
 
 
 class Reservation(Stamped):
