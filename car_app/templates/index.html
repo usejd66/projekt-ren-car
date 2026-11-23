@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static car_images %}
 
 {% block title %}Car Rental in Tirana | DriveOn{% endblock %}
 
@@ -8,7 +8,7 @@
 <meta name="author" content="DriveOn">
 <meta property="og:title" content="DriveOn - Rent a Car | Premium Vehicle Rental Service">
 <meta property="og:description" content="Premium car rental services with modern vehicles, competitive prices, and easy booking.">
-<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/hero1.jpg' %}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -16,14 +16,14 @@
 
 {% block head_extra %}
 <style>
-    section.hero { --hero-img: url("{% static 'image/hero1.jpg' %}"); }
+    section.hero { --hero-img: url("{% static 'image/hero1.webp' %}"); }
     @media (max-width: 767.98px) {
-        section.hero { --hero-img: url("{% static 'image/hero1-mobile.jpg' %}"); }
+        section.hero { --hero-img: url("{% static 'image/hero1-mobile.webp' %}"); }
     }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
-<link rel="preload" as="image" href="{% static 'image/hero1.jpg' %}" media="(min-width: 768px)">
-<link rel="preload" as="image" href="{% static 'image/hero1-mobile.jpg' %}" media="(max-width: 767.98px)">
+<link rel="preload" as="image" href="{% static 'image/hero1.webp' %}" media="(min-width: 768px)">
+<link rel="preload" as="image" href="{% static 'image/hero1-mobile.webp' %}" media="(max-width: 767.98px)">
 {% endblock %}
 
 {% block content %}
@@ -44,9 +44,9 @@
         <div class="hero-search">{% include "_trip_search.html" %}</div>
 
         <ul class="hero-trust list-unstyled">
-            <li><i class="fas fa-check"></i>Total price shown before you book</li>
-            <li><i class="fas fa-check"></i>Pickup in Tirana, Durrës &amp; airport</li>
-            <li><i class="fas fa-check"></i>Book online in under 2 minutes</li>
+            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Total price shown before you book</li>
+            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Pickup in Tirana, Durrës &amp; airport</li>
+            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Book online in under 2 minutes</li>
         </ul>
     </div>
 </section>
@@ -59,7 +59,7 @@
                 <h2 class="section-title">Choose your car</h2>
                 <p class="section-sub">From city cars to family vans, all with unlimited kilometres.</p>
             </div>
-            <a href="{% url 'cars' %}" class="link-arrow">View all cars <i class="fas fa-arrow-right"></i></a>
+            <a href="{% url 'cars' %}" class="link-arrow">View all cars <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
         </div>
 
         <div class="category-grid">
@@ -67,7 +67,7 @@
             <a href="{% url 'cars' %}?category={{ c.key }}" class="category-tile">
                 <span class="category-name">{{ c.label }}</span>
                 <span class="category-count">{{ c.count }} car{{ c.count|pluralize }}</span>
-                <i class="fas fa-arrow-right"></i>
+                <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg>
             </a>
             {% endfor %}
         </div>
@@ -78,15 +78,15 @@
             <div class="col-12 col-sm-6 col-xl-3">
                 <article class="car-tile h-100">
                     <a href="{% url 'reservation' %}?car={{ car.pk }}" class="car-tile-img">
-                        <img src="{% if car.image %}{{ car.image.url }}{% else %}{% static 'image/hero.jpg' %}{% endif %}" alt="{{ car }}" loading="lazy">
+                        {% car_img car sizes="(min-width: 1200px) 300px, (min-width: 576px) 50vw, 100vw" %}
                     </a>
                     <div class="car-tile-body">
                         <p class="car-tile-cat">{{ car.get_category_display }}</p>
                         <h3 class="car-tile-name">{{ car }}</h3>
                         <ul class="car-tile-specs list-unstyled">
-                            <li><i class="fas fa-user"></i>{{ car.seats }}</li>
-                            <li><i class="fas fa-gears"></i>{{ car.get_transmission_display }}</li>
-                            <li><i class="fas fa-gas-pump"></i>{{ car.get_fuel_display }}</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{{ car.seats }}</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>{{ car.get_transmission_display }}</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>{{ car.get_fuel_display }}</li>
                         </ul>
                         <div class="car-tile-foot">
                             <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
@@ -135,25 +135,25 @@
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <img src="{% static 'image/hero.jpg' %}" alt="A DriveOn rental car" class="why-image w-100 object-fit-cover" loading="lazy">
+                <img src="{% static 'image/hero.webp' %}" alt="A DriveOn rental car" class="why-image w-100 object-fit-cover" loading="lazy">
             </div>
             <div class="col-lg-6">
                 <h2 class="section-title mb-4">Why rent with DriveOn</h2>
                 <ul class="why-list list-unstyled">
                     <li>
-                        <i class="fas fa-circle-check"></i>
+                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
                         <div><h3>Well-maintained cars</h3><p>Every car is cleaned and checked before each rental.</p></div>
                     </li>
                     <li>
-                        <i class="fas fa-circle-check"></i>
+                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
                         <div><h3>Clear pricing</h3><p>One daily price. The total is calculated before you confirm.</p></div>
                     </li>
                     <li>
-                        <i class="fas fa-circle-check"></i>
+                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
                         <div><h3>Flexible pickup</h3><p>Collect your car in Tirana, Durrës or at Tirana Airport.</p></div>
                     </li>
                     <li>
-                        <i class="fas fa-circle-check"></i>
+                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
                         <div><h3>Local support</h3><p>A real team in Tirana you can call or message during your rental.</p></div>
                     </li>
                 </ul>
@@ -170,7 +170,7 @@
             <div>
                 <h2 class="section-title">What customers say</h2>
                 {% if rating_total %}
-                <p class="section-sub"><i class="fas fa-star text-gold me-1"></i><strong class="text-dark">{{ rating_avg }}</strong> out of 5 &middot; {{ rating_total }} review{{ rating_total|pluralize }}</p>
+                <p class="section-sub"><svg class="icon text-gold me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg><strong class="text-dark">{{ rating_avg }}</strong> out of 5 &middot; {{ rating_total }} review{{ rating_total|pluralize }}</p>
                 {% endif %}
             </div>
         </div>
@@ -178,7 +178,7 @@
             {% for review in reviews %}
             <div class="col-md-4">
                 <figure class="review h-100">
-                    <div class="review-rating" aria-label="{{ review.rating }} out of 5">{% for i in "12345" %}<i class="{% if forloop.counter <= review.rating %}fas{% else %}far{% endif %} fa-star"></i>{% endfor %}</div>
+                    <div class="review-rating" aria-label="{{ review.rating }} out of 5">{% for i in "12345" %}<svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star{% if forloop.counter > review.rating %}-o{% endif %}"></use></svg>{% endfor %}</div>
                     <blockquote>{{ review.text }}</blockquote>
                     <figcaption>{{ review.name }}</figcaption>
                 </figure>
@@ -196,7 +196,7 @@
             <div class="col-lg-4">
                 <h2 class="section-title">Questions &amp; answers</h2>
                 <p class="section-sub mb-4">Can't find what you're looking for?</p>
-                <a href="{% url 'contact' %}" class="link-arrow">Contact us <i class="fas fa-arrow-right"></i></a>
+                <a href="{% url 'contact' %}" class="link-arrow">Contact us <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
             </div>
             <div class="col-lg-8">
                 <div class="accordion faq" id="faqAccordion">
@@ -235,7 +235,7 @@
                 <p>Call us and we'll help you choose the right car for your trip.</p>
             </div>
             <div class="cta-band-actions">
-                <a href="tel:+355690000000" class="btn btn-light"><i class="fas fa-phone me-2"></i>+355 69 000 0000</a>
+                <a href="tel:+355690000000" class="btn btn-light"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg>+355 69 000 0000</a>
                 <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
             </div>
         </div>
@@ -246,5 +246,5 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
-<script src="{% static 'js/trip-search.js' %}?v=1"></script>
+<script src="{% static 'js/trip-search.js' %}"></script>
 {% endblock %}

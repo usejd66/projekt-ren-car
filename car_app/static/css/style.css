@@ -13,6 +13,15 @@
 }
 
 /* Base */
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    vertical-align: -.125em;
+    flex-shrink: 0;
+}
+
 h1, h2, h3, h4, h5, h6, .navbar-brand-text { font-family: var(--font-heading); }
 body { overflow-x: clip; }
 a { text-decoration: none; }
@@ -103,8 +112,8 @@ img { max-width: 100%; height: auto; }
 }
 .navbar-enhanced:has(.offcanvas-lg.show, .offcanvas-lg.showing)::after { opacity: .5; }
 
-/* butoni "kthehu lart" dhe shiriti i progresit nuk duhet të dalin mbi menunë */
-body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgress) {
+/* butoni "kthehu lart" nuk duhet të dalë mbi menunë */
+body:has(.offcanvas-lg.show, .offcanvas-lg.showing) #backToTop {
     opacity: 0 !important;
     visibility: hidden !important;
 }
@@ -210,7 +219,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
         font-size: 1.05rem;
     }
 
-    .nav-drawer .nav-link i { width: 20px; text-align: center; color: var(--muted); }
+    .nav-drawer .nav-link .icon { width: 20px; text-align: center; color: var(--muted); }
 
     .nav-drawer .nav-link.active,
     .nav-drawer .nav-link:hover {
@@ -218,8 +227,8 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
         color: var(--gold);
     }
 
-    .nav-drawer .nav-link.active i,
-    .nav-drawer .nav-link:hover i { color: var(--gold); }
+    .nav-drawer .nav-link.active .icon,
+    .nav-drawer .nav-link:hover .icon { color: var(--gold); }
 
     .nav-actions {
         margin-top: auto;
@@ -304,7 +313,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 }
 
 .trip-summary strong { color: var(--black); }
-.trip-summary i { color: var(--gold); margin-right: .4rem; }
+.trip-summary .icon { color: var(--gold); margin-right: .4rem; }
 
 .car-footer .car-trip-total { margin: .2rem 0 0; color: var(--muted); font-size: .85rem; font-weight: 400; }
 .car-trip-total strong { color: var(--black); }
@@ -356,7 +365,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
     font-size: .95rem;
 }
 
-.hero-trust i { color: #fff; margin-right: .5rem; font-size: .85rem; }
+.hero-trust .icon { color: #fff; margin-right: .5rem; font-size: .85rem; }
 
 /* Seksionet */
 .section { padding: clamp(56px, 7vw, 96px) 0; }
@@ -393,9 +402,9 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
     padding-bottom: 2px;
 }
 
-.link-arrow i { font-size: .8em; margin-left: .35rem; transition: transform .2s; }
+.link-arrow .icon { font-size: .8em; margin-left: .35rem; transition: transform .2s; }
 .link-arrow:hover { color: var(--gold); }
-.link-arrow:hover i { transform: translateX(4px); }
+.link-arrow:hover .icon { transform: translateX(4px); }
 
 /* Kategoritë */
 .category-grid {
@@ -424,7 +433,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 .category-name { font-weight: 700; font-size: 1.05rem; }
 .category-count { color: var(--muted); font-size: .9rem; }
 
-.category-tile i {
+.category-tile .icon {
     position: absolute;
     right: 1.25rem;
     top: 50%;
@@ -434,7 +443,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
     transition: transform .2s, color .2s;
 }
 
-.category-tile:hover i { color: var(--gold); transform: translate(4px, -50%); }
+.category-tile:hover .icon { color: var(--gold); transform: translate(4px, -50%); }
 
 /* Kartat e makinave */
 .car-tile {
@@ -466,7 +475,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
     font-size: .9rem;
 }
 
-.car-tile-specs i { margin-right: .4rem; color: var(--muted); font-size: .8rem; }
+.car-tile-specs .icon { margin-right: .4rem; color: var(--muted); font-size: .8rem; }
 
 .car-tile-foot {
     display: flex;
@@ -508,7 +517,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 
 .why-list { display: grid; gap: 1.5rem; margin: 0; }
 .why-list li { display: flex; gap: 1rem; }
-.why-list i { margin-top: .25rem; color: var(--gold); font-size: 1.15rem; }
+.why-list .icon { margin-top: .25rem; color: var(--gold); font-size: 1.15rem; }
 .why-list h3 { margin-bottom: .25rem; font-size: 1.1rem; font-weight: 700; }
 .why-list p { margin: 0; color: var(--muted); }
 
@@ -602,23 +611,13 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 .hero-description { animation-delay: .1s; }
 .hero-price { animation-delay: .2s; }
 
-.reveal,
-.scroll-reveal {
+.reveal {
     opacity: 0;
+    transform: translateY(16px);
     transition: opacity .6s var(--ease), transform .6s var(--ease);
 }
 
-.scroll-reveal { transform: translateY(16px); }
-.reveal-up { transform: translateY(16px); }
-.reveal-left { transform: translateX(-20px); }
-.reveal-right { transform: translateX(20px); }
-.reveal-zoom { transform: scale(.97); }
-
-.reveal.visible,
-.scroll-reveal.show {
-    opacity: 1;
-    transform: none;
-}
+.reveal.visible { opacity: 1; transform: none; }
 
 /* Hover */
 .card:hover,
@@ -632,17 +631,6 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 .card:hover .card-img-top { transform: scale(1.03); }
 
 /* Scroll */
-#scrollProgress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 4px;
-    background: var(--gold);
-    z-index: 2000;
-    pointer-events: none;
-}
-
 #backToTop {
     position: fixed;
     right: 24px;
@@ -735,7 +723,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 }
 
 .car-meta-grid span { white-space: nowrap; }
-.car-meta-grid i { color: var(--gold); font-size: 12px; }
+.car-meta-grid .icon { color: var(--gold); font-size: 12px; }
 
 .car-footer {
     display: flex;
@@ -765,7 +753,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 
 .review-card:hover { border-color: var(--gold); }
 
-.review-stars i {
+.review-stars .icon {
     color: var(--gold);
     font-size: 14px;
 }
@@ -809,7 +797,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
     font-weight: 800;
 }
 
-.stars-small i {
+.stars-small .icon {
     font-size: 16px;
     margin: 0 2px;
 }
@@ -825,12 +813,8 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, #scrollProgr
 .accordion-button:hover { color: var(--gold); }
 footer a.text-secondary:hover { color: var(--gold) !important; }
 
-.fa-arrow-right {
-    display: inline-block;
-    transition: transform .3s;
-}
-
-.btn:hover .fa-arrow-right { transform: translateX(6px); }
+.btn .icon { transition: transform .3s; }
+.btn:hover .icon:has(use[href$="#i-arrow-right"]) { transform: translateX(5px); }
 
 .social-btn {
     --bs-btn-hover-color: #fff;
@@ -904,7 +888,7 @@ footer a.text-secondary:hover { color: var(--gold) !important; }
 .picked-car-cat { margin: 0; color: var(--muted); font-size: .8rem; }
 .picked-car-name { margin: 0 0 .4rem; font-size: 1.1rem; font-weight: 700; }
 .picked-car-specs { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin: 0; color: #334155; font-size: .85rem; }
-.picked-car-specs i { margin-right: .35rem; color: var(--muted); font-size: .75rem; }
+.picked-car-specs .icon { margin-right: .35rem; color: var(--muted); font-size: .75rem; }
 .picked-car-price { margin: 0 .5rem 0 0; text-align: right; color: var(--muted); font-size: .85rem; }
 .picked-car-price strong { display: block; color: var(--black); font-size: 1.35rem; }
 
@@ -937,7 +921,7 @@ footer a.text-secondary:hover { color: var(--gold) !important; }
 .summary-btn { width: 100%; margin-top: 1.25rem; padding: .9rem; border-radius: 8px; font-weight: 700; font-size: 1.05rem; }
 
 .summary-notes { display: grid; gap: .45rem; margin: 1.25rem 0 0; color: var(--muted); font-size: .88rem; }
-.summary-notes i { margin-right: .5rem; color: #16a34a; font-size: .8rem; }
+.summary-notes .icon { margin-right: .5rem; color: #16a34a; font-size: .8rem; }
 
 /* datat e zëna në kalendar */
 .flatpickr-day.booked,

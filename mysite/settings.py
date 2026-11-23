@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,12 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',  # WhiteNoise shërben skedarët statikë edhe në runserver
     'django.contrib.staticfiles',
     'car_app',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,11 +121,19 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'car_app' / 'static',
-]
-
+# skedarët statikë të car_app/static/ gjenden automatikisht (APP_DIRS)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# WhiteNoise: skedarët statikë kompresohen (gzip/brotli) dhe marrin emra me hash
+# (style.4f2a9c.css), kështu shfletuesi i ruan në cache për gjithmonë dhe i rifreskon
+# vetëm kur ndryshojnë. Në produksion duhet `python manage.py collectstatic`.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
+if "test" in sys.argv:
+    # testet nuk kanë nevojë për collectstatic
+    STORAGES["staticfiles"]["BACKEND"] = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 
 # Default primary key field type

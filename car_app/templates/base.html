@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>{% block title %}DriveOn - Rent a Car | Premium Vehicle Rental Service{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{% static 'image/logo.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/favicon-32.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'image/apple-touch-icon.png' %}">
     <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
 
     {% block meta %}
@@ -13,7 +14,7 @@
     <meta name="author" content="DriveOn">
     <meta property="og:title" content="DriveOn - Rent a Car | Premium Vehicle Rental Service">
     <meta property="og:description" content="Premium car rental services with modern vehicles, competitive prices, and easy booking.">
-    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/hero1.jpg' %}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
@@ -23,10 +24,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=25">
-    <link rel="stylesheet" href="{% static 'css/responsive.css' %}?v=10">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 
     {% block head_extra %}{% endblock %}
     {% block structured_data %}{% endblock %}
@@ -37,7 +36,7 @@
 <nav class="navbar navbar-expand-lg navbar-enhanced sticky-top">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2 me-lg-5" href="{% url 'index' %}">
-            <img src="{% static 'image/logo.png' %}" alt="DriveOn Logo" width="60" height="60">
+            <img src="{% static 'image/logo.webp' %}" alt="DriveOn Logo" width="96" height="35">
             <span class="navbar-brand-text">DRIVE<span>ON</span></span>
         </a>
         <button class="navbar-toggler nav-burger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-label="Open menu">
@@ -48,17 +47,17 @@
         <div class="offcanvas-lg offcanvas-end nav-drawer flex-lg-grow-1" id="mainNavbar" tabindex="-1" aria-labelledby="mainNavbarLabel">
             <div class="offcanvas-header d-lg-none">
                 <a class="d-flex align-items-center gap-2" href="{% url 'index' %}" id="mainNavbarLabel">
-                    <img src="{% static 'image/logo.png' %}" alt="" width="44" height="44">
+                    <img src="{% static 'image/logo.webp' %}" alt="" width="80" height="29">
                     <span class="navbar-brand-text">DRIVE<span>ON</span></span>
                 </a>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#mainNavbar" aria-label="Close menu"></button>
             </div>
             <div class="offcanvas-body d-flex flex-column flex-lg-row align-items-lg-center">
                 <ul class="navbar-nav mx-lg-auto">
-                    <li class="nav-item"><a class="nav-link {% if page == 'index' %}active{% endif %}" href="{% url 'index' %}" {% if page == 'index' %}aria-current="page"{% endif %}><i class="fas fa-house d-lg-none"></i>Home</a></li>
-                    <li class="nav-item"><a class="nav-link {% if page == 'cars' %}active{% endif %}" href="{% url 'cars' %}" {% if page == 'cars' %}aria-current="page"{% endif %}><i class="fas fa-car d-lg-none"></i>Cars</a></li>
-                    <li class="nav-item"><a class="nav-link {% if page == 'about' %}active{% endif %}" href="{% url 'about' %}" {% if page == 'about' %}aria-current="page"{% endif %}><i class="fas fa-circle-info d-lg-none"></i>About Us</a></li>
-                    <li class="nav-item"><a class="nav-link {% if page == 'contact' %}active{% endif %}" href="{% url 'contact' %}" {% if page == 'contact' %}aria-current="page"{% endif %}><i class="fas fa-envelope d-lg-none"></i>Contact</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'index' %}active{% endif %}" href="{% url 'index' %}" {% if page == 'index' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-house"></use></svg>Home</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'cars' %}active{% endif %}" href="{% url 'cars' %}" {% if page == 'cars' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-car"></use></svg>Cars</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'about' %}active{% endif %}" href="{% url 'about' %}" {% if page == 'about' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-info"></use></svg>About Us</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'contact' %}active{% endif %}" href="{% url 'contact' %}" {% if page == 'contact' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg>Contact</a></li>
                 </ul>
                 <div class="nav-actions d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 gap-lg-3">
                     {% if user.is_authenticated %}
@@ -66,7 +65,7 @@
                     {% else %}
                     <a href="{% url 'login' %}" class="btn btn-nav-outline">Sign In</a>
                     {% endif %}
-                    <a href="{% url 'reservation' %}" class="btn btn-gold text-nowrap"><i class="fas fa-calendar-check me-2"></i>Reserve Now</a>
+                    <a href="{% url 'reservation' %}" class="btn btn-gold text-nowrap"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-calendar-check"></use></svg>Reserve Now</a>
                 </div>
             </div>
         </div>
@@ -86,7 +85,7 @@
         <div class="row g-4 mb-4">
             <div class="col-lg-4">
                 <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 mb-3">
-                    <img src="{% static 'image/logo.png' %}" alt="DriveOn Logo" width="48" height="48">
+                    <img src="{% static 'image/logo.webp' %}" alt="DriveOn Logo" width="80" height="29">
                     <span class="text-white fw-bold">DRIVEON</span>
                 </a>
                 <p class="text-secondary">Premium car rental services with modern vehicles, competitive prices and a simple booking experience.</p>
@@ -119,17 +118,17 @@
             </div>
             <div class="col-lg-3">
                 <h5 class="fw-bold mb-4">Contact Us</h5>
-                <p class="mb-3"><i class="fas fa-location-dot text-gold me-3"></i><span class="text-secondary">Tirana, Albania</span></p>
-                <p class="mb-3"><i class="fas fa-phone text-gold me-3"></i><span class="text-secondary">+355 69 000 0000</span></p>
-                <p class="mb-0"><i class="fas fa-envelope text-gold me-3"></i><a href="mailto:info@driveon.al" class="text-secondary">info@driveon.al</a></p>
+                <p class="mb-3"><svg class="icon text-gold me-3" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg><span class="text-secondary">Tirana, Albania</span></p>
+                <p class="mb-3"><svg class="icon text-gold me-3" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg><span class="text-secondary">+355 69 000 0000</span></p>
+                <p class="mb-0"><svg class="icon text-gold me-3" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg><a href="mailto:info@driveon.al" class="text-secondary">info@driveon.al</a></p>
             </div>
         </div>
         <div class="row mt-4 pt-4 border-top border-secondary align-items-center">
             <p class="col-md-6 text-secondary small mb-0">© 2026 DriveOn. All rights reserved.</p>
             <div class="col-md-6 d-flex gap-2 justify-content-md-end mt-3 mt-md-0">
-                <a href="https://www.instagram.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://wa.me/355690000000" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-instagram"></use></svg></a>
+                <a href="https://www.facebook.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-facebook-f"></use></svg></a>
+                <a href="https://wa.me/355690000000" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="WhatsApp"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-whatsapp"></use></svg></a>
             </div>
         </div>
     </div>
@@ -137,6 +136,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 {% block scripts %}{% endblock %}
-<script src="{% static 'js/script.js' %}?v=8"></script>
+<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

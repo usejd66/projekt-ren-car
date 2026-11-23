@@ -158,3 +158,46 @@ class ReservationSuccessTest(BaseCase):
         r = self.client.post(reverse("reservation"), {"car": self.car.pk, "phone": "abc"})
         self.assertContains(r, "is-invalid")
         self.assertContains(r, "Please enter a valid phone number.")
+
+
+class CarImageTest(TestCase):
+    """Fotot e makinave marrin automatikisht versione WebP (në një dosje të përkohshme)."""
+
+    def setUp(self):
+        import shutil
+        import tempfile
+        self.media = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.media, ignore_errors=True)
+        self.override = self.settings(MEDIA_ROOT=self.media)
+        self.override.enable()
+        self.addCleanup(self.override.disable)
+
+    def make_car(self):
+        from io import BytesIO
+
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from PIL import Image
+
+        buf = BytesIO()
+        Image.new("RGB", (2400, 1600), (200, 30, 40)).save(buf, "JPEG")
+        upload = SimpleUploadedFile("photo.jpg", buf.getvalue(), content_type="image/jpeg")
+        return Car.objects.create(brand="Audi", name="A6", price_per_day=70, image=upload, is_featured=True)
+
+    def test_variants_are_created_on_save(self):
+        from django.core.files.storage import default_storage
+
+        from .images import SIZES, variant_name
+
+        car = self.make_car()
+        for w in SIZES:
+            name = variant_name(car.image.name, w)
+            self.assertTrue(default_storage.exists(name), name)
+        from PIL import Image
+        with default_storage.open(variant_name(car.image.name, 480)) as f:
+            self.assertEqual(Image.open(f).size, (480, 320))
+
+    def test_pages_use_srcset(self):
+        self.make_car()
+        r = self.client.get(reverse("index"))
+        self.assertContains(r, 'srcset="')
+        self.assertContains(r, "-480.webp 480w")

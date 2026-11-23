@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static car_images %}
 {% block title %}Reserve a Car | DriveOn{% endblock %}
 {% block meta %}
     <meta name="description" content="Reserve your DriveOn rental car online: choose your car, dates and pickup location and see the total price before you confirm.">
@@ -16,7 +16,7 @@
 <div class="container">
 
     <nav class="checkout-crumbs" aria-label="Breadcrumb">
-        <a href="{% url 'cars' %}"><i class="fas fa-arrow-left me-2"></i>Back to cars</a>
+        <a href="{% url 'cars' %}"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-left"></use></svg>Back to cars</a>
     </nav>
 
     <header class="checkout-head">
@@ -59,7 +59,7 @@
                                     data-transmission="{{ car.get_transmission_display }}"
                                     data-seats="{{ car.seats }}"
                                     data-fuel="{{ car.get_fuel_display }}"
-                                    data-image="{% if car.image %}{{ car.image.url }}{% else %}{% static 'image/hero.jpg' %}{% endif %}">
+                                    data-image="{% car_img_url car 480 %}">
                                 {{ car }} — €{{ car.price_per_day|floatformat:"-2" }}/day
                             </option>
                             {% endfor %}
@@ -74,9 +74,9 @@
                             <p id="selectedCarCategory" class="picked-car-cat"></p>
                             <h3 id="selectedCarName" class="picked-car-name"></h3>
                             <ul class="picked-car-specs list-unstyled">
-                                <li><i class="fas fa-user"></i><span id="selectedCarSeats"></span></li>
-                                <li><i class="fas fa-gears"></i><span id="selectedCarTransmission"></span></li>
-                                <li><i class="fas fa-gas-pump"></i><span id="selectedCarFuel"></span></li>
+                                <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg><span id="selectedCarSeats"></span></li>
+                                <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg><span id="selectedCarTransmission"></span></li>
+                                <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg><span id="selectedCarFuel"></span></li>
                             </ul>
                         </div>
                         <p class="picked-car-price"><strong id="selectedCarPrice"></strong><span>/ day</span></p>
@@ -108,7 +108,7 @@
                             {% for e in form.return_date.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                     </div>
-                    <p class="checkout-hint"><i class="fas fa-circle-info me-2"></i>Dates that are already booked for this car are crossed out in the calendar.</p>
+                    <p class="checkout-hint"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-info"></use></svg>Dates that are already booked for this car are crossed out in the calendar.</p>
                 </section>
 
                 <!-- Shoferi -->
@@ -158,9 +158,9 @@
                     <button type="submit" id="confirmReservation" class="btn btn-gold summary-btn">Confirm reservation</button>
 
                     <ul class="summary-notes list-unstyled">
-                        <li><i class="fas fa-check"></i>No payment taken online</li>
-                        <li><i class="fas fa-check"></i>Total price shown, no hidden fees</li>
-                        <li><i class="fas fa-check"></i>We contact you to confirm the booking</li>
+                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>No payment taken online</li>
+                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Total price shown, no hidden fees</li>
+                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>We contact you to confirm the booking</li>
                     </ul>
                 </aside>
             </div>
@@ -181,5 +181,5 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
-<script src="{% static 'js/reservation.js' %}?v=6"></script>
+<script src="{% static 'js/reservation.js' %}"></script>
 {% endblock %}

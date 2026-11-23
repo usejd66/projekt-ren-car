@@ -63,7 +63,7 @@
                                     <button class="btn btn-outline-secondary" type="button"
                                         aria-label="Show or hide password"
                                         onclick="togglePassword('{{ form.password1.id_for_label }}', this)">
-                                        <i class="bi bi-eye"></i>
+                                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-eye"></use></svg>
                                     </button>
                                 </div>
                                 {% for error in form.password1.errors %}
@@ -79,7 +79,7 @@
                                     <button class="btn btn-outline-secondary" type="button"
                                         aria-label="Show or hide password"
                                         onclick="togglePassword('{{ form.password2.id_for_label }}', this)">
-                                        <i class="bi bi-eye"></i>
+                                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-eye"></use></svg>
                                     </button>
                                 </div>
                                 {% for error in form.password2.errors %}
@@ -107,16 +107,4 @@
     </section>
 </div>
 
-<!-- TOGGLE PASSWORD SCRIPT -->
-<script>
-    function togglePassword(inputId, btn) {
-        const input = document.getElementById(inputId);
-        const icon = btn.querySelector('i');
-        const show = input.type === 'password';
-
-        input.type = show ? 'text' : 'password';
-        icon.classList.toggle('bi-eye', !show);
-        icon.classList.toggle('bi-eye-slash', show);
-    }
-</script>
 {% endblock %}

@@ -1,8 +1,14 @@
+import logging
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
+
+from .images import make_variants
+
+logger = logging.getLogger(__name__)
 
 ACTIVE_STATUSES = ("pending", "confirmed")
 
@@ -47,6 +53,15 @@ class Car(Stamped):
 
     def __str__(self):
         return f"{self.brand} {self.name}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.image:
+            # versionet e vogla WebP për faqet (shih images.py)
+            try:
+                make_variants(self.image.name)
+            except (OSError, ValueError):
+                logger.exception("Could not create image variants for %s", self.image.name)
 
 
 class Reservation(Stamped):

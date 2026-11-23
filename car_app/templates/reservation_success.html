@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static car_images %}
 {% block title %}Reservation received | DriveOn{% endblock %}
 {% block meta %}
     <meta name="robots" content="noindex">
@@ -9,13 +9,13 @@
 <section class="checkout">
 <div class="container">
     <div class="done">
-        <div class="done-icon" aria-hidden="true"><i class="fas fa-check"></i></div>
+        <div class="done-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg></div>
         <h1>Reservation received</h1>
         <p class="done-lead">Thank you, {{ booking.full_name }}. We'll contact you at <strong>{{ booking.email }}</strong> or <strong>{{ booking.phone }}</strong> to confirm your booking.</p>
 
         <div class="done-card">
             <div class="done-car">
-                <img src="{% if booking.car.image %}{{ booking.car.image.url }}{% else %}{% static 'image/hero.jpg' %}{% endif %}" alt="{{ booking.car }}">
+                <img src="{% car_img_url booking.car 480 %}" alt="{{ booking.car }}">
                 <div>
                     <p class="done-ref">Reservation #{{ booking.pk }}</p>
                     <h2>{{ booking.car }}</h2>

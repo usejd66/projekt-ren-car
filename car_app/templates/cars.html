@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static car_images %}
 {% block title %}Cars | DriveOn{% endblock %}
 {% block meta %}
     <meta name="description" content="Browse the DriveOn fleet: filter by category, transmission and price, and rent the car that fits your journey.">
@@ -21,9 +21,9 @@
         <div class="alert alert-warning mt-3 mb-0" role="alert">{{ trip.error }}</div>
         {% elif trip.start %}
         <div class="trip-summary">
-            <span><i class="fas fa-calendar"></i><strong>{{ trip.start|date:"D j M" }}</strong> &ndash; <strong>{{ trip.end|date:"D j M Y" }}</strong></span>
-            <span><i class="fas fa-clock"></i>{{ trip.days }} day{{ trip.days|pluralize }}</span>
-            {% if trip.location %}<span><i class="fas fa-location-dot"></i>Pickup: {{ trip.location }}</span>{% endif %}
+            <span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-calendar"></use></svg><strong>{{ trip.start|date:"D j M" }}</strong> &ndash; <strong>{{ trip.end|date:"D j M Y" }}</strong></span>
+            <span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-clock"></use></svg>{{ trip.days }} day{{ trip.days|pluralize }}</span>
+            {% if trip.location %}<span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg>Pickup: {{ trip.location }}</span>{% endif %}
             <a href="{% url 'cars' %}" class="ms-auto small text-secondary">Clear dates</a>
         </div>
         {% endif %}
@@ -105,11 +105,7 @@
             <div class="col-12 col-md-4 col-lg-4">
                 <div class="car-card h-100 shadow-sm overflow-hidden">
 
-                    {% if car.image %}
-                    <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.name }}">
-                    {% else %}
-                    <img src="{% static 'image/hero.jpg' %}" alt="{{ car.brand }} {{ car.name }}">
-                    {% endif %}
+                    {% car_img car sizes="(min-width: 992px) 400px, (min-width: 768px) 33vw, 100vw" %}
 
                     <div class="car-card-body p-4">
 
@@ -117,22 +113,22 @@
 
                         <div class="car-meta-grid">
                             <span>
-                                <i class="fas fa-gears me-1"></i>
+                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>
                                 {{ car.get_transmission_display }}
                             </span>
 
                             <span>
-                                <i class="fas fa-users me-1"></i>
+                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-users"></use></svg>
                                 {{ car.seats }} Seats
                             </span>
 
                             <span>
-                                <i class="fas fa-gas-pump me-1"></i>
+                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>
                                 {{ car.get_fuel_display }}
                             </span>
 
                             <span>
-                                <i class="fas fa-road me-1"></i>
+                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-road"></use></svg>
                                 Unlimited
                             </span>
                         </div>
@@ -212,7 +208,7 @@
                 <div class="review-card h-100 p-4">
                     <div class="review-stars mb-3">
                         {% for i in "12345" %}
-                        <i class="{% if forloop.counter <= review.rating %}fas{% else %}far{% endif %} fa-star"></i>
+                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star{% if forloop.counter > review.rating %}-o{% endif %}"></use></svg>
                         {% endfor %}
                     </div>
 
@@ -242,11 +238,11 @@
                 <div class="rating-stat">
                     <h3 class="mb-1">4.9/5</h3>
                     <div class="stars-small">
-                        <i class="fas fa-star text-gold"></i>
-                        <i class="fas fa-star text-gold"></i>
-                        <i class="fas fa-star text-gold"></i>
-                        <i class="fas fa-star text-gold"></i>
-                        <i class="fas fa-star text-gold"></i>
+                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
+                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
+                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
+                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
+                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
                     </div>
                     <p class="text-muted small mt-2">Based on 500+ reviews</p>
                 </div>
@@ -272,5 +268,5 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
-<script src="{% static 'js/trip-search.js' %}?v=1"></script>
+<script src="{% static 'js/trip-search.js' %}"></script>
 {% endblock %}
