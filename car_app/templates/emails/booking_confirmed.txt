@@ -1,0 +1,11 @@
+{% autoescape off %}Hi {{ booking.full_name }},
+
+Good news: your booking is confirmed and your {{ booking.car }} will be ready for you.
+
+{% include "emails/_booking_lines.txt" %}
+At pickup, please bring a valid driving licence and an ID card or passport.
+
+Need to change something? Reply to this email or call {{ site.phone }}.
+
+{{ site.name }}
+{% endautoescape %}

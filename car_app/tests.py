@@ -262,3 +262,59 @@ class CarDetailTest(BaseCase):
         self.car.save()
         self.assertContains(self.client.get(reverse("index")), self.car.get_absolute_url())
         self.assertContains(self.client.get(reverse("cars")), self.car.get_absolute_url())
+
+
+class EmailTest(BaseCase):
+    def setUp(self):
+        super().setUp()
+        from django.core import mail
+        self.mail = mail
+
+    def test_booking_sends_customer_and_owner_emails(self):
+        with self.captureOnCommitCallbacks(execute=True):
+            self.post_reservation(1, 4)
+        booking = Reservation.objects.get()
+        self.assertEqual(len(self.mail.outbox), 2)
+        customer, owner = self.mail.outbox
+        self.assertEqual(customer.to, ["ana@test.al"])
+        self.assertIn(f"#{booking.pk}", customer.subject)
+        self.assertIn("€150", customer.body)
+        self.assertIn("€150", customer.alternatives[0][0])  # versioni HTML
+        self.assertEqual(owner.reply_to, ["ana@test.al"])
+        self.assertIn(f"/admin/car_app/reservation/{booking.pk}/change/", owner.body)
+
+    def test_text_email_is_not_html_escaped(self):
+        with self.captureOnCommitCallbacks(execute=True):
+            self.client.post(reverse("reservation"), {
+                "car": self.car.pk, "full_name": "Ana & Ben Hoxha", "email": "ana@test.al",
+                "phone": "+355 69 123 4567",
+                "pickup_date": (self.today + timedelta(days=1)).isoformat(),
+                "return_date": (self.today + timedelta(days=3)).isoformat(),
+                "pickup_location": "Tirana",
+            })
+        self.assertIn("Hi Ana & Ben Hoxha", self.mail.outbox[0].body)
+
+    def test_admin_confirm_and_cancel_notify_customer(self):
+        r = self.book(1, 3)
+        admin_test = AdminConfirmTest()
+        with self.captureOnCommitCallbacks(execute=True):
+            AdminConfirmTest.run_confirm(admin_test, Reservation.objects.filter(pk=r.pk))
+        self.assertEqual(len(self.mail.outbox), 1)
+        self.assertIn("is confirmed", self.mail.outbox[0].subject)
+
+    def test_contact_form_notifies_owner(self):
+        with self.captureOnCommitCallbacks(execute=True):
+            self.client.post(reverse("contact"), {
+                "name": "Arben", "email": "arben@test.al", "subject": "Airport pickup", "message": "Hi, is it possible?",
+            })
+        self.assertEqual(len(self.mail.outbox), 1)
+        self.assertEqual(self.mail.outbox[0].reply_to, ["arben@test.al"])
+
+    def test_failed_email_does_not_break_booking(self):
+        from unittest import mock
+        with mock.patch("django.core.mail.EmailMultiAlternatives.send", side_effect=OSError("SMTP down")):
+            # assertLogs jashtë: emailet dërgohen kur mbyllet captureOnCommitCallbacks
+            with self.assertLogs("car_app.emails", "ERROR"), self.captureOnCommitCallbacks(execute=True):
+                r = self.post_reservation(1, 4)
+        self.assertRedirects(r, reverse("reservation_success"))
+        self.assertEqual(Reservation.objects.count(), 1)

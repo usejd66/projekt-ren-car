@@ -1,0 +1,9 @@
+{% extends "emails/_base.html" %}
+{% block content %}
+<h1 style="margin:0 0 8px;font-size:22px;">We received your reservation</h1>
+<p style="margin:0;color:#334155;">Hi {{ booking.full_name }}, thank you for choosing {{ site.name }}. We'll check availability and contact you shortly to confirm your booking.</p>
+{% include "emails/_booking_table.html" %}
+<p style="margin:0 0 6px;color:#334155;"><strong>What happens next?</strong></p>
+<p style="margin:0;color:#334155;">You'll get another email as soon as your booking is confirmed. No payment is taken online.</p>
+<p style="margin:20px 0 0;color:#334155;">Questions? Just reply to this email or call us on <a href="tel:{{ site.phone_link }}" style="color:#e9002b;">{{ site.phone }}</a>.</p>
+{% endblock %}

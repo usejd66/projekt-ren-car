@@ -1,0 +1,5 @@
+Reservation: #{{ booking.pk }}
+Car:         {{ booking.car }}
+Pickup:      {{ booking.pickup_date|date:"D j M Y" }} – {{ booking.pickup_location }}
+Return:      {{ booking.return_date|date:"D j M Y" }} ({{ booking.days }} day{{ booking.days|pluralize }})
+Total:       €{{ booking.total_price|floatformat:"-2" }}

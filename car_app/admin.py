@@ -1,5 +1,6 @@
 from django.contrib import admin, messages
 
+from . import emails
 from .models import Car, CarPhoto, ContactMessage, Reservation, Review, Subscriber
 
 
@@ -28,10 +29,10 @@ class ReservationAdmin(admin.ModelAdmin):
     date_hierarchy = "pickup_date"
     actions = ["confirm_reservations", "cancel_reservations"]
 
-    @admin.action(description="Konfirmo rezervimet e zgjedhura")
+    @admin.action(description="Konfirmo rezervimet e zgjedhura (dhe njofto klientët me email)")
     def confirm_reservations(self, request, queryset):
         # Një rezervim i anuluar mund të mbivendoset me një tjetër aktiv: mos e konfirmo atë.
-        skipped = []
+        skipped, done = [], 0
         for r in queryset.exclude(status="confirmed"):
             if r.status == "cancelled" and Reservation.overlapping(
                 r.car_id, r.pickup_date, r.return_date, r.pk
@@ -39,6 +40,11 @@ class ReservationAdmin(admin.ModelAdmin):
                 skipped.append(f"#{r.pk}")
                 continue
             Reservation.objects.filter(pk=r.pk).update(status="confirmed")
+            r.status = "confirmed"
+            emails.booking_status_changed(r)
+            done += 1
+        if done:
+            self.message_user(request, f"{done} rezervim(e) u konfirmuan; klientët u njoftuan me email.")
         if skipped:
             self.message_user(
                 request,
@@ -46,9 +52,23 @@ class ReservationAdmin(admin.ModelAdmin):
                 level=messages.WARNING,
             )
 
-    @admin.action(description="Anulo rezervimet e zgjedhura")
+    @admin.action(description="Anulo rezervimet e zgjedhura (dhe njofto klientët me email)")
     def cancel_reservations(self, request, queryset):
-        queryset.update(status="cancelled")
+        done = 0
+        for r in queryset.exclude(status="cancelled"):
+            Reservation.objects.filter(pk=r.pk).update(status="cancelled")
+            r.status = "cancelled"
+            emails.booking_status_changed(r)
+            done += 1
+        if done:
+            self.message_user(request, f"{done} rezervim(e) u anuluan; klientët u njoftuan me email.")
+
+    def save_model(self, request, obj, form, change):
+        # statusi u ndryshua nga faqja e rezervimit te admin: njofto klientin
+        status_changed = change and "status" in form.changed_data
+        super().save_model(request, obj, form, change)
+        if status_changed:
+            emails.booking_status_changed(obj)
 
 
 @admin.register(Review)

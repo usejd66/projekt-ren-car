@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -146,7 +147,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Në zhvillim emailet shfaqen në terminal. Në produksion vendos variablat e mjedisit
+# EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD (p.sh. Gmail me "App password" ose Brevo).
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "true").lower() == "true"
+EMAIL_TIMEOUT = 15
+EMAIL_BACKEND = (
+    "django.core.mail.backends.smtp.EmailBackend" if EMAIL_HOST
+    else "django.core.mail.backends.console.EmailBackend"
+)
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "DriveOn <info@driveon.al>")
+# kush merr njoftimet për rezervimet e reja dhe mesazhet nga Contact
+BOOKINGS_EMAIL = os.environ.get("BOOKINGS_EMAIL", "info@driveon.al")
+# adresa e plotë e faqes (për lidhjet në email), p.sh. https://driveon.al
+SITE_URL = os.environ.get("SITE_URL", "http://127.0.0.1:8000")
 
 
 MEDIA_URL = "/media/"

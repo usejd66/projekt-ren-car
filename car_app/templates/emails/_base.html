@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{{ site.name }}</title></head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#0b0f19;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:24px 12px;">
+<tr><td align="center">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;">
+    <tr><td style="padding:24px 28px;border-bottom:1px solid #e2e8f0;">
+      <a href="{{ site_url }}" style="text-decoration:none;font-size:20px;font-weight:800;letter-spacing:2px;color:#0b0f19;">DRIVE<span style="color:#e9002b;">ON</span></a>
+    </td></tr>
+    <tr><td style="padding:28px;font-size:15px;line-height:1.6;">
+      {% block content %}{% endblock %}
+    </td></tr>
+    <tr><td style="padding:20px 28px;border-top:1px solid #e2e8f0;font-size:13px;line-height:1.6;color:#64748b;">
+      {{ site.name }} · {{ site.address }}<br>
+      <a href="tel:{{ site.phone_link }}" style="color:#64748b;">{{ site.phone }}</a> · <a href="mailto:{{ site.email }}" style="color:#64748b;">{{ site.email }}</a>
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>

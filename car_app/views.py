@@ -13,6 +13,7 @@ from django.templatetags.static import static
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import cache_control
 
+from . import emails
 from .forms import LOCATIONS, ContactForm, ReservationForm, SignUpForm, SubscribeForm
 from .models import ACTIVE_STATUSES, Car, Reservation, Review
 
@@ -213,7 +214,7 @@ def contact(request):
     form = ContactForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
-        form.save()
+        emails.contact_message(form.save())
         messages.success(
             request,
             "Thank you! Your message has been sent. We'll get back to you shortly.",
@@ -271,6 +272,7 @@ def reservation(request):
                 booking.user = user if user.is_authenticated else None
                 booking.save()
 
+                emails.booking_received(booking)
                 # faqja e konfirmimit e shfaq vetëm rezervimin e këtij vizitori
                 request.session["last_booking"] = booking.pk
                 return redirect("reservation_success")

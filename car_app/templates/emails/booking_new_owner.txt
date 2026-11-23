@@ -1,0 +1,10 @@
+{% autoescape off %}New reservation #{{ booking.pk }} – waiting for your confirmation.
+
+{% include "emails/_booking_lines.txt" %}
+Customer: {{ booking.full_name }}
+Email:    {{ booking.email }}
+Phone:    {{ booking.phone }}
+{% if booking.notes %}Notes:    {{ booking.notes }}
+{% endif %}
+Open in admin: {{ admin_url }}
+{% endautoescape %}

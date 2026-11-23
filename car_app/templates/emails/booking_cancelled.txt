@@ -1,0 +1,10 @@
+{% autoescape off %}Hi {{ booking.full_name }},
+
+Your reservation #{{ booking.pk }} for the {{ booking.car }} ({{ booking.pickup_date|date:"j M" }} – {{ booking.return_date|date:"j M Y" }}) has been cancelled.
+
+If this is unexpected or you'd like to book different dates, reply to this email or call {{ site.phone }}.
+
+See available cars: {{ site_url }}{% url 'cars' %}
+
+{{ site.name }}
+{% endautoescape %}

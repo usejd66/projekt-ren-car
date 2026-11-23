@@ -78,6 +78,27 @@ Website për qiradhënien e makinave, i ndërtuar me **Django** (backend) dhe **
 
 Rishikimet (**Reviews**) shfaqen në website vetëm pasi t'i miratosh nga admin (**Is approved**).
 
+## Emailet
+
+Faqja dërgon automatikisht:
+
+- **klientit**: konfirmimin që rezervimi u mor, dhe një email tjetër kur e konfirmon ose e anulon te admin;
+- **ty** (`BOOKINGS_EMAIL`): njoftim për çdo rezervim të ri (me lidhje te admin) dhe çdo mesazh nga Contact.
+
+Në zhvillim emailet shfaqen në terminal. Në produksion vendos këto variabla mjedisi:
+
+| Variabla | Shembull |
+|---|---|
+| `EMAIL_HOST` | `smtp.gmail.com` (ose `smtp-relay.brevo.com`) |
+| `EMAIL_PORT` | `587` |
+| `EMAIL_HOST_USER` | adresa / përdoruesi SMTP |
+| `EMAIL_HOST_PASSWORD` | fjalëkalimi (për Gmail: "App password") |
+| `DEFAULT_FROM_EMAIL` | `DriveOn <info@driveon.al>` |
+| `BOOKINGS_EMAIL` | adresa ku vijnë rezervimet e reja |
+| `SITE_URL` | `https://driveon.al` (për lidhjet në email) |
+
+Të dhënat e kompanisë që shfaqen në faqe (telefoni, email-i, orari) ndryshohen te `car_app/context_processors.py`.
+
 ## Struktura e projektit
 
 ```

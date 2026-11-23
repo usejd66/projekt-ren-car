@@ -1,0 +1,8 @@
+{% extends "emails/_base.html" %}
+{% block content %}
+<h1 style="margin:0 0 8px;font-size:22px;">New message from the website</h1>
+<p style="margin:0 0 16px;color:#64748b;">From <strong style="color:#0b0f19;">{{ message.name }}</strong> &lt;<a href="mailto:{{ message.email }}" style="color:#0b0f19;">{{ message.email }}</a>&gt;</p>
+<p style="margin:0 0 8px;font-weight:700;">{{ message.subject }}</p>
+<div style="padding:16px;border:1px solid #e2e8f0;border-radius:10px;color:#334155;">{{ message.message|linebreaksbr }}</div>
+<p style="margin:16px 0 0;color:#64748b;font-size:13px;">Reply to this email to answer {{ message.name }} directly.</p>
+{% endblock %}
