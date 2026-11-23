@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}You're offline | DriveOn{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<section class="auth">
+    <div class="auth-card text-center">
+        <h1>You're offline</h1>
+        <p class="auth-sub">Check your internet connection and try again. You can still call or message us.</p>
+        <button type="button" class="btn btn-gold summary-btn mt-0" onclick="location.reload()">Try again</button>
+        <p class="auth-switch"><a href="tel:{{ site.phone_link }}">{{ site.phone }}</a></p>
+    </div>
+</section>
+{% endblock %}

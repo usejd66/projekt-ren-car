@@ -7,6 +7,10 @@
     <title>{% block title %}DriveOn - Rent a Car | Premium Vehicle Rental Service{% endblock %}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/favicon-32.png' %}">
     <link rel="apple-touch-icon" href="{% static 'image/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% url 'manifest' %}">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-title" content="DriveOn">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
 
     {% block meta %}
@@ -133,8 +137,23 @@
     </div>
 </footer>
 
+<!-- WhatsApp: gjithmonë i dukshëm (shumica e klientëve preferojnë të shkruajnë këtu) -->
+<a class="wa-fab" href="https://wa.me/{{ site.phone_link|slice:'1:' }}?text={{ "Hi DriveOn, I'd like to rent a car."|urlencode }}"
+   target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+    <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-whatsapp"></use></svg>
+    <span class="wa-fab-label">Chat with us</span>
+</a>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 {% block scripts %}{% endblock %}
 <script src="{% static 'js/script.js' %}"></script>
+{% if pwa %}
+<script>
+    // PWA: instalim në ekranin kryesor + faqe kur s'ka internet
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => navigator.serviceWorker.register("{% url 'service_worker' %}"));
+    }
+</script>
+{% endif %}
 </body>
 </html>

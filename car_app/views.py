@@ -1,3 +1,4 @@
+import hashlib
 from datetime import date
 
 from django.contrib import messages
@@ -5,10 +6,12 @@ from django.contrib.auth import login
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Avg, Count, DecimalField, ExpressionWrapper, F, Min, Q
-from django.http import QueryDict
+from django.http import JsonResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.templatetags.static import static
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.cache import cache_control
 
 from .forms import LOCATIONS, ContactForm, ReservationForm, SignUpForm, SubscribeForm
 from .models import ACTIVE_STATUSES, Car, Reservation, Review
@@ -325,3 +328,38 @@ def subscribe(request):
         return redirect(back)
 
     return redirect("index")
+
+
+# ===== PWA: manifest, service worker, faqja pa internet =====
+
+def manifest(request):
+    """Manifesti i aplikacionit: lejon "Add to Home Screen" në telefon."""
+    return JsonResponse({
+        "name": "DriveOn – Car Rental in Tirana",
+        "short_name": "DriveOn",
+        "description": "Rent a car in Tirana, Durrës or at Tirana Airport.",
+        "start_url": "/?source=pwa",
+        "scope": "/",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#0B0F19",
+        "icons": [
+            {"src": static("image/apple-touch-icon.png"), "sizes": "180x180", "type": "image/png"},
+            {"src": static("image/icon-512.png"), "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+        ],
+    }, content_type="application/manifest+json")
+
+
+SW_PRECACHE = ("css/style.css", "css/responsive.css", "icons.svg", "js/script.js", "image/favicon-32.png")
+
+
+@cache_control(no_cache=True)  # shfletuesi duhet ta kontrollojë gjithmonë për versione të reja
+def service_worker(request):
+    urls = ["/offline/"] + [static(path) for path in SW_PRECACHE]
+    version = hashlib.md5("|".join(urls).encode()).hexdigest()[:10]
+    return render(request, "sw.js", {"urls": urls, "version": version},
+                  content_type="application/javascript")
+
+
+def offline(request):
+    return render(request, "offline.html")

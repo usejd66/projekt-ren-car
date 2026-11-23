@@ -3,6 +3,8 @@
 NDRYSHO KËTU numrin, email-in dhe rrjetet sociale kur të kesh të dhënat reale:
 përditësohen automatikisht në navbar, footer, Contact, faqen kryesore dhe FAQ.
 """
+from django.conf import settings
+
 from .forms import LOCATIONS
 
 SITE = {
@@ -19,4 +21,5 @@ SITE = {
 
 
 def site(request):
-    return {"site": SITE}
+    # pwa: service worker-i regjistrohet vetëm në produksion (në zhvillim do shfaqte skedarë të vjetër)
+    return {"site": SITE, "pwa": not settings.DEBUG}

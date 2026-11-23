@@ -201,3 +201,25 @@ class CarImageTest(TestCase):
         r = self.client.get(reverse("index"))
         self.assertContains(r, 'srcset="')
         self.assertContains(r, "-480.webp 480w")
+
+
+class PwaTest(TestCase):
+    def test_manifest(self):
+        r = self.client.get(reverse("manifest"))
+        self.assertEqual(r["Content-Type"], "application/manifest+json")
+        data = r.json()
+        self.assertEqual(data["short_name"], "DriveOn")
+        self.assertTrue(any(i["sizes"] == "512x512" for i in data["icons"]))
+
+    def test_service_worker_and_offline_page(self):
+        sw = self.client.get(reverse("service_worker"))
+        self.assertEqual(sw["Content-Type"], "application/javascript")
+        self.assertContains(sw, '"/offline/"')
+        self.assertIn("no-cache", sw["Cache-Control"])
+        self.assertContains(self.client.get(reverse("offline")), "You're offline")
+
+    def test_sw_registered_only_in_production(self):
+        with self.settings(DEBUG=True):
+            self.assertNotContains(self.client.get(reverse("index")), "serviceWorker")
+        with self.settings(DEBUG=False):
+            self.assertContains(self.client.get(reverse("index")), "serviceWorker")

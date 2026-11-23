@@ -95,16 +95,18 @@
                             {{ form.pickup_location }}
                             {% for e in form.pickup_location.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
-                        <div class="col-sm-6">
+                        <input type="hidden" id="pickupDate" name="pickup_date" value="{{ form.pickup_date.value|default:'' }}">
+                        <input type="hidden" id="returnDate" name="return_date" value="{{ form.return_date.value|default:'' }}">
+                        <div class="col-6">
                             <label class="form-label" for="pickupDateAlt">Pickup date</label>
-                            <input type="text" id="pickupDate" name="pickup_date" autocomplete="off" placeholder="Select date"
-                                   value="{{ form.pickup_date.value|default:'' }}" class="form-control{% if form.pickup_date.errors %} is-invalid{% endif %}">
+                            <input type="text" id="pickupDateAlt" autocomplete="off" inputmode="none" placeholder="Select date"
+                                   class="form-control date-field{% if form.pickup_date.errors %} is-invalid{% endif %}">
                             {% for e in form.pickup_date.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-6">
                             <label class="form-label" for="returnDateAlt">Return date</label>
-                            <input type="text" id="returnDate" name="return_date" autocomplete="off" placeholder="Select date"
-                                   value="{{ form.return_date.value|default:'' }}" class="form-control{% if form.return_date.errors %} is-invalid{% endif %}">
+                            <input type="text" id="returnDateAlt" autocomplete="off" inputmode="none" placeholder="Select date"
+                                   class="form-control date-field{% if form.return_date.errors %} is-invalid{% endif %}">
                             {% for e in form.return_date.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                     </div>
@@ -181,5 +183,6 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script src="{% static 'js/date-range.js' %}"></script>
 <script src="{% static 'js/reservation.js' %}"></script>
 {% endblock %}

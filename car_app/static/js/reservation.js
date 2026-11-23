@@ -18,7 +18,6 @@ const conflict = (c) => c && pickup.value && ret.value &&
     c.booked.find((b) => pickup.value <= b.to && ret.value >= b.from);
 const isBooked = (iso) => (car()?.booked || []).some((b) => iso >= b.from && iso <= b.to);
 const fmt = (iso) => iso.split("-").reverse().join("/");
-const nextDay = (iso) => new Date(Date.parse(iso) + MS_DAY).toISOString().slice(0, 10);
 const showError = (msg) => { err.textContent = msg; err.classList.toggle("d-none", !msg); };
 
 /* ---------- Summary ---------- */
@@ -57,40 +56,20 @@ function update() {
     set("summaryTotalMobile", money(total));
 }
 
-/* ---------- Calendars ---------- */
-const base = {
-    dateFormat: "Y-m-d", // value sent to Django
-    altInput: true,
-    altFormat: "d/m/Y",  // what the user sees
-    altInputClass: "form-control",
-    minDate: "today",
-    disableMobile: true,
-    locale: { firstDayOfWeek: 1 },
-    // function rule: reads the currently selected car every time the calendar redraws
-    disable: [(d) => isBooked(flatpickr.formatDate(d, "Y-m-d"))],
-    onDayCreate: (_, __, fp, el) => isBooked(fp.formatDate(el.dateObj, "Y-m-d")) && el.classList.add("booked"),
+/* ---------- Calendar ---------- */
+// një kalendar me interval; ditët e zëna të makinës së zgjedhur janë të vizatuara me vijë
+const range = DriveOnRange.attach({
+    start: pickup,
+    end: ret,
+    startDisplay: $("pickupDateAlt"),
+    endDisplay: $("returnDateAlt"),
+    isBooked,
     onChange: update,
-    // the visible flatpickr input gets an id (pickupDateAlt / returnDateAlt) so label[for] works
-    onReady: (_, __, fp) => {
-        fp.altInput.id = `${fp.input.id}Alt`;
-        fp.altInput.autocomplete = "off";
-        // gabimi nga serveri (is-invalid) duhet të duket te input-i i dukshëm
-        if (fp.input.classList.contains("is-invalid")) fp.altInput.classList.add("is-invalid");
-    },
-};
-const returnFp = flatpickr(ret, {
-    ...base,
-    onOpen: () => returnFp.set("minDate", pickup.value ? nextDay(pickup.value) : "today"),
-});
-const pickupFp = flatpickr(pickup, {
-    ...base,
-    onChange: () => { if (ret.value <= pickup.value) returnFp.clear(); update(); },
 });
 
 /* ---------- Events ---------- */
 const onCar = () => {
-    pickupFp.redraw();
-    returnFp.redraw();
+    range.redraw(); // ditët e zëna ndryshojnë sipas makinës
     update();
 };
 carSel.addEventListener("change", onCar);
@@ -108,6 +87,8 @@ form.addEventListener("submit", (e) => {
         e.preventDefault();
         showError(msg);
         err.scrollIntoView({ behavior: "smooth", block: "center" });
+        // datat mungojnë: hap direkt kalendarin
+        if (c && pickLoc.value && (!pickup.value || !ret.value)) setTimeout(() => range.openFor(pickup.value ? "end" : "start"), 400);
     } else {
         // parandalon dërgimin dy herë (edhe butoni i shiritit në telefon)
         document.querySelectorAll('button[type="submit"]').forEach((b) => { b.disabled = true; });

@@ -13,6 +13,9 @@ urlpatterns = [
     path("reservation/success/", views.reservation_success, name="reservation_success"),
     path("signup/", views.signup, name="signup"),
     path("subscribe/", views.subscribe, name="subscribe"),
+    path("manifest.webmanifest", views.manifest, name="manifest"),
+    path("sw.js", views.service_worker, name="service_worker"),
+    path("offline/", views.offline, name="offline"),
     path("login/", auth_views.LoginView.as_view(template_name="login.html", redirect_authenticated_user=True), name="login"),
     path("logout/", auth_views.LogoutView.as_view(next_page="index"), name="logout"),
 ]
