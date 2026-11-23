@@ -36,7 +36,6 @@
 <nav class="navbar navbar-expand-lg navbar-enhanced sticky-top">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2 me-lg-5" href="{% url 'index' %}">
-            <img src="{% static 'image/logo.webp' %}" alt="DriveOn Logo" width="96" height="35">
             <span class="navbar-brand-text">DRIVE<span>ON</span></span>
         </a>
         <button class="navbar-toggler nav-burger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-label="Open menu">
@@ -47,7 +46,6 @@
         <div class="offcanvas-lg offcanvas-end nav-drawer flex-lg-grow-1" id="mainNavbar" tabindex="-1" aria-labelledby="mainNavbarLabel">
             <div class="offcanvas-header d-lg-none">
                 <a class="d-flex align-items-center gap-2" href="{% url 'index' %}" id="mainNavbarLabel">
-                    <img src="{% static 'image/logo.webp' %}" alt="" width="80" height="29">
                     <span class="navbar-brand-text">DRIVE<span>ON</span></span>
                 </a>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#mainNavbar" aria-label="Close menu"></button>
@@ -80,55 +78,56 @@
 </main>
 
 <!-- Footer -->
-<footer class="bg-dark text-white py-5">
-    <div class="container py-5">
-        <div class="row g-4 mb-4">
-            <div class="col-lg-4">
-                <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 mb-3">
-                    <img src="{% static 'image/logo.webp' %}" alt="DriveOn Logo" width="80" height="29">
-                    <span class="text-white fw-bold">DRIVEON</span>
-                </a>
-                <p class="text-secondary">Premium car rental services with modern vehicles, competitive prices and a simple booking experience.</p>
-                <form method="post" action="{% url 'subscribe' %}" class="mt-4">
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <a href="{% url 'index' %}" class="navbar-brand-text footer-logo">DRIVE<span>ON</span></a>
+                <p>Car rental in Tirana with modern cars, clear prices and simple online booking.</p>
+                <form method="post" action="{% url 'subscribe' %}" class="footer-subscribe">
                     {% csrf_token %}
-                    <label for="subscribeEmail" class="form-label fw-bold small">Subscribe to our newsletter</label>
-                    <div class="input-group">
+                    <label for="subscribeEmail">Get offers by email</label>
+                    <div class="footer-subscribe-row">
                         <input type="email" name="email" id="subscribeEmail" class="form-control" placeholder="Your email address" autocomplete="email" required>
                         <button type="submit" class="btn btn-gold">Subscribe</button>
                     </div>
                 </form>
             </div>
-            <div class="col-6 col-lg-2">
-                <h5 class="fw-bold mb-4">Quick Links</h5>
-                <ul class="list-unstyled d-grid gap-3">
-                    <li><a href="{% url 'index' %}" class="text-secondary">Home</a></li>
-                    <li><a href="{% url 'cars' %}" class="text-secondary">Cars</a></li>
-                    <li><a href="{% url 'about' %}" class="text-secondary">About Us</a></li>
-                    <li><a href="{% url 'contact' %}" class="text-secondary">Contact</a></li>
+
+            <nav class="footer-col" aria-label="Footer">
+                <h2>Explore</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'cars' %}">Our cars</a></li>
+                    <li><a href="{% url 'reservation' %}">Reserve a car</a></li>
+                    <li><a href="{% url 'about' %}">About us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="footer-col">
+                <h2>Pickup locations</h2>
+                <ul class="list-unstyled">
+                    {% for loc in site.locations %}<li>{{ loc }}</li>{% endfor %}
                 </ul>
             </div>
-            <div class="col-6 col-lg-3">
-                <h5 class="fw-bold mb-4">Services</h5>
-                <ul class="list-unstyled d-grid gap-3">
-                    <li><a href="{% url 'cars' %}" class="text-secondary">Car Rental</a></li>
-                    <li><a href="{% url 'reservation' %}" class="text-secondary">Easy Booking</a></li>
-                    <li><a href="{% url 'cars' %}" class="text-secondary">Premium Cars</a></li>
-                    <li><a href="{% url 'contact' %}" class="text-secondary">24/7 Support</a></li>
+
+            <div class="footer-col">
+                <h2>Contact</h2>
+                <ul class="list-unstyled footer-contact">
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg><a href="tel:{{ site.phone_link }}">{{ site.phone }}</a></li>
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-clock"></use></svg>{{ site.hours }}</li>
+                    <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg>{{ site.address }}</li>
                 </ul>
-            </div>
-            <div class="col-lg-3">
-                <h5 class="fw-bold mb-4">Contact Us</h5>
-                <p class="mb-3"><svg class="icon text-gold me-3" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg><span class="text-secondary">Tirana, Albania</span></p>
-                <p class="mb-3"><svg class="icon text-gold me-3" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg><span class="text-secondary">+355 69 000 0000</span></p>
-                <p class="mb-0"><svg class="icon text-gold me-3" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg><a href="mailto:info@driveon.al" class="text-secondary">info@driveon.al</a></p>
             </div>
         </div>
-        <div class="row mt-4 pt-4 border-top border-secondary align-items-center">
-            <p class="col-md-6 text-secondary small mb-0">© 2026 DriveOn. All rights reserved.</p>
-            <div class="col-md-6 d-flex gap-2 justify-content-md-end mt-3 mt-md-0">
-                <a href="https://www.instagram.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-instagram"></use></svg></a>
-                <a href="https://www.facebook.com/driveon" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-facebook-f"></use></svg></a>
-                <a href="https://wa.me/355690000000" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary social-btn rounded-circle" aria-label="WhatsApp"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-whatsapp"></use></svg></a>
+
+        <div class="footer-bottom">
+            <p>© {% now "Y" %} {{ site.name }}. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="{{ site.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-instagram"></use></svg></a>
+                <a href="{{ site.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-facebook-f"></use></svg></a>
+                <a href="https://wa.me/{{ site.phone_link|slice:'1:' }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-whatsapp"></use></svg></a>
             </div>
         </div>
     </div>

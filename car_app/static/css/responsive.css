@@ -1,17 +1,12 @@
 /* ===== Tablet dhe më i vogël (≤ 991px) ===== */
-@media (max-width: 991.98px) {
-    section > .container.py-5 { padding-block: 3rem !important; }  /* 6rem total është shumë për tablet */
-    .car-image { height: 220px; }
-    .car-meta-grid span { white-space: normal; }                   /* 3 karta në rresht janë të ngushta */
+@media (max-width: 991.98px) {  /* 6rem total është shumë për tablet */
+                       /* 3 karta në rresht janë të ngushta */
 }
 
 /* ===== Telefon (≤ 767px) ===== */
 @media (max-width: 767.98px) {
     /* hapësirat vertikale */
-    section.py-5 { padding-block: 2.5rem !important; }
-    section > .container.py-5, section > .container.py-4 { padding-block: 1.5rem !important; }
-    footer.py-5 { padding-block: 2rem !important; }
-    footer > .container.py-5 { padding-block: 1rem !important; }
+    
 
     /* hero */
     section.hero {
@@ -30,9 +25,7 @@
     .cta-band-actions, .cta-band-actions .btn { width: 100%; }
 
     /* kartat dhe faqet e brendshme */
-    .car-image { height: 200px; }
-    .car-footer { flex-direction: column; align-items: stretch; }
-    .car-footer .btn { width: 100%; }
+    
     .accordion-button { font-size: .95rem; }
     #backToTop { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: 46px; height: 46px; }
 }
@@ -41,9 +34,6 @@
 @media (max-width: 575.98px) {
     .navbar-brand img { width: 80px; height: auto; }
     .navbar-brand-text { font-size: 1.05rem; letter-spacing: 1px; }
-    .car-card-body h3 { margin-bottom: 1rem; }
-    .reviews-section { padding: 3rem 0; }
-    .pagination { flex-wrap: wrap; justify-content: center; }
 }
 
 /* ===== Telefona shumë të ngushtë: iPhone SE, Galaxy Fold (≤ 359px) ===== */
@@ -51,7 +41,6 @@
     .navbar-brand-text { font-size: .95rem; }
     .hero-title { font-size: 2.1rem; }
     .btn-lg { font-size: 1rem; }
-    .car-meta-grid { grid-template-columns: 1fr; }
 }
 
 /* ===== Telefon i kthyer horizontalisht (lartësia ~320-430px) ===== */
@@ -62,15 +51,8 @@
 }
 
 /* ===== Pajisje touch: pa hover që "ngec" pas prekjes ===== */
-@media (hover: none) {
-    .card:hover, .car-card:hover, .review-card:hover, .transition-hover:hover {
-        transform: none; box-shadow: var(--bs-box-shadow-sm) !important;
-    }
-    .card:hover .card-img-top { transform: none; }
-}
 
 /* ===== Lartësia e saktë në telefon (shiriti i adresës që del e fshihet) ===== */
-
 
 /* ===== Respekto përdoruesit që i kanë çaktivizuar animacionet ===== */
 @media (prefers-reduced-motion: reduce) {

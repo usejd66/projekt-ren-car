@@ -1,107 +1,100 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About Us - DriveOn{% endblock %}
+{% block title %}About Us | DriveOn{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="Learn about DriveOn: a modern car rental company focused on quality vehicles, competitive prices and a simple booking experience.">
+    <meta name="description" content="DriveOn is a car rental company in Tirana offering modern cars, clear prices and simple online booking, with pickup in Tirana, Durrës and at Tirana Airport.">
     <meta name="author" content="DriveOn">
 {% endblock %}
 
-{# stili i hero-s i faqes kryesore nuk duhet këtu #}
-{% block head_extra %}{% endblock %}
-
 {% block content %}
-<!-- WHO WE ARE -->
-<section class="py-5">
-    <div class="container py-5">
+<header class="page-head">
+    <div class="container">
+        <h1>About DriveOn</h1>
+        <p>A local car rental company in Tirana, built around one idea: renting a car should be simple.</p>
+    </div>
+</header>
+
+<!-- HISTORIA -->
+<section class="section">
+    <div class="container">
         <div class="row align-items-center g-5">
-            <div class="col-12 col-lg-6">
-                <img src="{% static 'image/hero.webp' %}" class="img-fluid rounded shadow-sm" alt="DriveOn Car Rental">
+            <div class="col-lg-6">
+                <img src="{% static 'image/cars/range.webp' %}" alt="A DriveOn rental car" class="about-image" width="1400" height="788" loading="lazy">
             </div>
-
-            <div class="col-12 col-lg-6">
-                <p class="text-gold fw-600 text-uppercase mb-3">Who We Are</p>
-                <h2 class="fw-bold mb-4">Your Journey, <span class="text-gold">Our Cars.</span></h2>
-                <p class="text-secondary mb-4">DriveOn is a modern car rental company created to make travelling easier, more comfortable and more convenient.</p>
-                <p class="text-secondary mb-4">We offer a carefully selected range of vehicles for different types of journeys. Whether you are travelling for business, planning a holiday, exploring a new city or simply need a reliable car for everyday use, we aim to provide a vehicle that fits your needs.</p>
-                <p class="text-secondary mb-4">We believe that renting a car should be simple and transparent. From choosing your vehicle to understanding the rental options, every part of the experience should be clear and convenient.</p>
-                <p class="text-secondary mb-4">Our focus is on combining quality vehicles, competitive prices and a straightforward booking experience so that our customers can spend less time worrying about the rental process and more time enjoying their journey.</p>
-                <a href="{% url 'cars' %}" class="btn btn-gold px-4 fw-600">Explore Our Cars</a>
+            <div class="col-lg-6">
+                <h2 class="section-title mb-3">Your trip, our cars</h2>
+                <div class="about-text">
+                    <p>Whether you are travelling for business, on holiday, or just need a reliable car for a few days, we want the rental to be the easy part of your trip.</p>
+                    <p>That is why you see the total price before you book, you can reserve online in a couple of minutes, and a real team in Tirana is there when you need help.</p>
+                </div>
+                <a href="{% url 'cars' %}" class="link-arrow">See our cars <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- OUR STORY -->
-<section class="py-5 bg-light">
-    <div class="container py-5">
-        <div class="row align-items-center g-5">
-            <div class="col-12 col-lg-6">
-                <p class="text-gold fw-600 text-uppercase mb-3">Our Story</p>
-                <h2 class="fw-bold mb-4">Built Around <span class="text-gold">Your Journey.</span></h2>
-                <p class="text-secondary mb-4">DriveOn was created with a simple idea: car rental should not be complicated.</p>
-                <p class="text-secondary mb-4">Customers should be able to find a suitable vehicle, understand the rental options and make a reservation without unnecessary steps.</p>
-                <p class="text-secondary mb-4">Our fleet is designed to provide different options for different journeys, from practical cars for everyday travel to premium vehicles for customers looking for additional comfort and style.</p>
-                <p class="text-secondary mb-4">We also understand that a good rental experience is about more than the vehicle itself. Clear communication, an easy booking process and helpful customer support are important parts of the service we want to provide.</p>
-                <p class="text-secondary mb-0">As DriveOn continues to grow, our focus remains the same: making every rental simple, comfortable and dependable.</p>
+<!-- VLERAT -->
+<section class="section section-muted">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">What we stand for</h2>
+                <p class="section-sub">Three promises behind every rental.</p>
             </div>
-
-            <div class="col-12 col-lg-6">
-                <img src="{% static 'image/cars/range.webp' %}" class="img-fluid rounded shadow-sm" alt="DriveOn Vehicle">
+        </div>
+        <div class="values">
+            <div class="value">
+                <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-car-side"></use></svg>
+                <h3>Well-kept cars</h3>
+                <p>Every car is cleaned and checked before each rental, so it is ready when you are.</p>
+            </div>
+            <div class="value">
+                <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
+                <h3>Clear prices</h3>
+                <p>One daily price and a total you see before you confirm. No surprises at pickup.</p>
+            </div>
+            <div class="value">
+                <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-headset"></use></svg>
+                <h3>Real support</h3>
+                <p>Questions before or during your rental? Call or message our team in Tirana.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- WHY DRIVEON -->
-<section class="py-5">
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <p class="text-gold fw-600 text-uppercase mb-3">Why Choose Us</p>
-            <h2 class="fw-bold mb-3">Why DriveOn?</h2>
-            <p class="section-text text-secondary">Everything we do is focused on providing a simple and comfortable rental experience.</p>
+<!-- VENDET -->
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">Where to pick up your car</h2>
+                <p class="section-sub">Choose the location when you book.</p>
+            </div>
         </div>
-
-        <div class="row g-4">
-            <div class="col-12 col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4 text-center transition-hover">
-                    <div class="mb-4"><svg class="icon fa-2x text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-car-side"></use></svg></div>
-                    <h3 class="h5 fw-bold mb-3">Quality Cars</h3>
-                    <p class="text-secondary mb-0">We provide carefully selected vehicles designed to offer comfort, reliability and a pleasant driving experience.</p>
-                </div>
+        <div class="category-grid locations-grid">
+            {% for loc in site.locations %}
+            <div class="category-tile">
+                <span class="category-name">{{ loc }}</span>
+                <span class="category-count">Pickup &amp; return</span>
+                <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg>
             </div>
-
-            <div class="col-12 col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4 text-center transition-hover">
-                    <div class="mb-4"><svg class="icon fa-2x text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-calendar-check"></use></svg></div>
-                    <h3 class="h5 fw-bold mb-3">Easy Booking</h3>
-                    <p class="text-secondary mb-0">Choose your vehicle, select your dates and move through a simple rental process without unnecessary complications.</p>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4 text-center transition-hover">
-                    <div class="mb-4"><svg class="icon fa-2x text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-headset"></use></svg></div>
-                    <h3 class="h5 fw-bold mb-3">Customer Support</h3>
-                    <p class="text-secondary mb-0">Our team is available to help with questions, reservations and anything you may need during your rental.</p>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- OUR MISSION -->
-<section class="py-5 bg-light">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-9 text-center">
-                <p class="text-gold fw-600 text-uppercase mb-3">Our Mission</p>
-                <h2 class="fw-bold mb-4">Making Every Journey Easier</h2>
-                <p class="text-secondary mb-4">Our mission is to provide a straightforward car rental experience where customers can find the right vehicle, book with confidence and enjoy their journey.</p>
-                <p class="text-secondary mb-4">We aim to combine quality vehicles, transparent pricing and responsive customer service to create an experience that customers can rely on whenever they need a car.</p>
-                <p class="text-secondary mb-4">Whether it is a short city trip, a business journey or a longer road adventure, DriveOn is focused on making the rental process simple from start to finish.</p>
-                <a href="{% url 'cars' %}" class="btn btn-gold px-5 mt-2 fw-600">Find Your Car</a>
+<section class="cta-band">
+    <div class="container">
+        <div class="cta-band-inner">
+            <div>
+                <h2>Ready when you are</h2>
+                <p>Pick your dates and see which cars are available.</p>
+            </div>
+            <div class="cta-band-actions">
+                <a href="{% url 'contact' %}" class="btn btn-light">Contact us</a>
+                <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
             </div>
         </div>
     </div>

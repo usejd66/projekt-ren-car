@@ -40,7 +40,7 @@
     const REVEAL = [
         ".section-head", ".category-tile", ".car-tile", ".step", ".why-list li", ".why-image",
         ".review", ".faq .accordion-item", ".cta-band-inner",
-        ".car-card", ".about-section .row > *", "footer .row.g-4 > *",
+        ".value", ".contact-item", ".footer-top > *",
     ].join(",");
 
     const observer = new IntersectionObserver((entries) => {

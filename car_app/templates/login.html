@@ -1,138 +1,48 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Sign In - DriveOn{% endblock %}
+{% block title %}Sign In | DriveOn{% endblock %}
 
 {% block meta %}
     <meta name="description" content="Sign in to your DriveOn account to manage your car rental reservations.">
-    <meta name="author" content="DriveOn">
+    <meta name="robots" content="noindex">
 {% endblock %}
 
-{# stili i hero-s i faqes kryesore nuk duhet këtu #}
-{% block head_extra %}{% endblock %}
-
 {% block content %}
-<!-- LOGIN -->
-<div>
+<section class="auth">
+    <div class="auth-card">
+        <h1>Welcome back</h1>
+        <p class="auth-sub">Sign in to your DriveOn account.</p>
 
-    <section class="py-5">
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">The username or password is incorrect. Please try again.</div>
+        {% endif %}
 
-        <div class="container">
+        <form method="post" action="{% url 'login' %}" class="checkout" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
 
-            <div class="row justify-content-center">
-
-                <div class="col-12 col-md-8 col-lg-5">
-
-                    <div class="login-card">
-
-                        <!-- HEADER -->
-                        <div class="text-center">
-
-                            <p>
-                                Welcome Back
-                            </p>
-
-                            <h1>
-                                Sign In
-                            </h1>
-
-                            <p>
-                                Sign in to your DriveOn account.
-                            </p>
-
-                        </div>
-
-
-                        <!-- FORM -->
-                        <form method="post" action="{% url 'login' %}">
-                            {% csrf_token %}
-
-                            <!-- Ku të çojë pas login-it (nëse ka ?next=...) -->
-                            <input type="hidden" name="next" value="{{ next }}">
-
-                            <!-- GABIMET (username/password i gabuar) -->
-                            {% if form.non_field_errors %}
-                            <div class="alert alert-danger" role="alert">
-                                Username or password is incorrect. Please try again.
-                            </div>
-                            {% endif %}
-
-                            <!-- USERNAME -->
-                            <div class="mb-3">
-
-                                <label for="id_username" class="form-label">
-                                    Username
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="username"
-                                    id="id_username"
-                                    class="form-control"
-                                    placeholder="Enter your username"
-                                    value="{{ form.username.value|default:'' }}"
-                                    autocomplete="username"
-                                    required
-                                    autofocus>
-
-                            </div>
-
-
-                            <!-- PASSWORD -->
-                            <div class="mb-4">
-
-                                <label for="id_password" class="form-label">
-                                    Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="id_password"
-                                    class="form-control"
-                                    placeholder="Enter your password"
-                                    autocomplete="current-password"
-                                    required>
-
-                            </div>
-
-
-                            <!-- SIGN IN BUTTON -->
-                            <div class="d-grid">
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-gold">
-                                    Sign In
-                                </button>
-
-                            </div>
-
-                        </form>
-
-
-                        <!-- REGISTER -->
-                        <div class="text-center mt-4">
-
-                            <p>
-                                Don't have an account?
-                            </p>
-
-                            <a href="{% url 'signup' %}">
-                                Create an Account
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" name="username" id="id_username" class="form-control{% if form.non_field_errors %} is-invalid{% endif %}"
+                       value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required autofocus>
             </div>
 
-        </div>
+            <div class="mb-4">
+                <label for="id_password" class="form-label">Password</label>
+                <div class="password-field">
+                    <input type="password" name="password" id="id_password" class="form-control{% if form.non_field_errors %} is-invalid{% endif %}"
+                           autocomplete="current-password" required>
+                    <button class="password-toggle" type="button" aria-label="Show or hide password" onclick="togglePassword('id_password', this)">
+                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-eye"></use></svg>
+                    </button>
+                </div>
+            </div>
 
-    </section>
+            <button type="submit" class="btn btn-gold summary-btn mt-0">Sign in</button>
+        </form>
 
-</div>
+        <p class="auth-switch">New to DriveOn? <a href="{% url 'signup' %}">Create an account</a></p>
+    </div>
+</section>
 {% endblock %}

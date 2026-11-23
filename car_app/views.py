@@ -122,6 +122,8 @@ def _filtered_cars(request):
         "qs_no_page": _query_without(get, "page"),
         "qs_no_category": _query_without(get, "page", "category"),
         "book_qs": book_params.urlencode(),
+        # sa filtra janë aktivë (për butonin "Filters (2)" në telefon)
+        "active_filters": sum(bool(v) for v in (q, transmission, max_price)) + (sort != "newest"),
         "filters": {
             "q": q,
             "category": category,
@@ -162,16 +164,12 @@ def about(request):
 
 
 def cars(request):
-    context = _filtered_cars(request)
-    context["reviews"] = Review.objects.filter(
-        is_approved=True
-    )[:6]
-
-    return render(request, "cars.html", context)
+    return render(request, "cars.html", _filtered_cars(request))
 
 
 def explore_fleet(request):
-    return render(request, "explorefleet.html")
+    # faqja e vjetër me makina të shkruara me dorë: tani lista reale është te Cars
+    return redirect("cars", permanent=True)
 
 
 def contact(request):

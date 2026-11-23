@@ -218,7 +218,7 @@
                     </div>
                     <div class="accordion-item">
                         <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">How can I contact DriveOn?</button></h3>
-                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Call us on +355 69 000 0000, email info@driveon.al, or use the form on the Contact page.</div></div>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Call us on {{ site.phone }}, email {{ site.email }}, or use the form on the Contact page.</div></div>
                     </div>
                 </div>
             </div>
@@ -235,7 +235,7 @@
                 <p>Call us and we'll help you choose the right car for your trip.</p>
             </div>
             <div class="cta-band-actions">
-                <a href="tel:+355690000000" class="btn btn-light"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg>+355 69 000 0000</a>
+                <a href="tel:{{ site.phone_link }}" class="btn btn-light"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg>{{ site.phone }}</a>
                 <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
             </div>
         </div>

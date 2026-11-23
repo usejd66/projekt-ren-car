@@ -36,7 +36,7 @@ class BaseCase(TestCase):
 
 class PagesTest(BaseCase):
     def test_pages_load(self):
-        for name in ["index", "about", "cars", "explorefleet", "contact", "reservation", "signup", "login"]:
+        for name in ["index", "about", "cars", "contact", "reservation", "signup", "login"]:
             self.assertEqual(self.client.get(reverse(name)).status_code, 200, name)
 
 

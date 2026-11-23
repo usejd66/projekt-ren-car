@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load static car_images %}
-{% block title %}Cars | DriveOn{% endblock %}
+{% block title %}{% if trip.start %}Available Cars{% else %}Our Cars{% endif %} | DriveOn{% endblock %}
 {% block meta %}
-    <meta name="description" content="Browse the DriveOn fleet: filter by category, transmission and price, and rent the car that fits your journey.">
+    <meta name="description" content="Browse the DriveOn fleet in Tirana: filter by category, transmission and price, check availability for your dates and book online.">
     <meta name="author" content="DriveOn">
 {% endblock %}
 
@@ -30,238 +30,125 @@
     </div>
 </section>
 
-<!-- CARS GRID -->
-<section class="cars-section py-5">
+<section class="section pt-4 pt-lg-5">
     <div class="container">
 
-        <!-- CATEGORY TABS -->
-        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
-            <a href="?{{ qs_no_category }}"
-               class="btn px-4 {% if not filters.category %}btn-gold{% else %}btn-outline-secondary{% endif %}">All</a>
-            {% for value, label in categories %}
-            <a href="?{% if qs_no_category %}{{ qs_no_category }}&{% endif %}category={{ value }}"
-               class="btn px-4 {% if filters.category == value %}btn-gold{% else %}btn-outline-secondary{% endif %}">{{ label }}</a>
-            {% endfor %}
+        <!-- KATEGORITË + FILTRAT -->
+        <div class="fleet-toolbar">
+            <nav class="chips" aria-label="Categories">
+                <a href="?{{ qs_no_category }}" class="chip{% if not filters.category %} active{% endif %}">All</a>
+                {% for value, label in categories %}
+                <a href="?{% if qs_no_category %}{{ qs_no_category }}&{% endif %}category={{ value }}" class="chip{% if filters.category == value %} active{% endif %}">{{ label }}</a>
+                {% endfor %}
+            </nav>
+            <button class="btn btn-nav-outline fleet-filter-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#fleetFilters" aria-controls="fleetFilters">
+                <svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-sliders"></use></svg>Filters{% if active_filters %} ({{ active_filters }}){% endif %}
+            </button>
         </div>
 
-        <!-- FILTERS -->
-        <form method="get" action="{% url 'cars' %}" class="row g-3 mb-4 align-items-end">
-
-            <!-- kategoria e zgjedhur ruhet kur përdoren filtrat e tjerë -->
-            <input type="hidden" name="category" value="{{ filters.category }}">
-            {% if trip.start %}
-            <!-- ruaj edhe kërkimin sipas datave -->
-            <input type="hidden" name="pickup_location" value="{{ trip.location }}">
-            <input type="hidden" name="pickup_date" value="{{ trip.start|date:'Y-m-d' }}">
-            <input type="hidden" name="return_date" value="{{ trip.end|date:'Y-m-d' }}">
-            {% endif %}
-
-            <div class="col-12 col-md-6 col-lg-4">
-                <label for="filterQ" class="form-label small fw-semibold">Search</label>
-                <input type="text" name="q" id="filterQ" class="form-control"
-                    placeholder="Brand or model" value="{{ filters.q }}">
+        {# Desktop: filtrat në rresht. Telefon: panel që del nga poshtë. #}
+        <div class="offcanvas-lg offcanvas-bottom fleet-filters" id="fleetFilters" tabindex="-1" aria-labelledby="fleetFiltersLabel">
+            <div class="offcanvas-header d-lg-none">
+                <h2 class="h5 fw-bold mb-0" id="fleetFiltersLabel">Filters</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#fleetFilters" aria-label="Close"></button>
             </div>
+            <div class="offcanvas-body">
+                <form method="get" action="{% url 'cars' %}" class="fleet-filter-form">
+                    <input type="hidden" name="category" value="{{ filters.category }}">
+                    {% if trip.start %}
+                    <input type="hidden" name="pickup_location" value="{{ trip.location }}">
+                    <input type="hidden" name="pickup_date" value="{{ trip.start|date:'Y-m-d' }}">
+                    <input type="hidden" name="return_date" value="{{ trip.end|date:'Y-m-d' }}">
+                    {% endif %}
 
-            <div class="col-6 col-lg-2">
-                <label for="filterTransmission" class="form-label small fw-semibold">Transmission</label>
-                <select name="transmission" id="filterTransmission" class="form-select" onchange="this.form.submit()">
-                    <option value="">All</option>
-                    {% for value, label in transmissions %}
-                    <option value="{{ value }}" {% if filters.transmission == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
+                    <div class="fleet-field fleet-field-search">
+                        <label for="filterQ">Search</label>
+                        <input type="search" name="q" id="filterQ" class="form-control" placeholder="Brand or model" value="{{ filters.q }}">
+                    </div>
+                    <div class="fleet-field">
+                        <label for="filterTransmission">Transmission</label>
+                        <select name="transmission" id="filterTransmission" class="form-select">
+                            <option value="">Any</option>
+                            {% for value, label in transmissions %}
+                            <option value="{{ value }}" {% if filters.transmission == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="fleet-field">
+                        <label for="filterPrice">Max price / day</label>
+                        <input type="number" name="max_price" id="filterPrice" class="form-control" min="0" inputmode="numeric" placeholder="Any" value="{{ filters.max_price }}">
+                    </div>
+                    <div class="fleet-field">
+                        <label for="filterSort">Sort by</label>
+                        <select name="sort" id="filterSort" class="form-select">
+                            <option value="newest" {% if filters.sort == 'newest' %}selected{% endif %}>Newest</option>
+                            <option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>Price: low to high</option>
+                            <option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>Price: high to low</option>
+                        </select>
+                    </div>
+                    <div class="fleet-actions">
+                        <button type="submit" class="btn btn-gold">Apply</button>
+                        {% if active_filters %}<a href="{% url 'cars' %}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-nav-outline">Reset</a>{% endif %}
+                    </div>
+                </form>
             </div>
+        </div>
 
-            <div class="col-6 col-lg-2">
-                <label for="filterPrice" class="form-label small fw-semibold">Max price (€/day)</label>
-                <input type="number" name="max_price" id="filterPrice" class="form-control"
-                    min="0" placeholder="e.g. 300" value="{{ filters.max_price }}">
-            </div>
-
-            <div class="col-6 col-lg-2">
-                <label for="filterSort" class="form-label small fw-semibold">Sort by</label>
-                <select name="sort" id="filterSort" class="form-select" onchange="this.form.submit()">
-                    <option value="newest" {% if filters.sort == 'newest' %}selected{% endif %}>Newest</option>
-                    <option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>Price: low to high</option>
-                    <option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>Price: high to low</option>
-                </select>
-            </div>
-
-            <div class="col-6 col-lg-2 d-flex gap-2">
-                <button type="submit" class="btn btn-gold flex-fill">Filter</button>
-                <a href="{% url 'cars' %}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-outline-secondary flex-fill">Reset</a>
-            </div>
-
-        </form>
-
-        <p class="text-secondary small mb-4">
+        <p class="fleet-count">
             {{ page_obj.paginator.count }} car{{ page_obj.paginator.count|pluralize }} {% if trip.start %}available for your dates{% else %}found{% endif %}
         </p>
 
+        <!-- MAKINAT -->
+        {% if cars %}
         <div class="row g-4">
-
             {% for car in cars %}
-            <!-- CAR -->
-            <div class="col-12 col-md-4 col-lg-4">
-                <div class="car-card h-100 shadow-sm overflow-hidden">
-
-                    {% car_img car sizes="(min-width: 992px) 400px, (min-width: 768px) 33vw, 100vw" %}
-
-                    <div class="car-card-body p-4">
-
-                        <h3>{{ car.brand }} {{ car.name }}</h3>
-
-                        <div class="car-meta-grid">
-                            <span>
-                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>
-                                {{ car.get_transmission_display }}
-                            </span>
-
-                            <span>
-                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-users"></use></svg>
-                                {{ car.seats }} Seats
-                            </span>
-
-                            <span>
-                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>
-                                {{ car.get_fuel_display }}
-                            </span>
-
-                            <span>
-                                <svg class="icon me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-road"></use></svg>
-                                Unlimited
-                            </span>
-                        </div>
-
-                        <div class="car-footer">
-
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="car-tile h-100">
+                    <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}" class="car-tile-img">
+                        {% car_img car sizes="(min-width: 992px) 400px, (min-width: 576px) 50vw, 100vw" %}
+                    </a>
+                    <div class="car-tile-body">
+                        <p class="car-tile-cat">{{ car.get_category_display }}{% if car.year %} · {{ car.year }}{% endif %}</p>
+                        <h2 class="car-tile-name">{{ car }}</h2>
+                        <ul class="car-tile-specs list-unstyled">
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{{ car.seats }} seats</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>{{ car.get_transmission_display }}</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>{{ car.get_fuel_display }}</li>
+                        </ul>
+                        <div class="car-tile-foot">
                             <div>
-                                <p class="mb-0 fw-bold">
-                                    €{{ car.price_per_day|floatformat:"-2" }} <small>/ day</small>
-                                </p>
+                                <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
                                 {% if trip.start %}
-                                <p class="car-trip-total"><strong>€{{ car.trip_total|floatformat:"-2" }}</strong> total for {{ trip.days }} day{{ trip.days|pluralize }}</p>
+                                <p class="car-tile-total">€{{ car.trip_total|floatformat:"-2" }} total · {{ trip.days }} day{{ trip.days|pluralize }}</p>
                                 {% endif %}
                             </div>
-
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}"
-                                class="btn btn-gold btn-sm px-3">
-                                Rent Now
-                            </a>
-
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}" class="btn btn-gold btn-sm">Book</a>
                         </div>
-
                     </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-12 text-center py-5">
-                <p class="text-secondary mb-3">{% if trip.start %}No cars are available for these dates. Try different dates or remove some filters.{% else %}No cars match your search.{% endif %}</p>
-                <a href="{% url 'cars' %}" class="btn btn-gold">Clear filters</a>
+                </article>
             </div>
             {% endfor %}
-
         </div>
+        {% else %}
+        <div class="fleet-empty">
+            <h2>{% if trip.start %}No cars available for these dates{% else %}No cars match your search{% endif %}</h2>
+            <p>{% if trip.start %}Try different dates or remove some filters.{% else %}Try removing some filters.{% endif %}</p>
+            <a href="{% url 'cars' %}" class="btn btn-gold">Show all cars</a>
+        </div>
+        {% endif %}
 
-        <!-- PAGINATION -->
+        <!-- FAQOSJA -->
         {% if page_obj.has_other_pages %}
-        <nav class="mt-5" aria-label="Cars pagination">
-            <ul class="pagination justify-content-center">
-
-                {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
-                </li>
-                {% else %}
-                <li class="page-item disabled"><span class="page-link">Previous</span></li>
-                {% endif %}
-
-                <li class="page-item disabled">
-                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-                </li>
-
-                {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
-                </li>
-                {% else %}
-                <li class="page-item disabled"><span class="page-link">Next</span></li>
-                {% endif %}
-
-            </ul>
+        <nav class="fleet-pages" aria-label="Pages">
+            {% if page_obj.has_previous %}
+            <a class="btn btn-nav-outline" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+            <a class="btn btn-nav-outline" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
         </nav>
         {% endif %}
-
-    </div>
-</section>
-
-<!-- REVIEWS SECTION -->
-<section class="reviews-section">
-    <div class="container">
-
-        {% if reviews %}
-        <div class="row g-4">
-
-            {% for review in reviews %}
-            <!-- REVIEW -->
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="review-card h-100 p-4">
-                    <div class="review-stars mb-3">
-                        {% for i in "12345" %}
-                        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star{% if forloop.counter > review.rating %}-o{% endif %}"></use></svg>
-                        {% endfor %}
-                    </div>
-
-                    <p class="review-text mb-4">
-                        "{{ review.text }}"
-                    </p>
-
-                    <div class="review-author">
-                        <div class="review-avatar d-flex align-items-center justify-content-center fw-bold text-white bg-dark">
-                            {{ review.name|first|upper }}
-                        </div>
-                        <div>
-                            <h4 class="mb-0">{{ review.name }}</h4>
-                            <small>Verified Customer</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-        </div>
-        {% endif %}
-
-        <!-- RATING STATS -->
-        <div class="row g-4 mt-5 text-center">
-            <div class="col-12 col-md-4">
-                <div class="rating-stat">
-                    <h3 class="mb-1">4.9/5</h3>
-                    <div class="stars-small">
-                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
-                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
-                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
-                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
-                        <svg class="icon text-gold" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>
-                    </div>
-                    <p class="text-muted small mt-2">Based on 500+ reviews</p>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-4">
-                <div class="rating-stat">
-                    <h3 class="mb-1">98%</h3>
-                    <p class="text-muted">Customer Satisfaction</p>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-4">
-                <div class="rating-stat">
-                    <h3 class="mb-1">5000+</h3>
-                    <p class="text-muted">Happy Customers</p>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 {% endblock %}
