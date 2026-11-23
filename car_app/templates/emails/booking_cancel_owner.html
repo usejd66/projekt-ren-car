@@ -1,0 +1,8 @@
+{% extends "emails/_base.html" %}
+{% block content %}
+<h1 style="margin:0 0 8px;font-size:22px;">{% if requested %}Cancellation request #{{ booking.pk }}{% else %}Booking #{{ booking.pk }} cancelled by the customer{% endif %}</h1>
+<p style="margin:0;color:#334155;">{% if requested %}{{ booking.full_name }} asked to cancel this <strong>confirmed</strong> booking. Please decide in the admin and let the customer know.{% else %}{{ booking.full_name }} cancelled this booking before it was confirmed. The dates are free again.{% endif %}</p>
+{% include "emails/_booking_table.html" %}
+<p style="margin:0 0 20px;color:#334155;">Customer: {{ booking.full_name }} · <a href="mailto:{{ booking.email }}" style="color:#0b0f19;">{{ booking.email }}</a> · <a href="tel:{{ booking.phone }}" style="color:#0b0f19;">{{ booking.phone }}</a></p>
+<a href="{{ admin_url }}" style="display:inline-block;padding:12px 22px;background:#e9002b;color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">Open in admin</a>
+{% endblock %}

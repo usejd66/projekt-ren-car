@@ -1,0 +1,43 @@
+{% load static car_images %}
+<article class="booking">
+    <a href="{{ b.car.get_absolute_url }}" class="booking-img">
+        <img src="{% car_img_url b.car 480 %}" alt="{{ b.car }}" loading="lazy">
+    </a>
+
+    <div class="booking-info">
+        <div class="booking-top">
+            <h3>{{ b.car }}</h3>
+            {% if b.status == "cancelled" %}
+            <span class="badge-status is-muted">Cancelled</span>
+            {% elif b.cancel_requested_at %}
+            <span class="badge-status is-warn">Cancellation requested</span>
+            {% elif b.status == "confirmed" and not b.is_upcoming %}
+            <span class="badge-status is-muted">Completed</span>
+            {% elif b.status == "confirmed" %}
+            <span class="badge-status is-ok">Confirmed</span>
+            {% else %}
+            <span class="badge-status is-warn">Awaiting confirmation</span>
+            {% endif %}
+        </div>
+        <p class="booking-ref">Reservation #{{ b.pk }} · booked {{ b.created_at|date:"j M Y" }}</p>
+        <dl class="booking-dates">
+            <div><dt>Pickup</dt><dd><span class="d-none d-md-inline">{{ b.pickup_date|date:"D" }} </span>{{ b.pickup_date|date:"j M Y" }}<span>{{ b.pickup_location }}</span></dd></div>
+            <div><dt>Return</dt><dd><span class="d-none d-md-inline">{{ b.return_date|date:"D" }} </span>{{ b.return_date|date:"j M Y" }}<span>{{ b.days }} day{{ b.days|pluralize }}</span></dd></div>
+        </dl>
+    </div>
+
+    <div class="booking-side">
+        <p class="booking-total"><span>Total</span>€{{ b.total_price|floatformat:"-2" }}</p>
+        {% if b.can_cancel %}
+        <form method="post" action="{% url 'cancel_booking' b.pk %}"
+              onsubmit="return confirm('{% if b.status == 'pending' %}Cancel this booking? The dates will be released.{% else %}Send a cancellation request for this confirmed booking?{% endif %}');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-nav-outline booking-cancel">
+                {% if b.status == "pending" %}Cancel booking{% else %}Request cancellation{% endif %}
+            </button>
+        </form>
+        {% elif not b.is_upcoming %}
+        <a href="{{ b.car.get_absolute_url }}" class="btn btn-nav-outline">Book again</a>
+        {% endif %}
+    </div>
+</article>

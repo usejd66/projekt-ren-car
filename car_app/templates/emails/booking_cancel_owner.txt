@@ -1,0 +1,8 @@
+{% autoescape off %}{% if requested %}Cancellation request for reservation #{{ booking.pk }}.
+{{ booking.full_name }} asked to cancel this confirmed booking. Please decide in the admin and let the customer know.{% else %}Reservation #{{ booking.pk }} was cancelled by the customer before it was confirmed. The dates are free again.{% endif %}
+
+{% include "emails/_booking_lines.txt" %}
+Customer: {{ booking.full_name }} – {{ booking.email }} – {{ booking.phone }}
+
+Open in admin: {{ admin_url }}
+{% endautoescape %}

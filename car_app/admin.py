@@ -22,10 +22,14 @@ class CarAdmin(admin.ModelAdmin):
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ("id", "full_name", "car", "pickup_date", "return_date", "total_price", "status", "created_at")
-    list_filter = ("status", "car", "pickup_date")
+    list_display = ("id", "full_name", "car", "pickup_date", "return_date", "total_price", "status", "cancel_request", "created_at")
+    list_filter = ("status", ("cancel_requested_at", admin.EmptyFieldListFilter), "car", "pickup_date")
     search_fields = ("full_name", "email", "phone")
-    readonly_fields = ("total_price", "created_at")
+    readonly_fields = ("total_price", "created_at", "cancel_requested_at")
+
+    @admin.display(description="Kërkesë anulimi", boolean=True)
+    def cancel_request(self, obj):
+        return bool(obj.cancel_requested_at) and obj.status != "cancelled"
     date_hierarchy = "pickup_date"
     actions = ["confirm_reservations", "cancel_reservations"]
 

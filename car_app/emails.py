@@ -62,3 +62,17 @@ def contact_message(message):
     """Mesazh i ri nga faqja Contact: te pronari, me "Reply" direkt te dërguesi."""
     _later(lambda: _send("contact_owner", f"Contact form: {message.subject}", [settings.BOOKINGS_EMAIL],
                          {"message": message}, reply_to=[message.email]))
+
+
+def booking_cancelled_by_customer(booking, requested):
+    """Klienti anuloi (requested=False) ose kërkoi anulim (requested=True) nga 'My bookings'."""
+    def send():
+        admin_url = settings.SITE_URL.rstrip("/") + reverse("admin:car_app_reservation_change", args=[booking.pk])
+        what = "Cancellation request" if requested else "Cancelled by customer"
+        _send("booking_cancel_owner", f"{what}: reservation #{booking.pk} – {booking.car}",
+              [settings.BOOKINGS_EMAIL], {"booking": booking, "requested": requested, "admin_url": admin_url},
+              reply_to=[booking.email])
+        if not requested:
+            _send("booking_cancelled", f"Your booking #{booking.pk} was cancelled", [booking.email],
+                  {"booking": booking}, reply_to=[settings.BOOKINGS_EMAIL])
+    _later(send)

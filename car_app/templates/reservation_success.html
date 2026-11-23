@@ -31,7 +31,11 @@
 
         <div class="done-actions">
             <a href="{% url 'index' %}" class="btn btn-gold">Back to home</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'my_bookings' %}" class="btn btn-nav-outline">View my bookings</a>
+            {% else %}
             <a href="{% url 'cars' %}" class="btn btn-nav-outline">Browse more cars</a>
+            {% endif %}
         </div>
     </div>
 </div>

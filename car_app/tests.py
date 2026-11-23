@@ -318,3 +318,80 @@ class EmailTest(BaseCase):
                 r = self.post_reservation(1, 4)
         self.assertRedirects(r, reverse("reservation_success"))
         self.assertEqual(Reservation.objects.count(), 1)
+
+
+class MyBookingsTest(BaseCase):
+    def setUp(self):
+        super().setUp()
+        from django.core import mail
+        self.mail = mail
+        User = get_user_model()
+        self.user = User.objects.create_user("ana", "ana@test.al", "pass-12345")
+        self.other = User.objects.create_user("ben", "ben@test.al", "pass-12345")
+        self.client.force_login(self.user)
+
+    def mine(self, start, end, **extra):
+        return self.book(start, end, user=self.user, **extra)
+
+    def test_requires_login(self):
+        self.client.logout()
+        r = self.client.get(reverse("my_bookings"))
+        self.assertRedirects(r, f"{reverse('login')}?next={reverse('my_bookings')}")
+
+    def test_shows_only_own_bookings_split_upcoming_past(self):
+        upcoming = self.mine(3, 5)
+        past = Reservation.objects.create(
+            car=self.car, user=self.user, full_name="Ana", email="a@a.al", phone="+355690000000",
+            pickup_date=self.today - timedelta(days=10), return_date=self.today - timedelta(days=7),
+            pickup_location="Tirana",
+        )
+        self.book(10, 12, user=self.other)
+        r = self.client.get(reverse("my_bookings"))
+        self.assertEqual(r.context["upcoming"], [upcoming])
+        self.assertEqual(r.context["past"], [past])
+
+    def test_booking_while_logged_in_is_linked_to_user(self):
+        self.post_reservation(1, 3)
+        self.assertEqual(Reservation.objects.get().user, self.user)
+
+    def test_cancel_pending_booking_frees_dates_and_emails(self):
+        b = self.mine(3, 5)
+        with self.captureOnCommitCallbacks(execute=True):
+            self.client.post(reverse("cancel_booking", args=[b.pk]))
+        b.refresh_from_db()
+        self.assertEqual(b.status, "cancelled")
+        self.assertEqual(len(self.mail.outbox), 2)  # pronari + klienti
+        self.assertFalse(Reservation.overlapping(self.car.pk, b.pickup_date, b.return_date).exists())
+
+    def test_confirmed_booking_becomes_cancellation_request(self):
+        b = self.mine(3, 5, status="confirmed")
+        with self.captureOnCommitCallbacks(execute=True):
+            self.client.post(reverse("cancel_booking", args=[b.pk]))
+        b.refresh_from_db()
+        self.assertEqual(b.status, "confirmed")
+        self.assertIsNotNone(b.cancel_requested_at)
+        self.assertEqual(len(self.mail.outbox), 1)
+        self.assertIn("Cancellation request", self.mail.outbox[0].subject)
+
+    def test_cannot_cancel_someone_elses_booking(self):
+        b = self.book(3, 5, user=self.other)
+        r = self.client.post(reverse("cancel_booking", args=[b.pk]))
+        self.assertEqual(r.status_code, 404)
+        b.refresh_from_db()
+        self.assertEqual(b.status, "pending")
+
+    def test_cancel_requires_post(self):
+        b = self.mine(3, 5)
+        self.assertEqual(self.client.get(reverse("cancel_booking", args=[b.pk])).status_code, 405)
+
+    def test_cannot_cancel_on_or_after_pickup_day(self):
+        b = Reservation.objects.create(
+            car=self.car, user=self.user, full_name="Ana", email="a@a.al", phone="+355690000000",
+            pickup_date=self.today, return_date=self.today + timedelta(days=2), pickup_location="Tirana",
+        )
+        self.client.post(reverse("cancel_booking", args=[b.pk]))
+        b.refresh_from_db()
+        self.assertEqual(b.status, "pending")
+
+    def test_navbar_shows_my_bookings_when_logged_in(self):
+        self.assertContains(self.client.get(reverse("index")), reverse("my_bookings"))

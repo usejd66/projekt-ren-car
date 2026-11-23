@@ -63,7 +63,8 @@
                 </ul>
                 <div class="nav-actions d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 gap-lg-3">
                     {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit" class="btn btn-nav-outline w-100">Sign Out</button></form>
+                    <form method="post" action="{% url 'logout' %}" class="nav-signout">{% csrf_token %}<button type="submit" class="btn btn-link">Sign out</button></form>
+                    <a href="{% url 'my_bookings' %}" class="btn btn-nav-outline{% if page == 'my_bookings' %} active{% endif %}"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>My bookings</a>
                     {% else %}
                     <a href="{% url 'login' %}" class="btn btn-nav-outline">Sign In</a>
                     {% endif %}

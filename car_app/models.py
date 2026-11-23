@@ -114,9 +114,22 @@ class Reservation(Stamped):
     notes = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, editable=False)
+    cancel_requested_at = models.DateTimeField(
+        null=True, blank=True,
+        help_text="Klienti kërkoi anulimin nga 'My bookings'. Vendos ti: ndrysho statusin në 'Anuluar' ose kontakto klientin.",
+    )
 
     def __str__(self):
         return f"#{self.pk} {self.full_name} - {self.car}"
+
+    @property
+    def is_upcoming(self):
+        return self.status != "cancelled" and self.return_date >= timezone.localdate()
+
+    @property
+    def can_cancel(self):
+        """Klienti mund të anulojë/kërkojë anulim vetëm para datës së marrjes."""
+        return self.status in ACTIVE_STATUSES and self.pickup_date > timezone.localdate() and not self.cancel_requested_at
 
     @property
     def days(self):

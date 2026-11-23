@@ -3,6 +3,7 @@ from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Avg, Count, DecimalField, ExpressionWrapper, F, Min, Q
@@ -12,6 +13,7 @@ from django.utils import timezone
 from django.templatetags.static import static
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import cache_control
+from django.views.decorators.http import require_POST
 
 from . import emails
 from .forms import LOCATIONS, ContactForm, ReservationForm, SignUpForm, SubscribeForm
@@ -297,6 +299,36 @@ def reservation_success(request):
     if booking is None:
         return redirect("reservation")
     return render(request, "reservation_success.html", {"booking": booking})
+
+
+@login_required
+def my_bookings(request):
+    bookings = list(request.user.reservations.select_related("car").order_by("-pickup_date"))
+    return render(request, "my_bookings.html", {
+        "upcoming": sorted([b for b in bookings if b.is_upcoming], key=lambda b: b.pickup_date),
+        "past": [b for b in bookings if not b.is_upcoming],
+    })
+
+
+@login_required
+@require_POST
+def cancel_booking(request, pk):
+    booking = get_object_or_404(Reservation, pk=pk, user=request.user)  # vetëm rezervimet e veta
+    if not booking.can_cancel:
+        messages.error(request, "This booking can no longer be cancelled online. Please contact us.")
+    elif booking.status == "pending":
+        # ende i pakonfirmuar: anulohet menjëherë, datat lirohen
+        booking.status = "cancelled"
+        booking.save(update_fields=["status"])
+        emails.booking_cancelled_by_customer(booking, requested=False)
+        messages.success(request, f"Booking #{booking.pk} has been cancelled.")
+    else:
+        # i konfirmuar: kërkesë që e shqyrton pronari
+        booking.cancel_requested_at = timezone.now()
+        booking.save(update_fields=["cancel_requested_at"])
+        emails.booking_cancelled_by_customer(booking, requested=True)
+        messages.success(request, "Your cancellation request was sent. We'll contact you shortly.")
+    return redirect("my_bookings")
 
 
 def signup(request):
