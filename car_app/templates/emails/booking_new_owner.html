@@ -9,5 +9,5 @@
   <tr><td style="padding:4px 0;color:#64748b;">Phone</td><td style="padding:4px 0;"><a href="tel:{{ booking.phone }}" style="color:#0b0f19;">{{ booking.phone }}</a></td></tr>
   {% if booking.notes %}<tr><td style="padding:4px 0;color:#64748b;vertical-align:top;">Notes</td><td style="padding:4px 0;">{{ booking.notes|linebreaksbr }}</td></tr>{% endif %}
 </table>
-<a href="{{ admin_url }}" style="display:inline-block;padding:12px 22px;background:#e9002b;color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">Open in admin</a>
+<a href="{{ admin_url }}" style="display:inline-block;padding:12px 22px;background:{{ site.color }};color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">Open in admin</a>
 {% endblock %}

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static car_images %}
 
-{% block title %}{{ car }} – rent from €{{ car.price_per_day|floatformat:"-2" }}/day | DriveOn{% endblock %}
+{% block title %}{{ car }} – rent from €{{ car.price_per_day|floatformat:"-2" }}/day | {{ site.name }}{% endblock %}
 {% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ car.get_absolute_url }}{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Rent the {{ car }} in Tirana from €{{ car.price_per_day|floatformat:'-2' }} per day. {{ car.get_transmission_display }}, {{ car.get_fuel_display|lower }}, {{ car.seats }} seats. Check availability and book online.">
-<meta property="og:title" content="{{ car }} – DriveOn car rental">
+<meta name="description" content="Rent the {{ car }} in {{ site.city }} from €{{ car.price_per_day|floatformat:'-2' }} per day. {{ car.get_transmission_display }}, {{ car.get_fuel_display|lower }}, {{ car.seats }} seats. Check availability and book online.">
+<meta property="og:title" content="{{ car }} – {{ site.name }} car rental">
 <meta property="og:description" content="From €{{ car.price_per_day|floatformat:'-2' }} per day · {{ car.get_transmission_display }} · {{ car.seats }} seats">
 <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% img_url car.image 960 %}">
 <meta property="og:type" content="product">

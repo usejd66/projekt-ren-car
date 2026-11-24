@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Contact | DriveOn{% endblock %}
+{% block title %}Contact | {{ site.name }}{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Contact DriveOn in Tirana for help choosing a car, making a reservation or any question about renting a car.">
-<meta name="author" content="DriveOn">
+<meta name="description" content="Contact {{ site.name }} in {{ site.city }} for help choosing a car, making a reservation or any question about renting a car.">
+<meta name="author" content="{{ site.name }}">
 {% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="https://wa.me/{{ site.phone_link|slice:'1:' }}" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener noreferrer" class="contact-item">
                             <span class="contact-icon contact-icon-wa"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-whatsapp"></use></svg></span>
                             <span><strong>WhatsApp</strong>Message us any time</span>
                         </a>
@@ -94,7 +94,7 @@
 
 <!-- HARTA -->
 <section class="contact-map">
-    <iframe src="https://www.google.com/maps?q=Tirana,Albania&output=embed" title="DriveOn location on the map"
+    <iframe src="https://www.google.com/maps?q={{ site.map_query|urlencode }}&output=embed" title="{{ site.name }} location on the map"
             loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
 </section>
 {% endblock %}

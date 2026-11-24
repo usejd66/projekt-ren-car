@@ -1,25 +1,12 @@
-"""Të dhënat e kompanisë, të disponueshme në çdo template si {{ site.phone }} etj.
+"""Branding-u ({{ site.* }}) dhe flamuri PWA, të disponueshëm në çdo template.
 
-NDRYSHO KËTU numrin, email-in dhe rrjetet sociale kur të kesh të dhënat reale:
-përditësohen automatikisht në navbar, footer, Contact, faqen kryesore dhe FAQ.
+Të dhënat e kompanisë (emri, ngjyra, kontaktet, vendet) ndryshohen te car_app/branding.py.
 """
 from django.conf import settings
 
-from .forms import LOCATIONS
-
-SITE = {
-    "name": "DriveOn",
-    "phone": "+355 69 000 0000",
-    "phone_link": "+355690000000",       # pa hapësira, për tel: dhe WhatsApp
-    "email": "info@driveon.al",
-    "address": "Tirana, Albania",
-    "hours": "Every day, 08:00 – 20:00",
-    "instagram": "https://www.instagram.com/driveon",
-    "facebook": "https://www.facebook.com/driveon",
-    "locations": LOCATIONS,
-}
+from . import branding
 
 
 def site(request):
     # pwa: service worker-i regjistrohet vetëm në produksion (në zhvillim do shfaqte skedarë të vjetër)
-    return {"site": SITE, "pwa": not settings.DEBUG}
+    return {"site": branding.site(), "pwa": not settings.DEBUG}

@@ -15,7 +15,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_POST
 
-from . import emails
+from . import branding, emails
 from .forms import LOCATIONS, ContactForm, ReservationForm, SignUpForm, SubscribeForm
 from .models import ACTIVE_STATUSES, Car, Reservation, Review
 
@@ -344,7 +344,7 @@ def signup(request):
 
             messages.success(
                 request,
-                "Your account has been created. Welcome to DriveOn!",
+                f"Your account has been created. Welcome to {branding.BRAND['name']}!",
             )
             return redirect("index")
     else:
@@ -384,15 +384,16 @@ def subscribe(request):
 
 def manifest(request):
     """Manifesti i aplikacionit: lejon "Add to Home Screen" në telefon."""
+    brand = branding.site()
     return JsonResponse({
-        "name": "DriveOn – Car Rental in Tirana",
-        "short_name": "DriveOn",
-        "description": "Rent a car in Tirana, Durrës or at Tirana Airport.",
+        "name": f"{brand['name']} – Car Rental in {brand['city']}",
+        "short_name": brand["name"],
+        "description": f"Rent a car in {brand['locations_text']}.",
         "start_url": "/?source=pwa",
         "scope": "/",
         "display": "standalone",
         "background_color": "#ffffff",
-        "theme_color": "#0B0F19",
+        "theme_color": brand["color"],
         "icons": [
             {"src": static("image/apple-touch-icon.png"), "sizes": "180x180", "type": "image/png"},
             {"src": static("image/icon-512.png"), "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},

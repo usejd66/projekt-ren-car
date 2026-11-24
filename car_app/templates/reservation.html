@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static car_images %}
-{% block title %}Reserve a Car | DriveOn{% endblock %}
+{% block title %}Reserve a Car | {{ site.name }}{% endblock %}
 {% block meta %}
-    <meta name="description" content="Reserve your DriveOn rental car online: choose your car, dates and pickup location and see the total price before you confirm.">
-    <meta name="author" content="DriveOn">
+    <meta name="description" content="Reserve your {{ site.name }} rental car online: choose your car, dates and pickup location and see the total price before you confirm.">
+    <meta name="author" content="{{ site.name }}">
     <meta name="robots" content="noindex">
 {% endblock %}
 

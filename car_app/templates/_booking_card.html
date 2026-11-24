@@ -29,8 +29,10 @@
     <div class="booking-side">
         <p class="booking-total"><span>Total</span>€{{ b.total_price|floatformat:"-2" }}</p>
         {% if b.can_cancel %}
-        <form method="post" action="{% url 'cancel_booking' b.pk %}"
-              onsubmit="return confirm('{% if b.status == 'pending' %}Cancel this booking? The dates will be released.{% else %}Send a cancellation request for this confirmed booking?{% endif %}');">
+        {# konfirmimi bëhet me dritaren #cancelModal te my_bookings.html (pa JS dërgohet direkt) #}
+        <form method="post" action="{% url 'cancel_booking' b.pk %}" class="cancel-form"
+              data-car="{{ b.car }}" data-dates="{{ b.pickup_date|date:'j M' }} – {{ b.return_date|date:'j M Y' }}"
+              data-pending="{% if b.status == 'pending' %}1{% endif %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-nav-outline booking-cancel">
                 {% if b.status == "pending" %}Cancel booking{% else %}Request cancellation{% endif %}

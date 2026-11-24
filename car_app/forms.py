@@ -5,10 +5,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 
+from .branding import LOCATIONS
 from .models import Car, ContactMessage, Reservation, Subscriber
 
 User = get_user_model()
-LOCATIONS = ("Tirana", "Durrës", "Tirana Airport")
 
 
 class BootstrapFormMixin:

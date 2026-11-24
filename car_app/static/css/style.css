@@ -1,7 +1,9 @@
 /* Variables */
 :root {
+    /* ngjyrat e markës vijnë nga car_app/branding.py (shih <style> te base.html); këto janë vetëm rezervë */
     --gold: #e9002b;
     --gold-hover: #bb0022;
+    --brand-rgb: 233, 0, 43;
     --black: #0B0F19;
     --ivory: #F8FAFC;
     --muted: #64748B;
@@ -46,14 +48,14 @@ img { max-width: 100%; height: auto; }
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: var(--gold-hover);
     --bs-btn-active-border-color: var(--gold-hover);
-    --bs-btn-focus-shadow-rgb: 233, 0, 43;
+    --bs-btn-focus-shadow-rgb: var(--brand-rgb);
     font-weight: 600;
     transition: all .25s ease;
 }
 
 .btn-gold:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(233, 0, 43, .22);
+    box-shadow: 0 8px 20px rgba(var(--brand-rgb), .22);
 }
 
 /* Navbar */
@@ -140,7 +142,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, .wa-fab) {
     background: var(--black);
 }
 
-.nav-burger:focus { box-shadow: 0 0 0 3px rgba(233, 0, 43, .2); }
+.nav-burger:focus { box-shadow: 0 0 0 3px rgba(var(--brand-rgb), .2); }
 
 /* Butoni Sign In / Sign Out */
 .btn-nav-outline {
@@ -208,7 +210,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, .wa-fab) {
 
     .nav-drawer .nav-link.active,
     .nav-drawer .nav-link:hover {
-        background: rgba(233, 0, 43, .07);
+        background: rgba(var(--brand-rgb), .07);
         color: var(--gold);
     }
 
@@ -888,7 +890,7 @@ footer a.text-secondary:hover { color: var(--gold) !important; }
 a.contact-item:hover { border-color: var(--black); box-shadow: 0 6px 18px rgba(11, 15, 25, .06); color: var(--black); }
 .contact-item strong { display: block; color: var(--black); font-weight: 700; }
 .contact-item > span:last-child { color: var(--muted); line-height: 1.4; }
-.contact-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: rgba(233, 0, 43, .08); color: var(--gold); }
+.contact-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: rgba(var(--brand-rgb), .08); color: var(--gold); }
 .contact-icon-wa { background: rgba(37, 211, 102, .12); color: #128c4a; }
 .contact-map { background: var(--ivory); }
 .contact-map iframe { display: block; width: 100%; height: clamp(280px, 35vw, 420px); border: 0; filter: grayscale(.3); }
@@ -1261,4 +1263,22 @@ a.contact-item:hover { border-color: var(--black); box-shadow: 0 6px 18px rgba(1
 @media (max-width: 991.98px) {
     .nav-signout { order: 2; }
     .nav-signout .btn-link { width: 100%; }
+}
+
+
+/* Dritarja e konfirmimit (anulimi) */
+.confirm-modal { padding: 1.75rem; border: 0; border-radius: 16px; text-align: center; }
+.confirm-icon { display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto 1rem; border-radius: 50%; background: #fef3c7; color: #a16207; font-size: 1.4rem; }
+.confirm-car { margin: .25rem 0 .75rem; font-weight: 600; }
+.confirm-text { margin: 0 0 1.5rem; color: var(--muted); line-height: 1.6; }
+.confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.confirm-actions .btn { padding: .75rem; border-radius: 8px; font-weight: 700; }
+
+/* telefon: dritarja del nga poshtë, si kalendari */
+@media (max-width: 575.98px) {
+    #cancelModal .modal-dialog { position: fixed; inset: auto 0 0; min-height: 0; align-items: flex-end; margin: 0; max-width: none; transform: translateY(100%); transition: transform .25s var(--ease); }
+    #cancelModal.show .modal-dialog { transform: none; }
+    #cancelModal .confirm-modal { border-radius: 18px 18px 0 0; padding-bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px)); }
+    .confirm-actions { grid-template-columns: 1fr; }
+    .confirm-actions .confirm-yes { order: -1; }
 }

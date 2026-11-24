@@ -4,14 +4,14 @@
    HTML-i: dy input-e të fshehura (vlerat YYYY-MM-DD që shkojnë te Django) dhe
    dy fusha të dukshme vetëm-për-lexim (dd/mm/yyyy) që hapin të njëjtin kalendar.
 
-   DriveOnRange.attach({
+   RangePicker.attach({
        start, end,                 // input-et e fshehura
        startDisplay, endDisplay,   // fushat e dukshme
        isBooked(iso) -> bool,      // opsionale: ditët e zëna (vizatohen me vijë)
        onChange()                  // opsionale: thirret pas çdo ndryshimi
    }) -> instanca flatpickr
 */
-window.DriveOnRange = (() => {
+window.RangePicker = (() => {
     "use strict";
 
     const MS_DAY = 864e5;

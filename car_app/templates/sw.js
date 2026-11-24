@@ -1,8 +1,8 @@
-/* DriveOn service worker (versioni {{ version }}).
+/* Service worker (versioni {{ version }}).
    - Faqet: gjithmonë nga rrjeti (çmimet dhe datat e lira duhet të jenë të sakta);
      pa internet shfaqet /offline/.
    - Skedarët statikë dhe fotot: nga cache-i (emrat kanë hash, nuk ndryshojnë). */
-const CACHE = "driveon-{{ version }}";
+const CACHE = "site-{{ version }}";
 const PRECACHE = [{% for url in urls %}"{{ url|escapejs }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
 
 self.addEventListener("install", (event) => {
@@ -13,7 +13,7 @@ self.addEventListener("activate", (event) => {
     // fshi cache-t e versioneve të vjetra
     event.waitUntil(
         caches.keys()
-            .then((keys) => Promise.all(keys.filter((k) => k.startsWith("driveon-") && k !== CACHE).map((k) => caches.delete(k))))
+            .then((keys) => Promise.all(keys.filter((k) => k.startsWith("site-") && k !== CACHE).map((k) => caches.delete(k))))
             .then(() => self.clients.claim())
     );
 });

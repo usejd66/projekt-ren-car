@@ -1,0 +1,1 @@
+{% load static %}{% if site.logo_image %}<img src="{% static site.logo_image %}" alt="{{ site.name }}" class="brand-logo">{% else %}<span class="navbar-brand-text{% if footer %} footer-logo{% endif %}">{{ site.logo_first }}<span>{{ site.logo_second }}</span></span>{% endif %}

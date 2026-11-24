@@ -11,13 +11,13 @@ from django.db import transaction
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-from .context_processors import SITE
+from . import branding
 
 logger = logging.getLogger(__name__)
 
 
 def _send(template, subject, to, context, reply_to=None):
-    context = {"site": SITE, "site_url": settings.SITE_URL.rstrip("/"), **context}
+    context = {"site": branding.site(), "site_url": settings.SITE_URL.rstrip("/"), **context}
     text = render_to_string(f"emails/{template}.txt", context)
     html = render_to_string(f"emails/{template}.html", context)
     message = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, to, reply_to=reply_to)

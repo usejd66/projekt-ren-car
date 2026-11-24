@@ -2,6 +2,6 @@
 {% block content %}
 <h1 style="margin:0 0 8px;font-size:22px;">Your booking was cancelled</h1>
 <p style="margin:0;color:#334155;">Hi {{ booking.full_name }}, your reservation #{{ booking.pk }} for the {{ booking.car }} ({{ booking.pickup_date|date:"j M" }} – {{ booking.return_date|date:"j M Y" }}) has been cancelled.</p>
-<p style="margin:16px 0 0;color:#334155;">If this is unexpected or you'd like to book different dates, reply to this email or call <a href="tel:{{ site.phone_link }}" style="color:#e9002b;">{{ site.phone }}</a>.</p>
-<p style="margin:24px 0 0;"><a href="{{ site_url }}{% url 'cars' %}" style="display:inline-block;padding:12px 22px;background:#e9002b;color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">See available cars</a></p>
+<p style="margin:16px 0 0;color:#334155;">If this is unexpected or you'd like to book different dates, reply to this email or call <a href="tel:{{ site.phone_link }}" style="color:{{ site.color }};">{{ site.phone }}</a>.</p>
+<p style="margin:24px 0 0;"><a href="{{ site_url }}{% url 'cars' %}" style="display:inline-block;padding:12px 22px;background:{{ site.color }};color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">See available cars</a></p>
 {% endblock %}

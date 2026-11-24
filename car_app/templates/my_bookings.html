@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static car_images %}
 
-{% block title %}My bookings | DriveOn{% endblock %}
+{% block title %}My bookings | {{ site.name }}{% endblock %}
 {% block meta %}<meta name="robots" content="noindex">{% endblock %}
 
 {% block content %}
@@ -40,4 +40,56 @@
         <p class="bookings-help">Need to change dates or have a question? <a href="{% url 'contact' %}">Contact us</a> or call <a href="tel:{{ site.phone_link }}">{{ site.phone }}</a>.</p>
     </div>
 </section>
+
+<!-- Dritarja e konfirmimit të anulimit (në vend të confirm() të shfletuesit) -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content confirm-modal">
+            <div class="confirm-icon" aria-hidden="true"><svg class="icon"><use href="{% static 'icons.svg' %}#i-circle-info"></use></svg></div>
+            <h2 class="h5 fw-bold" id="cancelModalTitle"></h2>
+            <p class="confirm-car"></p>
+            <p class="confirm-text"></p>
+            <div class="confirm-actions">
+                <button type="button" class="btn btn-nav-outline" data-bs-dismiss="modal">Keep booking</button>
+                <button type="button" class="btn btn-danger confirm-yes"></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Anulimi: dritare konfirmimi e faqes, jo dialogu i shfletuesit
+    (() => {
+        const el = document.getElementById("cancelModal");
+        const modal = new bootstrap.Modal(el);
+        const yes = el.querySelector(".confirm-yes");
+        let form = null;
+
+        document.querySelectorAll(".cancel-form").forEach((f) => {
+            f.addEventListener("submit", (e) => {
+                if (f.dataset.confirmed) return; // tashmë e konfirmuar: dërgo
+                e.preventDefault();
+                form = f;
+                const pending = !!f.dataset.pending;
+                el.querySelector("#cancelModalTitle").textContent = pending ? "Cancel this booking?" : "Request cancellation?";
+                el.querySelector(".confirm-car").textContent = `${f.dataset.car} · ${f.dataset.dates}`;
+                el.querySelector(".confirm-text").textContent = pending
+                    ? "Your booking hasn't been confirmed yet, so it will be cancelled right away and the dates released."
+                    : "Your booking is already confirmed. We'll receive your request and contact you to arrange the cancellation.";
+                yes.textContent = pending ? "Yes, cancel booking" : "Send request";
+                modal.show();
+            });
+        });
+
+        yes.addEventListener("click", () => {
+            if (!form) return;
+            yes.disabled = true;
+            form.dataset.confirmed = "1";
+            form.requestSubmit();
+        });
+        el.addEventListener("hidden.bs.modal", () => { yes.disabled = false; });
+    })();
+</script>
 {% endblock %}

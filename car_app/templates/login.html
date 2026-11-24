@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Sign In | DriveOn{% endblock %}
+{% block title %}Sign In | {{ site.name }}{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="Sign in to your DriveOn account to manage your car rental reservations.">
+    <meta name="description" content="Sign in to your {{ site.name }} account to manage your car rental reservations.">
     <meta name="robots" content="noindex">
 {% endblock %}
 
@@ -12,7 +12,7 @@
 <section class="auth">
     <div class="auth-card">
         <h1>Welcome back</h1>
-        <p class="auth-sub">Sign in to your DriveOn account.</p>
+        <p class="auth-sub">Sign in to your {{ site.name }} account.</p>
 
         {% if form.non_field_errors %}
         <div class="alert alert-danger" role="alert">The username or password is incorrect. Please try again.</div>
@@ -42,7 +42,7 @@
             <button type="submit" class="btn btn-gold summary-btn mt-0">Sign in</button>
         </form>
 
-        <p class="auth-switch">New to DriveOn? <a href="{% url 'signup' %}">Create an account</a></p>
+        <p class="auth-switch">New to {{ site.name }}? <a href="{% url 'signup' %}">Create an account</a></p>
     </div>
 </section>
 {% endblock %}

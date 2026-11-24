@@ -58,7 +58,7 @@ function update() {
 
 /* ---------- Calendar ---------- */
 // një kalendar me interval; ditët e zëna të makinës së zgjedhur janë të vizatuara me vijë
-const range = DriveOnRange.attach({
+const range = RangePicker.attach({
     start: pickup,
     end: ret,
     startDisplay: $("pickupDateAlt"),

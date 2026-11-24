@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static car_images %}
-{% block title %}{% if trip.start %}Available Cars{% else %}Our Cars{% endif %} | DriveOn{% endblock %}
+{% block title %}{% if trip.start %}Available Cars{% else %}Our Cars{% endif %} | {{ site.name }}{% endblock %}
 {% block meta %}
-    <meta name="description" content="Browse the DriveOn fleet in Tirana: filter by category, transmission and price, check availability for your dates and book online.">
-    <meta name="author" content="DriveOn">
+    <meta name="description" content="Browse the {{ site.name }} fleet in {{ site.city }}: filter by category, transmission and price, check availability for your dates and book online.">
+    <meta name="author" content="{{ site.name }}">
 {% endblock %}
 
 {% block head_extra %}

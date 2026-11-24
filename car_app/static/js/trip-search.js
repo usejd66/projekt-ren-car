@@ -4,9 +4,9 @@
 
     const $ = (id) => document.getElementById(id);
     const start = $("tripPickup"), end = $("tripReturn");
-    if (!start || !end || !window.DriveOnRange) return;
+    if (!start || !end || !window.RangePicker) return;
 
-    const range = DriveOnRange.attach({
+    const range = RangePicker.attach({
         start, end,
         startDisplay: $("tripPickupAlt"),
         endDisplay: $("tripReturnAlt"),

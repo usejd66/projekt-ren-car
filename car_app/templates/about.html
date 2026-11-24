@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About Us | DriveOn{% endblock %}
+{% block title %}About Us | {{ site.name }}{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="DriveOn is a car rental company in Tirana offering modern cars, clear prices and simple online booking, with pickup in Tirana, Durrës and at Tirana Airport.">
-    <meta name="author" content="DriveOn">
+    <meta name="description" content="{{ site.name }} is a car rental company in {{ site.city }} offering modern cars, clear prices and simple online booking, with pickup in {{ site.locations_text }}.">
+    <meta name="author" content="{{ site.name }}">
 {% endblock %}
 
 {% block content %}
 <header class="page-head">
     <div class="container">
-        <h1>About DriveOn</h1>
-        <p>A local car rental company in Tirana, built around one idea: renting a car should be simple.</p>
+        <h1>About {{ site.name }}</h1>
+        <p>A local car rental company in {{ site.city }}, built around one idea: renting a car should be simple.</p>
     </div>
 </header>
 
@@ -21,13 +21,13 @@
     <div class="container">
         <div class="row align-items-center g-4 g-lg-5">
             <div class="col-lg-6">
-                <img src="{% static 'image/cars/range.webp' %}" alt="A DriveOn rental car" class="about-image" width="1400" height="788" loading="lazy">
+                <img src="{% static 'image/cars/range.webp' %}" alt="A {{ site.name }} rental car" class="about-image" width="1400" height="788" loading="lazy">
             </div>
             <div class="col-lg-6">
                 <h2 class="section-title mb-3">Your trip, our cars</h2>
                 <div class="about-text">
                     <p>Whether you are travelling for business, on holiday, or just need a reliable car for a few days, we want the rental to be the easy part of your trip.</p>
-                    <p>That is why you see the total price before you book, you can reserve online in a couple of minutes, and a real team in Tirana is there when you need help.</p>
+                    <p>That is why you see the total price before you book, you can reserve online in a couple of minutes, and a real team in {{ site.city }} is there when you need help.</p>
                 </div>
                 <a href="{% url 'cars' %}" class="link-arrow">See our cars <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
             </div>
@@ -58,7 +58,7 @@
             <div class="value">
                 <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-headset"></use></svg>
                 <h3>Real support</h3>
-                <p>Questions before or during your rental? Call or message our team in Tirana.</p>
+                <p>Questions before or during your rental? Call or message our team in {{ site.city }}.</p>
             </div>
         </div>
     </div>

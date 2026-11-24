@@ -41,7 +41,7 @@
 
     /* ---------- Rezervimi ---------- */
     const form = document.getElementById("bookForm");
-    if (!form || !window.DriveOnRange) return;
+    if (!form || !window.RangePicker) return;
 
     const $ = (id) => document.getElementById(id);
     const price = parseFloat(form.dataset.price) || 0;
@@ -57,7 +57,7 @@
     function update() {
         const days = range.nights();
         const hit = conflict();
-        showError(hit ? `Booked from ${DriveOnRange.nice(hit.from)} to ${DriveOnRange.nice(hit.to)}. Please choose other dates.` : "");
+        showError(hit ? `Booked from ${RangePicker.nice(hit.from)} to ${RangePicker.nice(hit.to)}. Please choose other dates.` : "");
         $("bookRateLabel").textContent = days ? `${money(price)} × ${days} ${days === 1 ? "day" : "days"}` : "Choose your dates";
         $("bookRate").textContent = days ? money(price * days) : "—";
         $("bookTotal").textContent = money(price * days);
@@ -77,7 +77,7 @@
         }
     }
 
-    const range = DriveOnRange.attach({
+    const range = RangePicker.attach({
         start, end,
         startDisplay: $("bookPickupAlt"),
         endDisplay: $("bookReturnAlt"),

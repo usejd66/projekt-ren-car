@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load static car_images %}
 
-{% block title %}Car Rental in Tirana | DriveOn{% endblock %}
+{% block title %}Car Rental in {{ site.city }} | {{ site.name }}{% endblock %}
 
 {% block meta %}
-<meta name="description" content="DriveOn - Premium car rental services with modern vehicles, competitive prices, and easy booking. Rent your dream car today!">
-<meta name="author" content="DriveOn">
-<meta property="og:title" content="DriveOn - Rent a Car | Premium Vehicle Rental Service">
-<meta property="og:description" content="Premium car rental services with modern vehicles, competitive prices, and easy booking.">
+<meta name="description" content="Rent a car in {{ site.city }} with {{ site.name }}: modern cars, clear prices and easy online booking. Pickup in {{ site.locations_text }}.">
+<meta name="author" content="{{ site.name }}">
+<meta property="og:title" content="{{ site.name }} – Car Rental in {{ site.city }}">
+<meta property="og:description" content="Modern cars, clear prices and easy online booking in {{ site.city }}.">
 <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
 <meta property="og:type" content="website">
@@ -33,8 +33,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-xl-7">
-                <h1 class="hero-title text-white">Car rental in Tirana,<br>made simple.</h1>
-                <p class="hero-description">Modern, well-maintained cars with clear prices. Pick up in Tirana, Durrës or at Tirana Airport.</p>
+                <h1 class="hero-title text-white">Car rental in {{ site.city }},<br>made simple.</h1>
+                <p class="hero-description">Modern, well-maintained cars with clear prices. Pick up in {{ site.locations_text }}.</p>
                 {% if min_price %}
                 <p class="hero-price">From <strong>€{{ min_price|floatformat:"-2" }}</strong> per day</p>
                 {% endif %}
@@ -45,7 +45,7 @@
 
         <ul class="hero-trust list-unstyled">
             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Total price shown before you book</li>
-            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Pickup in Tirana, Durrës &amp; airport</li>
+            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Pickup in {{ site.locations|length }} location{{ site.locations|length|pluralize }}</li>
             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Book online in under 2 minutes</li>
         </ul>
     </div>
@@ -138,10 +138,10 @@
     <div class="container">
         <div class="row align-items-center g-4 g-lg-5">
             <div class="col-lg-6">
-                <img src="{% static 'image/hero.webp' %}" alt="A DriveOn rental car" class="why-image w-100 object-fit-cover" loading="lazy">
+                <img src="{% static 'image/hero.webp' %}" alt="A {{ site.name }} rental car" class="why-image w-100 object-fit-cover" loading="lazy">
             </div>
             <div class="col-lg-6">
-                <h2 class="section-title mb-4">Why rent with DriveOn</h2>
+                <h2 class="section-title mb-4">Why rent with {{ site.name }}</h2>
                 <ul class="why-list list-unstyled">
                     <li>
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
@@ -153,11 +153,11 @@
                     </li>
                     <li>
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
-                        <div><h3>Flexible pickup</h3><p>Collect your car in Tirana, Durrës or at Tirana Airport.</p></div>
+                        <div><h3>Flexible pickup</h3><p>Collect your car in {{ site.locations_text }}.</p></div>
                     </li>
                     <li>
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
-                        <div><h3>Local support</h3><p>A real team in Tirana you can call or message during your rental.</p></div>
+                        <div><h3>Local support</h3><p>A real team in {{ site.city }} you can call or message during your rental.</p></div>
                     </li>
                 </ul>
             </div>
@@ -220,7 +220,7 @@
                         <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Cancellation depends on the rental conditions of your booking. Contact us and we'll help you.</div></div>
                     </div>
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">How can I contact DriveOn?</button></h3>
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">How can I contact {{ site.name }}?</button></h3>
                         <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Call us on {{ site.phone }}, email {{ site.email }}, or use the form on the Contact page.</div></div>
                     </div>
                 </div>

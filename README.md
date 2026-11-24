@@ -78,6 +78,18 @@ Website për qiradhënien e makinave, i ndërtuar me **Django** (backend) dhe **
 
 Rishikimet (**Reviews**) shfaqen në website vetëm pasi t'i miratosh nga admin (**Is approved**).
 
+## Ribrandimi për një klient të ri
+
+Gjithë marka është në **një skedar**: [`car_app/branding.py`](car_app/branding.py).
+
+1. Ndrysho emrin, logon (si tekst ose imazh), ngjyrën, qytetin, vendet e marrjes dhe kontaktet.
+2. Zëvendëso foton e hero-s: `car_app/static/image/hero1.webp` (desktop) dhe `hero1-mobile.webp` (telefon).
+3. (opsionale) Favicon: `car_app/static/image/favicon-32.png`, `apple-touch-icon.png`, `icon-512.png`.
+4. Në produksion: `python manage.py collectstatic`.
+
+Emri, ngjyra dhe kontaktet përditësohen automatikisht në të gjitha faqet, në email-e,
+te butoni WhatsApp, te manifesti i aplikacionit (PWA) dhe te të dhënat për Google.
+
 ## Emailet
 
 Faqja dërgon automatikisht:
@@ -97,7 +109,6 @@ Në zhvillim emailet shfaqen në terminal. Në produksion vendos këto variabla 
 | `BOOKINGS_EMAIL` | adresa ku vijnë rezervimet e reja |
 | `SITE_URL` | `https://driveon.al` (për lidhjet në email) |
 
-Të dhënat e kompanisë që shfaqen në faqe (telefoni, email-i, orari) ndryshohen te `car_app/context_processors.py`.
 
 ## Struktura e projektit
 

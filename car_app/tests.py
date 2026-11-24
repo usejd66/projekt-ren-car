@@ -395,3 +395,23 @@ class MyBookingsTest(BaseCase):
 
     def test_navbar_shows_my_bookings_when_logged_in(self):
         self.assertContains(self.client.get(reverse("index")), reverse("my_bookings"))
+
+
+class BrandingTest(TestCase):
+    """E gjithë faqja merr emrin, ngjyrën dhe qytetin nga car_app/branding.py."""
+
+    def test_pages_use_branding(self):
+        from unittest import mock
+
+        from . import branding
+        new = {"name": "AutoKos", "logo_first": "AUTO", "logo_second": "KOS", "color": "#1d4ed8",
+               "city": "Prishtina", "phone": "+383 44 000 000"}
+        with mock.patch.dict(branding.BRAND, new):
+            r = self.client.get(reverse("index"))
+            self.assertContains(r, "<title>Car Rental in Prishtina | AutoKos</title>", html=True)
+            self.assertContains(r, "--gold: #1d4ed8")
+            self.assertContains(r, "--brand-rgb: 29, 78, 216")
+            self.assertContains(r, "AUTO<span>KOS</span>")
+            self.assertContains(r, "https://wa.me/38344000000")
+            self.assertNotContains(r, "DriveOn")
+            self.assertEqual(self.client.get(reverse("manifest")).json()["short_name"], "AutoKos")

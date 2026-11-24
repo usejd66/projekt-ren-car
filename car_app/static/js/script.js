@@ -1,4 +1,4 @@
-/* DriveOn - script.js
+/* script.js
    Vetëm ajo që përdoret: navbar-i gjatë scroll-it, butoni "kthehu lart",
    shfaqja e butë e seksioneve dhe butoni i fjalëkalimit. */
 (() => {
