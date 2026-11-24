@@ -108,6 +108,14 @@
                     <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Local support during your rental</li>
                 </ul>
             </section>
+
+            <section class="car-section">
+                <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2 mb-3">
+                    <h2 class="mb-0">Rental terms</h2>
+                    <a href="{% url 'rental_terms' %}" class="link-arrow">Details <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+                </div>
+                {% include "_terms_grid.html" %}
+            </section>
         </div>
 
         <!-- ===== REZERVIMI ===== -->

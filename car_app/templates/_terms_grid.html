@@ -1,0 +1,10 @@
+{% load static %}
+{# Kushtet e qirasë në formë të shkurtër (nga branding.py) #}
+<ul class="terms-grid list-unstyled">
+    {% for t in site.terms %}
+    <li>
+        <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-{{ t.icon }}"></use></svg>
+        <div><strong>{{ t.title }}</strong><span>{{ t.short }}</span></div>
+    </li>
+    {% endfor %}
+</ul>

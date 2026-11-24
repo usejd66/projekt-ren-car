@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .admin import ReservationAdmin
-from .models import Car, Reservation
+from .models import Car, Lead, Reservation
 
 
 class BaseCase(TestCase):
@@ -415,3 +415,95 @@ class BrandingTest(TestCase):
             self.assertContains(r, "https://wa.me/38344000000")
             self.assertNotContains(r, "DriveOn")
             self.assertEqual(self.client.get(reverse("manifest")).json()["short_name"], "AutoKos")
+
+
+class TrackingTest(BaseCase):
+    """Matja e rezultateve: burimi i vizitorit, rezervimet, klikimet, raporti."""
+
+    def test_source_detection(self):
+        from django.test import RequestFactory
+
+        from .middleware import detect_source
+        rf = RequestFactory()
+        self.assertEqual(detect_source(rf.get("/", {"utm_source": "Instagram"})), "instagram")
+        self.assertEqual(detect_source(rf.get("/", {"gclid": "x"})), "google ads")
+        self.assertEqual(detect_source(rf.get("/", HTTP_REFERER="https://www.google.com/search?q=rent")), "google")
+        self.assertEqual(detect_source(rf.get("/", HTTP_REFERER="https://l.facebook.com/")), "facebook")
+        self.assertEqual(detect_source(rf.get("/")), "direct")
+
+    def test_booking_is_counted_with_first_source(self):
+        self.client.get(reverse("index"), {"utm_source": "instagram"})
+        self.client.get(reverse("cars"), HTTP_REFERER="https://www.google.com/")  # burimi i parë mbetet
+        self.post_reservation(1, 4)
+        lead = Lead.objects.get()
+        self.assertEqual((lead.kind, lead.source), ("booking", "instagram"))
+        self.assertEqual(lead.reservation, Reservation.objects.get())
+
+    def test_click_tracking(self):
+        self.client.get(reverse("index"), HTTP_REFERER="https://www.google.com/")
+        ok = self.client.post(reverse("track"), {"kind": "whatsapp"}, HTTP_ORIGIN="http://testserver")
+        self.assertEqual(ok.status_code, 204)
+        self.client.post(reverse("track"), {"kind": "whatsapp"}, HTTP_ORIGIN="http://testserver")  # dyfish: nuk numërohet
+        self.assertEqual(Lead.objects.filter(kind="whatsapp", source="google").count(), 1)
+
+    def test_click_tracking_rejects_bad_requests(self):
+        self.assertEqual(self.client.post(reverse("track"), {"kind": "booking"}, HTTP_ORIGIN="http://testserver").status_code, 400)
+        self.assertEqual(self.client.post(reverse("track"), {"kind": "phone"}, HTTP_ORIGIN="https://evil.example").status_code, 400)
+        self.assertEqual(self.client.get(reverse("track")).status_code, 405)
+        self.assertFalse(Lead.objects.exists())
+
+    def test_results_page_and_monthly_report(self):
+        from django.core import mail
+        from django.core.management import call_command
+
+        from . import stats
+        b = self.book(1, 3)
+        Lead.objects.create(kind="booking", source="google", reservation=b)
+        Lead.objects.create(kind="whatsapp", source="instagram")
+        s = stats.period_stats(*stats.month_range(timezone.localdate()))
+        self.assertEqual((s["bookings"], s["whatsapp"], s["contacts"]), (1, 1, 1))
+        self.assertEqual(s["revenue"], b.total_price)
+
+        admin_user = get_user_model().objects.create_superuser("boss", "b@b.al", "pass-12345")
+        self.client.force_login(admin_user)
+        r = self.client.get(reverse("admin:car_app_lead_changelist"))
+        self.assertContains(r, "Nga erdhën klientët")
+        self.assertContains(r, "instagram")
+
+        call_command("send_monthly_report", month=timezone.localdate().strftime("%Y-%m"), stdout=open("/dev/null", "w"))
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("1 bookings", mail.outbox[0].subject)
+
+
+class SeoAndTermsTest(BaseCase):
+    def test_rental_terms_page_and_sections(self):
+        from . import branding
+        first = branding.BRAND["terms"][0]
+        self.assertContains(self.client.get(reverse("rental_terms")), first["text"])
+        self.assertContains(self.client.get(reverse("index")), first["short"])
+        self.assertContains(self.client.get(self.car.get_absolute_url()), first["short"])
+
+    def test_robots_and_sitemap(self):
+        robots = self.client.get("/robots.txt")
+        self.assertContains(robots, "Disallow: /admin/")
+        self.assertContains(robots, "Sitemap: http://testserver/sitemap.xml")
+        sitemap = self.client.get("/sitemap.xml")
+        self.assertContains(sitemap, self.car.get_absolute_url())
+        self.assertContains(sitemap, "/rent-a-car/tirana-airport/")
+
+    def test_location_pages(self):
+        r = self.client.get(reverse("location", args=["tirana-airport"]))
+        self.assertContains(r, "Car rental at Tirana Airport")
+        self.assertContains(r, '<option value="Tirana Airport" selected>')
+        self.assertEqual(self.client.get(reverse("location", args=["paris"])).status_code, 404)
+
+    def test_structured_data_is_valid_json(self):
+        import json
+        import re
+        html = self.client.get(reverse("index")).content.decode()
+        data = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S).group(1))
+        self.assertEqual(data["@type"], "AutoRental")
+
+    def test_canonical_ignores_tracking_params(self):
+        r = self.client.get(reverse("cars"), {"utm_source": "instagram"})
+        self.assertContains(r, '<link rel="canonical" href="http://testserver/cars/">', html=True)

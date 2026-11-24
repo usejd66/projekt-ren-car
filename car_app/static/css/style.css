@@ -1282,3 +1282,35 @@ a.contact-item:hover { border-color: var(--black); box-shadow: 0 6px 18px rgba(1
     .confirm-actions { grid-template-columns: 1fr; }
     .confirm-actions .confirm-yes { order: -1; }
 }
+
+
+/* ===== Kushtet e qirasë ===== */
+.terms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 0; }
+.terms-grid li { display: flex; align-items: flex-start; gap: .85rem; padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: 12px; background: #fff; }
+.terms-grid .icon { flex-shrink: 0; width: 1.25rem; height: 1.25rem; margin-top: .15rem; color: var(--gold); }
+.terms-grid strong { display: block; font-size: .98rem; }
+.terms-grid span { color: var(--muted); font-size: .9rem; }
+.car-section .terms-grid { grid-template-columns: 1fr 1fr; }
+
+.terms-list { display: grid; gap: 1rem; max-width: 820px; }
+.terms-item { display: flex; gap: 1.25rem; padding: 1.5rem; border: 1px solid var(--border); border-radius: 12px; }
+.terms-item h2 { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.terms-short { margin: .1rem 0 .6rem; color: var(--gold); font-weight: 700; }
+.terms-item p:last-child { margin: 0; color: #334155; line-height: 1.7; }
+.terms-icon { display: grid; place-items: center; flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: rgba(var(--brand-rgb), .08); color: var(--gold); font-size: 1.25rem; }
+.terms-cta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-top: 2rem; }
+.terms-cta p { margin: 0 .5rem 0 0; color: var(--muted); }
+.terms-cta .btn { padding: .7rem 1.4rem; border-radius: 8px; font-weight: 700; }
+
+.summary-terms { margin: .9rem 0 0; color: var(--muted); font-size: .82rem; }
+.summary-terms a { color: var(--black); text-decoration: underline; }
+
+@media (max-width: 991.98px) { .terms-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 575.98px) {
+    .terms-grid, .car-section .terms-grid { grid-template-columns: 1fr; }
+    .terms-item { padding: 1.1rem; gap: 1rem; }
+}
+
+/* Faqet e vendeve të marrjes (SEO) */
+.loc-hero h1 { margin-bottom: .5rem; }
+.loc-lead { max-width: 640px; margin: 0 0 1.25rem; color: #334155; font-size: 1.05rem; }

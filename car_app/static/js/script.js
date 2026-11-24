@@ -33,6 +33,22 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
+    /* Matja: klikimet në WhatsApp / telefon / email numërohen si "kontakte" (admin → Results).
+       sendBeacon dërgohet edhe kur faqja po mbyllet (p.sh. kur hapet WhatsApp-i). */
+    document.addEventListener("click", (e) => {
+        const link = e.target.closest("a[href]");
+        if (!link) return;
+        const href = link.getAttribute("href");
+        const kind = href.startsWith("tel:") ? "phone"
+            : href.includes("wa.me/") ? "whatsapp"
+            : href.startsWith("mailto:") ? "email" : "";
+        if (!kind) return;
+        const data = new FormData();
+        data.append("kind", kind);
+        navigator.sendBeacon?.("/t/", data);
+        if (typeof window.gtag === "function") window.gtag("event", `contact_${kind}`); // nëse ka Google Analytics
+    });
+
     /* Shfaqja e butë e elementeve kur hyjnë në ekran.
        Elementet që janë tashmë në ekran në ngarkim nuk animohen (pa "flash"). */
     if (reducedMotion || !("IntersectionObserver" in window)) return;

@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-title" content="{{ site.name }}">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
 
     {% block meta %}
     <meta name="description" content="Rent a car in {{ site.city }} with {{ site.name }}: modern cars, clear prices and easy online booking.">
@@ -19,7 +19,7 @@
     <meta property="og:title" content="{{ site.name }} – Car Rental in {{ site.city }}">
     <meta property="og:description" content="Modern cars, clear prices and easy online booking in {{ site.city }}.">
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     {% endblock %}
@@ -35,6 +35,10 @@
 
     {% block head_extra %}{% endblock %}
     {% block structured_data %}{% endblock %}
+    {% if site.ga4_id and pwa %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga4_id }}"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag("js", new Date()); gtag("config", "{{ site.ga4_id }}");</script>
+    {% endif %}
 </head>
 <body>
 
@@ -106,6 +110,7 @@
                 <ul class="list-unstyled">
                     <li><a href="{% url 'cars' %}">Our cars</a></li>
                     <li><a href="{% url 'reservation' %}">Reserve a car</a></li>
+                    <li><a href="{% url 'rental_terms' %}">Rental terms</a></li>
                     <li><a href="{% url 'about' %}">About us</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
                 </ul>
@@ -114,7 +119,7 @@
             <div class="footer-col">
                 <h2>Pickup locations</h2>
                 <ul class="list-unstyled">
-                    {% for loc in site.locations %}<li>{{ loc }}</li>{% endfor %}
+                    {% for loc in site.locations %}<li><a href="{% url 'location' loc|slugify %}">{{ loc }}</a></li>{% endfor %}
                 </ul>
             </div>
 

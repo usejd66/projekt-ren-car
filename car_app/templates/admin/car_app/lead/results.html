@@ -1,0 +1,69 @@
+{% extends "admin/change_list.html" %}
+{% block content %}
+<style>
+  .res { margin: 0 0 28px; }
+  .res-tabs { display:flex; gap:6px; margin-bottom:16px; }
+  .res-tabs a { padding:6px 12px; border:1px solid var(--hairline-color); border-radius:999px; text-decoration:none; }
+  .res-tabs a.on { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .res-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:24px; }
+  .res-card { padding:16px; border:1px solid var(--hairline-color); border-radius:10px; background:var(--body-bg); }
+  .res-card b { display:block; font-size:28px; line-height:1.1; margin-top:6px; }
+  .res-card span { color:var(--body-quiet-color); }
+  .res-card.main { border-color:var(--primary); }
+  .res-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+  .res table { width:100%; }
+  .res h2 { margin:0 0 8px; font-size:15px; }
+  .res-note { color:var(--body-quiet-color); margin:6px 0 0; }
+</style>
+<div class="res">
+  <div class="res-tabs">
+    <a href="?period=this" class="{% if period == 'this' %}on{% endif %}">Ky muaj</a>
+    <a href="?period=last" class="{% if period == 'last' %}on{% endif %}">Muaji i kaluar</a>
+    <a href="?period=30" class="{% if period == '30' %}on{% endif %}">30 ditët e fundit</a>
+  </div>
+  <p class="res-note">{{ summary.start|date:"j M Y" }} – {{ summary.end|date:"j M Y" }}</p>
+
+  <div class="res-cards" style="margin-top:12px">
+    <div class="res-card main"><span>Rezervime</span><b>{{ summary.bookings }}</b></div>
+    <div class="res-card main"><span>Vlera e rezervimeve</span><b>€{{ summary.revenue|floatformat:"-2" }}</b></div>
+    <div class="res-card"><span>Klikime WhatsApp</span><b>{{ summary.whatsapp }}</b></div>
+    <div class="res-card"><span>Klikime telefon</span><b>{{ summary.phone }}</b></div>
+    <div class="res-card"><span>Mesazhe Contact</span><b>{{ summary.contact }}</b></div>
+    <div class="res-card"><span>Klikime email</span><b>{{ summary.email }}</b></div>
+  </div>
+
+  <div class="res-grid">
+    <div>
+      <h2>Nga erdhën klientët</h2>
+      <table>
+        <thead><tr><th>Burimi</th><th>Rezervime</th><th>Kontakte</th></tr></thead>
+        <tbody>
+        {% for s in summary.sources %}<tr><td>{{ s.source }}</td><td>{{ s.bookings }}</td><td>{{ s.contacts }}</td></tr>
+        {% empty %}<tr><td colspan="3">Ende asnjë të dhënë për këtë periudhë.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2>Makinat më të rezervuara</h2>
+      <table>
+        <thead><tr><th>Makina</th><th>Rezervime</th><th>Vlera</th></tr></thead>
+        <tbody>
+        {% for c in summary.top_cars %}<tr><td>{{ c.car__brand }} {{ c.car__name }}</td><td>{{ c.n }}</td><td>€{{ c.revenue|floatformat:"-2" }}</td></tr>
+        {% empty %}<tr><td colspan="3">Ende asnjë rezervim për këtë periudhë.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2>6 muajt e fundit</h2>
+      <table>
+        <thead><tr><th>Muaji</th><th>Rezervime</th><th>Vlera</th><th>Kontakte</th></tr></thead>
+        <tbody>
+        {% for m in months %}<tr><td>{{ m.month|date:"F Y" }}</td><td>{{ m.bookings }}</td><td>€{{ m.revenue|floatformat:"-2" }}</td><td>{{ m.contacts }}</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="res-note">Rezervimet e anuluara nuk llogariten. "Kontakte" = klikime WhatsApp / telefon / email + mesazhe nga Contact. Lista më poshtë tregon çdo kontakt veç e veç.</p>
+</div>
+{{ block.super }}
+{% endblock %}

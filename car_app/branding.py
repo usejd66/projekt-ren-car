@@ -35,6 +35,35 @@ BRAND = {
     "hours": "Every day, 08:00 – 20:00",
     "instagram": "https://www.instagram.com/driveon",
     "facebook": "https://www.facebook.com/driveon",
+
+    # --- Kushtet e qirasë ------------------------------------------------------------
+    # SHEMBUJ – përshtati sipas kushteve reale të klientit. Shfaqen te faqja kryesore,
+    # faqja e çdo makine, rezervimi dhe faqja /rental-terms/.
+    # "icon": emri i ikonës te static/icons.svg (pa "i-").
+    "terms": [
+        {"icon": "id-card", "title": "Driver requirements", "short": "21+ years, licence held 2+ years",
+         "text": "The main driver must be at least 21 years old and have held a valid driving licence for at least 2 years. "
+                 "Please bring your licence and an ID card or passport to pickup."},
+        {"icon": "credit-card", "title": "Deposit", "short": "Refundable deposit from €200",
+         "text": "A refundable security deposit (from €200, depending on the car) is taken at pickup by card or cash "
+                 "and returned in full when the car is returned in the same condition."},
+        {"icon": "shield-halved", "title": "Insurance", "short": "Basic insurance included",
+         "text": "Every rental includes basic insurance (CDW) and third-party liability. "
+                 "Full coverage with reduced excess is available on request."},
+        {"icon": "gas-pump", "title": "Fuel policy", "short": "Full to full",
+         "text": "You receive the car with a full tank and return it full. Missing fuel is charged at local pump prices."},
+        {"icon": "road", "title": "Mileage", "short": "Unlimited kilometres",
+         "text": "All rentals include unlimited kilometres within the country. Ask us before driving abroad."},
+        {"icon": "calendar", "title": "Cancellation", "short": "Free up to 48 h before pickup",
+         "text": "Cancel for free up to 48 hours before pickup. Bookings not yet confirmed can be cancelled any time "
+                 "from 'My bookings'."},
+    ],
+
+    # --- Matja (opsionale) -------------------------------------------------------------
+    # Faqja i numëron vetë rezervimet dhe kontaktet (admin → Rezultatet), pa cookies reklamimi.
+    # Nëse klienti do edhe Google Analytics 4, vendos ID-në, p.sh. "G-XXXXXXXXXX"
+    # (atëherë, sipas ligjit, duhet edhe një banner për pëlqimin e cookies).
+    "ga4_id": "",
 }
 
 

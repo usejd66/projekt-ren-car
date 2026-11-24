@@ -1,0 +1,39 @@
+{% extends "emails/_base.html" %}
+{% block content %}
+<h1 style="margin:0 0 4px;font-size:22px;">Your website in {{ s.start|date:"F Y" }}</h1>
+<p style="margin:0 0 20px;color:#64748b;">How many customers {{ site.name }}'s website brought this month.</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="padding:16px;border:1px solid {{ site.color }};border-radius:10px;width:50%;">
+      <div style="color:#64748b;font-size:13px;">Bookings</div>
+      <div style="font-size:30px;font-weight:800;">{{ s.bookings }}</div>
+      <div style="color:#64748b;font-size:12px;">{{ prev.bookings }} the month before</div>
+    </td>
+    <td style="width:12px;"></td>
+    <td style="padding:16px;border:1px solid {{ site.color }};border-radius:10px;width:50%;">
+      <div style="color:#64748b;font-size:13px;">Booking value</div>
+      <div style="font-size:30px;font-weight:800;">€{{ s.revenue|floatformat:"-2" }}</div>
+      <div style="color:#64748b;font-size:12px;">€{{ prev.revenue|floatformat:"-2" }} the month before</div>
+    </td>
+  </tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;border:1px solid #e2e8f0;border-radius:10px;">
+  <tr><td style="padding:10px 16px;color:#64748b;">WhatsApp clicks</td><td align="right" style="padding:10px 16px;font-weight:700;">{{ s.whatsapp }}</td></tr>
+  <tr><td style="padding:10px 16px;color:#64748b;border-top:1px solid #e2e8f0;">Phone clicks</td><td align="right" style="padding:10px 16px;font-weight:700;border-top:1px solid #e2e8f0;">{{ s.phone }}</td></tr>
+  <tr><td style="padding:10px 16px;color:#64748b;border-top:1px solid #e2e8f0;">Contact messages</td><td align="right" style="padding:10px 16px;font-weight:700;border-top:1px solid #e2e8f0;">{{ s.contact }}</td></tr>
+  <tr><td style="padding:10px 16px;color:#64748b;border-top:1px solid #e2e8f0;">Email clicks</td><td align="right" style="padding:10px 16px;font-weight:700;border-top:1px solid #e2e8f0;">{{ s.email }}</td></tr>
+</table>
+{% if s.sources %}
+<h2 style="margin:24px 0 8px;font-size:16px;">Where customers came from</h2>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
+  {% for r in s.sources %}<tr><td style="padding:6px 0;">{{ r.source }}</td><td align="right" style="padding:6px 0;color:#64748b;">{{ r.bookings }} booking{{ r.bookings|pluralize }} · {{ r.contacts }} contact{{ r.contacts|pluralize }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+{% if s.top_cars %}
+<h2 style="margin:24px 0 8px;font-size:16px;">Most booked cars</h2>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
+  {% for c in s.top_cars %}<tr><td style="padding:6px 0;">{{ c.car__brand }} {{ c.car__name }}</td><td align="right" style="padding:6px 0;color:#64748b;">{{ c.n }} · €{{ c.revenue|floatformat:"-2" }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+<p style="margin:28px 0 0;"><a href="{{ results_url }}" style="display:inline-block;padding:12px 22px;background:{{ site.color }};color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">See all results</a></p>
+{% endblock %}

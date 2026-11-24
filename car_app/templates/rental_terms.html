@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Rental terms | {{ site.name }}{% endblock %}
+{% block meta %}
+<meta name="description" content="{{ site.name }} rental terms: driver requirements, deposit, insurance, fuel policy, mileage and cancellation.">
+{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <div class="container">
+        <h1>Rental terms</h1>
+        <p>Everything you need to know before you book. Clear and simple, no small print.</p>
+    </div>
+</header>
+
+<section class="section pt-4 pt-lg-5">
+    <div class="container">
+        <div class="terms-list">
+            {% for t in site.terms %}
+            <article class="terms-item" id="term-{{ forloop.counter }}">
+                <span class="terms-icon"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-{{ t.icon }}"></use></svg></span>
+                <div>
+                    <h2>{{ t.title }}</h2>
+                    <p class="terms-short">{{ t.short }}</p>
+                    <p>{{ t.text }}</p>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="terms-cta">
+            <p>Still have a question about the terms?</p>
+            <a href="{% url 'contact' %}" class="btn btn-nav-outline">Contact us</a>
+            <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

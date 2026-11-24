@@ -1,4 +1,5 @@
 import hashlib
+from urllib.parse import urlparse
 from datetime import date
 
 from django.contrib import messages
@@ -7,17 +8,20 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Avg, Count, DecimalField, ExpressionWrapper, F, Min, Q
-from django.http import JsonResponse, QueryDict
+from django.http import Http404, HttpResponse, JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.templatetags.static import static
+from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.text import slugify
 from django.views.decorators.cache import cache_control
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from . import branding, emails
 from .forms import LOCATIONS, ContactForm, ReservationForm, SignUpForm, SubscribeForm
-from .models import ACTIVE_STATUSES, Car, Reservation, Review
+from .models import ACTIVE_STATUSES, Car, Lead, Reservation, Review
 
 
 SORT_OPTIONS = {
@@ -217,6 +221,7 @@ def contact(request):
 
     if request.method == "POST" and form.is_valid():
         emails.contact_message(form.save())
+        Lead.objects.create(kind="contact", source=request.session.get("src", "direct"), page=request.path)
         messages.success(
             request,
             "Thank you! Your message has been sent. We'll get back to you shortly.",
@@ -275,6 +280,8 @@ def reservation(request):
                 booking.save()
 
                 emails.booking_received(booking)
+                Lead.objects.create(kind="booking", reservation=booking,
+                                    source=request.session.get("src", "direct"), page=request.path)
                 # faqja e konfirmimit e shfaq vetëm rezervimin e këtij vizitori
                 request.session["last_booking"] = booking.pk
                 return redirect("reservation_success")
@@ -329,6 +336,38 @@ def cancel_booking(request, pk):
         emails.booking_cancelled_by_customer(booking, requested=True)
         messages.success(request, "Your cancellation request was sent. We'll contact you shortly.")
     return redirect("my_bookings")
+
+
+def location_page(request, slug):
+    """Faqe për çdo vend marrjeje (p.sh. /rent-a-car/tirana-airport/) – për kërkimet në Google."""
+    location = next((loc for loc in LOCATIONS if slugify(loc) == slug), None)
+    if location is None:
+        raise Http404
+    available = Car.objects.filter(is_available=True)
+    return render(request, "location.html", {
+        "location": location,
+        "is_airport": "airport" in location.lower(),
+        "cars": available.order_by("price_per_day")[:6],
+        "min_price": available.aggregate(m=Min("price_per_day"))["m"],
+        "locations": LOCATIONS,
+        "trip": {"location": location},
+    })
+
+
+def robots_txt(request):
+    lines = [
+        "User-agent: *",
+        "Disallow: /admin/",
+        "Disallow: /account/",
+        "Disallow: /reservation/success/",
+        "Disallow: /t/",
+        f"Sitemap: {request.scheme}://{request.get_host()}{reverse('django.contrib.sitemaps.views.sitemap')}",
+    ]
+    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+
+
+def rental_terms(request):
+    return render(request, "rental_terms.html")
 
 
 def signup(request):
@@ -414,3 +453,26 @@ def service_worker(request):
 
 def offline(request):
     return render(request, "offline.html")
+
+
+# ===== Matja: klikimet në WhatsApp / telefon / email (dërgohen nga script.js me sendBeacon) =====
+
+TRACKED_CLICKS = {"whatsapp", "phone", "email"}
+
+
+@csrf_exempt  # sendBeacon nuk dërgon token CSRF; pranojmë vetëm tre lloje dhe vetëm nga e njëjta faqe
+@require_POST
+def track(request):
+    kind = request.POST.get("kind", "")
+    origin = urlparse(request.headers.get("Origin") or request.headers.get("Referer") or "").netloc
+    if kind not in TRACKED_CLICKS or origin != request.get_host():
+        return HttpResponse(status=400)
+    # mos numëro dy herë të njëjtin klikim (p.sh. dy prekje rresht)
+    key = f"t_{kind}"
+    now = int(timezone.now().timestamp())
+    if now - request.session.get(key, 0) < 30:
+        return HttpResponse(status=204)
+    request.session[key] = now
+    page = urlparse(request.headers.get("Referer", "")).path[:200]
+    Lead.objects.create(kind=kind, source=request.session.get("src", "direct"), page=page)
+    return HttpResponse(status=204)

@@ -198,3 +198,30 @@ class Subscriber(models.Model):
 
     def __str__(self):
         return self.email
+
+class Lead(models.Model):
+    """Një "kontakt" nga faqja: rezervim, klikim në WhatsApp/telefon/email ose mesazh nga Contact.
+
+    Këto numra tregojnë sa klientë sjell faqja (shih admin → Results dhe raportin mujor).
+    """
+
+    KIND_CHOICES = [
+        ("booking", "Rezervim"),
+        ("whatsapp", "Klikim WhatsApp"),
+        ("phone", "Klikim telefon"),
+        ("email", "Klikim email"),
+        ("contact", "Mesazh nga Contact"),
+    ]
+    kind = models.CharField(max_length=20, choices=KIND_CHOICES)
+    source = models.CharField(max_length=40, default="direct", help_text="Nga erdhi vizitori: google, instagram, facebook, direct...")
+    page = models.CharField(max_length=200, blank=True, help_text="Faqja ku ndodhi")
+    reservation = models.ForeignKey(Reservation, null=True, blank=True, on_delete=models.SET_NULL, related_name="leads")
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "kontakt"
+        verbose_name_plural = "📈 Rezultatet (klientët nga faqja)"
+
+    def __str__(self):
+        return f"{self.get_kind_display()} · {self.source} · {self.created_at:%d/%m/%Y %H:%M}"

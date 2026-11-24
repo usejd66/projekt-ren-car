@@ -1,0 +1,17 @@
+{% autoescape off %}{{ site.name }} – your website in {{ s.start|date:"F Y" }}
+
+Bookings:          {{ s.bookings }}  ({{ prev.bookings }} the month before)
+Booking value:     €{{ s.revenue|floatformat:"-2" }}  (€{{ prev.revenue|floatformat:"-2" }} the month before)
+WhatsApp clicks:   {{ s.whatsapp }}
+Phone clicks:      {{ s.phone }}
+Contact messages:  {{ s.contact }}
+Email clicks:      {{ s.email }}
+{% if s.sources %}
+Where customers came from:
+{% for r in s.sources %}  - {{ r.source }}: {{ r.bookings }} bookings, {{ r.contacts }} contacts
+{% endfor %}{% endif %}{% if s.top_cars %}
+Most booked cars:
+{% for c in s.top_cars %}  - {{ c.car__brand }} {{ c.car__name }}: {{ c.n }} (€{{ c.revenue|floatformat:"-2" }})
+{% endfor %}{% endif %}
+All results: {{ results_url }}
+{% endautoescape %}

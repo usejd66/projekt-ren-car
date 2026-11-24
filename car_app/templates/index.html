@@ -9,9 +9,28 @@
 <meta property="og:title" content="{{ site.name }} – Car Rental in {{ site.city }}">
 <meta property="og:description" content="Modern cars, clear prices and easy online booking in {{ site.city }}.">
 <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}">
-<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+
+{% block structured_data %}
+{# Google: biznes lokal qiraje makinash (Google Maps / rezultatet lokale) #}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "AutoRental",
+    "name": "{{ site.name|escapejs }}",
+    "url": "{{ request.scheme }}://{{ request.get_host }}/",
+    "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}",
+    "telephone": "{{ site.phone_link }}",
+    "email": "{{ site.email|escapejs }}",
+    "address": {"@type": "PostalAddress", "addressLocality": "{{ site.city|escapejs }}", "addressCountry": "{{ site.country|escapejs }}"},
+    "areaServed": [{% for loc in site.locations %}"{{ loc|escapejs }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+    {% if min_price %}"priceRange": "From €{{ min_price|floatformat:'-2' }} per day",{% endif %}
+    "sameAs": ["{{ site.instagram|escapejs }}", "{{ site.facebook|escapejs }}"]
+}
+</script>
 {% endblock %}
 
 {% block head_extra %}
@@ -133,6 +152,20 @@
     </div>
 </section>
 
+<!-- KUSHTET -->
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">Rental terms at a glance</h2>
+                <p class="section-sub">No surprises at pickup. Here is what's included and what we need from you.</p>
+            </div>
+            <a href="{% url 'rental_terms' %}" class="link-arrow">Full rental terms <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+        </div>
+        {% include "_terms_grid.html" %}
+    </div>
+</section>
+
 <!-- PSE NE -->
 <section class="section">
     <div class="container">
@@ -217,7 +250,7 @@
                     </div>
                     <div class="accordion-item">
                         <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">Can I cancel my reservation?</button></h3>
-                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Cancellation depends on the rental conditions of your booking. Contact us and we'll help you.</div></div>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">{% for t in site.terms %}{% if t.icon == "calendar" %}{{ t.text }} {% endif %}{% endfor %}See all <a href="{% url 'rental_terms' %}">rental terms</a>.</div></div>
                     </div>
                     <div class="accordion-item">
                         <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">How can I contact {{ site.name }}?</button></h3>

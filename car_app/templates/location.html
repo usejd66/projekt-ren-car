@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static car_images %}
+
+{% block title %}Car Rental {% if is_airport %}at{% else %}in{% endif %} {{ location }} | {{ site.name }}{% endblock %}
+{% block meta %}
+<meta name="description" content="Rent a car {% if is_airport %}at{% else %}in{% endif %} {{ location }} with {{ site.name }}{% if min_price %} from €{{ min_price|floatformat:'-2' }} per day{% endif %}. Clear prices, unlimited kilometres and easy online booking.">
+<meta property="og:title" content="Car Rental {% if is_airport %}at{% else %}in{% endif %} {{ location }} | {{ site.name }}">
+{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+{% endblock %}
+
+{% block content %}
+<section class="cars-trip loc-hero">
+    <div class="container">
+        <nav class="car-crumbs" aria-label="Breadcrumb">
+            <a href="{% url 'index' %}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ location }}</span>
+        </nav>
+        <h1>Car rental {% if is_airport %}at{% else %}in{% endif %} {{ location }}</h1>
+        <p class="loc-lead">
+            {% if is_airport %}Pick up your car right when you land and start your trip without queues or taxis.{% else %}Collect your car in {{ location }} at a time that suits you and drive wherever you want.{% endif %}
+            {% if min_price %}Prices from <strong>€{{ min_price|floatformat:"-2" }} per day</strong>.{% endif %}
+        </p>
+        {% include "_trip_search.html" %}
+    </div>
+</section>
+
+{% if cars %}
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">Cars available in {{ location }}</h2>
+                <p class="section-sub">Choose your dates above to see the total price.</p>
+            </div>
+            <a href="{% url 'cars' %}?pickup_location={{ location|urlencode }}" class="link-arrow">All cars <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+        </div>
+        <div class="row g-4">
+            {% for car in cars %}
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="car-tile h-100">
+                    <a href="{{ car.get_absolute_url }}?pickup_location={{ location|urlencode }}" class="car-tile-img">{% car_img car sizes="(min-width: 992px) 400px, (min-width: 576px) 50vw, 100vw" %}</a>
+                    <div class="car-tile-body">
+                        <p class="car-tile-cat">{{ car.get_category_display }}</p>
+                        <h3 class="car-tile-name"><a href="{{ car.get_absolute_url }}?pickup_location={{ location|urlencode }}">{{ car }}</a></h3>
+                        <ul class="car-tile-specs list-unstyled">
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{{ car.seats }}</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>{{ car.get_transmission_display }}</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>{{ car.get_fuel_display }}</li>
+                        </ul>
+                        <div class="car-tile-foot"><p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p></div>
+                        <div class="car-tile-actions">
+                            <a href="{{ car.get_absolute_url }}?pickup_location={{ location|urlencode }}" class="btn btn-nav-outline">Details</a>
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}&pickup_location={{ location|urlencode }}" class="btn btn-gold">Book now</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section section-muted">
+    <div class="container">
+        <div class="section-head">
+            <div><h2 class="section-title">Rental terms</h2></div>
+            <a href="{% url 'rental_terms' %}" class="link-arrow">Full rental terms <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+        </div>
+        {% include "_terms_grid.html" %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title mb-3">Other pickup locations</h2>
+        <div class="chips">
+            {% for loc in locations %}{% if loc != location %}<a href="{% url 'location' loc|slugify %}" class="chip">{{ loc }}</a>{% endif %}{% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script src="{% static 'js/date-range.js' %}"></script>
+<script src="{% static 'js/trip-search.js' %}"></script>
+{% endblock %}

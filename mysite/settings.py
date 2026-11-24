@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',  # WhiteNoise shërben skedarët statikë edhe në runserver
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'car_app',
 ]
 
@@ -47,6 +48,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'car_app.middleware.TrafficSourceMiddleware',  # nga erdhi vizitori (Google, Instagram...)
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

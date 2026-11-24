@@ -1,7 +1,11 @@
+from datetime import timedelta
+
 from django.contrib import admin, messages
+from django.utils import timezone
 
 from . import emails
-from .models import Car, CarPhoto, ContactMessage, Reservation, Review, Subscriber
+from . import stats
+from .models import Car, CarPhoto, ContactMessage, Lead, Reservation, Review, Subscriber
 
 
 class CarPhotoInline(admin.TabularInline):
@@ -97,3 +101,40 @@ class SubscriberAdmin(admin.ModelAdmin):
     list_editable = ("is_active",)
     search_fields = ("email",)
     date_hierarchy = "subscribed_at"
+
+@admin.register(Lead)
+class LeadAdmin(admin.ModelAdmin):
+    """Rezultatet: sa rezervime dhe kontakte solli faqja, dhe nga cilat kanale."""
+
+    change_list_template = "admin/car_app/lead/results.html"
+    list_display = ("created_at", "kind", "source", "page", "reservation")
+    list_filter = ("kind", "source", "created_at")
+    date_hierarchy = "created_at"
+
+    def has_add_permission(self, request):
+        return False  # krijohen automatikisht nga faqja
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        today = timezone.localdate()
+        period = request.GET.get("period", "this")
+        if period == "last":
+            start, end = stats.previous_month(today)
+        elif period == "30":
+            start, end = today - timedelta(days=29), today + timedelta(days=1)
+        else:
+            period = "this"
+            start, end = stats.month_range(today)
+        # "period" nuk është fushë e modelit: hiqe para se ta shohë lista e Django-s
+        if "period" in request.GET:
+            request.GET = request.GET.copy()
+            request.GET.pop("period")
+        extra_context = {
+            **(extra_context or {}),
+            "period": period,
+            "summary": stats.period_stats(start, end),
+            "months": stats.last_months(6, today),
+        }
+        return super().changelist_view(request, extra_context=extra_context)

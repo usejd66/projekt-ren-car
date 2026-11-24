@@ -163,7 +163,9 @@
                         <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>No payment taken online</li>
                         <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Total price shown, no hidden fees</li>
                         <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>We contact you to confirm the booking</li>
+                        {% for t in site.terms %}{% if t.icon == "calendar" %}<li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{{ t.short }}</li>{% endif %}{% endfor %}
                     </ul>
+                    <p class="summary-terms">By confirming you accept our <a href="{% url 'rental_terms' %}" target="_blank" rel="noopener">rental terms</a>.</p>
                 </aside>
             </div>
         </div>
