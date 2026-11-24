@@ -1,17 +1,17 @@
-{% autoescape off %}{{ site.name }} – your website in {{ s.start|date:"F Y" }}
+{% load i18n %}{% autoescape off %}{{ site.name }} – {% blocktranslate with month=s.start|date:"F Y" %}Your website in {{ month }}{% endblocktranslate %}
 
-Bookings:          {{ s.bookings }}  ({{ prev.bookings }} the month before)
-Booking value:     €{{ s.revenue|floatformat:"-2" }}  (€{{ prev.revenue|floatformat:"-2" }} the month before)
-WhatsApp clicks:   {{ s.whatsapp }}
-Phone clicks:      {{ s.phone }}
-Contact messages:  {{ s.contact }}
-Email clicks:      {{ s.email }}
+{% translate "Bookings" %}: {{ s.bookings }}  ({% blocktranslate with n=prev.bookings %}{{ n }} the month before{% endblocktranslate %})
+{% translate "Booking value" %}: €{{ s.revenue|floatformat:"-2" }}  ({% blocktranslate with n=prev.revenue|floatformat:"-2" %}€{{ n }} the month before{% endblocktranslate %})
+{% translate "WhatsApp clicks" %}: {{ s.whatsapp }}
+{% translate "Phone clicks" %}: {{ s.phone }}
+{% translate "Contact messages" %}: {{ s.contact }}
+{% translate "Email clicks" %}: {{ s.email }}
 {% if s.sources %}
-Where customers came from:
-{% for r in s.sources %}  - {{ r.source }}: {{ r.bookings }} bookings, {{ r.contacts }} contacts
+{% translate "Where customers came from" %}:
+{% for r in s.sources %}  - {{ r.source }}: {% blocktranslate with b=r.bookings c=r.contacts %}{{ b }} bookings · {{ c }} contacts{% endblocktranslate %}
 {% endfor %}{% endif %}{% if s.top_cars %}
-Most booked cars:
+{% translate "Most booked cars" %}:
 {% for c in s.top_cars %}  - {{ c.car__brand }} {{ c.car__name }}: {{ c.n }} (€{{ c.revenue|floatformat:"-2" }})
 {% endfor %}{% endif %}
-All results: {{ results_url }}
+{% translate "See all results" %}: {{ results_url }}
 {% endautoescape %}

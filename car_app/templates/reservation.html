@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% load static car_images %}
-{% block title %}Reserve a Car | {{ site.name }}{% endblock %}
+{% load static i18n car_images %}
+{% block title %}{% translate "Reserve a Car" %} | {{ site.name }}{% endblock %}
 {% block meta %}
-    <meta name="description" content="Reserve your {{ site.name }} rental car online: choose your car, dates and pickup location and see the total price before you confirm.">
+    <meta name="description" content="{% blocktranslate with name=site.name %}Reserve your {{ name }} rental car online: choose your car, dates and pickup location and see the total price before you confirm.{% endblocktranslate %}">
     <meta name="author" content="{{ site.name }}">
     <meta name="robots" content="noindex">
 {% endblock %}
@@ -15,18 +15,18 @@
 <section class="checkout">
 <div class="container">
 
-    <nav class="checkout-crumbs" aria-label="Breadcrumb">
-        <a href="{% url 'cars' %}"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-left"></use></svg>Back to cars</a>
+    <nav class="checkout-crumbs" aria-label="{% translate 'Breadcrumb' %}">
+        <a href="{% url 'cars' %}"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-left"></use></svg>{% translate "Back to cars" %}</a>
     </nav>
 
     <header class="checkout-head">
-        <h1>Complete your reservation</h1>
-        <p>It takes about 2 minutes. No payment is taken online.</p>
+        <h1>{% translate "Complete your reservation" %}</h1>
+        <p>{% translate "It takes about 2 minutes. No payment is taken online." %}</p>
     </header>
 
     {% if form.errors %}
     <div class="alert alert-danger checkout-alert" role="alert">
-        <strong>Please check the highlighted fields.</strong>
+        <strong>{% translate "Please check the highlighted fields." %}</strong>
         {% for e in form.non_field_errors %}<div class="mt-1">{{ e }}</div>{% endfor %}
     </div>
     {% endif %}
@@ -42,11 +42,11 @@
 
                 <!-- Makina -->
                 <section class="checkout-card" aria-labelledby="stepCar">
-                    <h2 id="stepCar" class="checkout-card-title">Your car</h2>
+                    <h2 id="stepCar" class="checkout-card-title">{% translate "Your car" %}</h2>
 
-                    <label class="form-label" for="carSelect">Car</label>
+                    <label class="form-label" for="carSelect">{% translate "Car" %}</label>
                     <select id="carSelect" name="car" class="form-select{% if form.car.errors %} is-invalid{% endif %}">
-                        <option value="">Select a car…</option>
+                        <option value="">{% translate "Select a car…" %}</option>
                         {% regroup cars by get_category_display as groups %}
                         {% for g in groups %}
                         <optgroup label="{{ g.grouper }}">
@@ -60,7 +60,7 @@
                                     data-seats="{{ car.seats }}"
                                     data-fuel="{{ car.get_fuel_display }}"
                                     data-image="{% car_img_url car 480 %}">
-                                {{ car }} — €{{ car.price_per_day|floatformat:"-2" }}/day
+                                {{ car }} — €{{ car.price_per_day|floatformat:"-2" }} {% translate "/ day" %}
                             </option>
                             {% endfor %}
                         </optgroup>
@@ -79,61 +79,61 @@
                                 <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg><span id="selectedCarFuel"></span></li>
                             </ul>
                         </div>
-                        <p class="picked-car-price"><strong id="selectedCarPrice"></strong><span>/ day</span></p>
+                        <p class="picked-car-price"><strong id="selectedCarPrice"></strong><span>{% translate "/ day" %}</span></p>
                     </div>
                 </section>
 
                 <!-- Udhëtimi -->
                 <section class="checkout-card" aria-labelledby="stepTrip">
-                    <h2 id="stepTrip" class="checkout-card-title">Pickup &amp; return</h2>
+                    <h2 id="stepTrip" class="checkout-card-title">{% translate "Pickup & return" %}</h2>
 
                     <div id="formError" class="alert alert-danger d-none" role="alert"></div>
 
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="form-label" for="id_pickup_location">Pickup location</label>
+                            <label class="form-label" for="id_pickup_location">{% translate "Pickup location" %}</label>
                             {{ form.pickup_location }}
                             {% for e in form.pickup_location.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                         <input type="hidden" id="pickupDate" name="pickup_date" value="{{ form.pickup_date.value|default:'' }}">
                         <input type="hidden" id="returnDate" name="return_date" value="{{ form.return_date.value|default:'' }}">
                         <div class="col-6">
-                            <label class="form-label" for="pickupDateAlt">Pickup date</label>
-                            <input type="text" id="pickupDateAlt" autocomplete="off" inputmode="none" placeholder="Select date"
+                            <label class="form-label" for="pickupDateAlt">{% translate "Pickup date" %}</label>
+                            <input type="text" id="pickupDateAlt" autocomplete="off" inputmode="none" placeholder="{% translate 'Select date' %}"
                                    class="form-control date-field{% if form.pickup_date.errors %} is-invalid{% endif %}">
                             {% for e in form.pickup_date.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                         <div class="col-6">
-                            <label class="form-label" for="returnDateAlt">Return date</label>
-                            <input type="text" id="returnDateAlt" autocomplete="off" inputmode="none" placeholder="Select date"
+                            <label class="form-label" for="returnDateAlt">{% translate "Return date" %}</label>
+                            <input type="text" id="returnDateAlt" autocomplete="off" inputmode="none" placeholder="{% translate 'Select date' %}"
                                    class="form-control date-field{% if form.return_date.errors %} is-invalid{% endif %}">
                             {% for e in form.return_date.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                     </div>
-                    <p class="checkout-hint"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-info"></use></svg>Dates that are already booked for this car are crossed out in the calendar.</p>
+                    <p class="checkout-hint"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-info"></use></svg>{% translate "Dates that are already booked for this car are crossed out in the calendar." %}</p>
                 </section>
 
                 <!-- Shoferi -->
                 <section class="checkout-card" aria-labelledby="stepDriver">
-                    <h2 id="stepDriver" class="checkout-card-title">Driver details</h2>
+                    <h2 id="stepDriver" class="checkout-card-title">{% translate "Driver details" %}</h2>
                     <div class="row g-3">
                         <div class="col-12">
-                            <label for="id_full_name" class="form-label">Full name</label>
+                            <label for="id_full_name" class="form-label">{% translate "Full name" %}</label>
                             {{ form.full_name }}
                             {% for e in form.full_name.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                         <div class="col-md-6">
-                            <label for="id_email" class="form-label">Email</label>
+                            <label for="id_email" class="form-label">{% translate "Email" %}</label>
                             {{ form.email }}
                             {% for e in form.email.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                         <div class="col-md-6">
-                            <label for="id_phone" class="form-label">Phone</label>
+                            <label for="id_phone" class="form-label">{% translate "Phone" %}</label>
                             {{ form.phone }}
                             {% for e in form.phone.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                         </div>
                         <div class="col-12">
-                            <label for="id_notes" class="form-label">Notes <span class="text-secondary fw-normal">(optional)</span></label>
+                            <label for="id_notes" class="form-label">{% translate "Notes" %} <span class="text-secondary fw-normal">({% translate "optional" %})</span></label>
                             {{ form.notes }}
                         </div>
                     </div>
@@ -143,29 +143,29 @@
             <!-- ===== PËRMBLEDHJA ===== -->
             <div class="col-lg-5 col-xl-4">
                 <aside class="summary" aria-labelledby="summaryTitle">
-                    <h2 id="summaryTitle" class="summary-title">Booking summary</h2>
+                    <h2 id="summaryTitle" class="summary-title">{% translate "Booking summary" %}</h2>
 
-                    <p id="summaryVehicle" class="summary-car">No car selected</p>
+                    <p id="summaryVehicle" class="summary-car">{% translate "No car selected" %}</p>
 
                     <dl class="summary-trip">
-                        <div><dt>Pickup</dt><dd id="summaryPickup">—</dd></div>
-                        <div><dt>Return</dt><dd id="summaryReturn">—</dd></div>
+                        <div><dt>{% translate "Pickup" %}</dt><dd id="summaryPickup">—</dd></div>
+                        <div><dt>{% translate "Return" %}</dt><dd id="summaryReturn">—</dd></div>
                     </dl>
 
                     <dl class="summary-price">
-                        <div><dt id="summaryRateLabel">Daily rate</dt><dd id="summaryRate">—</dd></div>
-                        <div class="summary-total"><dt>Total</dt><dd id="summaryTotal">€0</dd></div>
+                        <div><dt id="summaryRateLabel">{% translate "Daily rate" %}</dt><dd id="summaryRate">—</dd></div>
+                        <div class="summary-total"><dt>{% translate "Total" %}</dt><dd id="summaryTotal">€0</dd></div>
                     </dl>
 
-                    <button type="submit" id="confirmReservation" class="btn btn-gold summary-btn">Confirm reservation</button>
+                    <button type="submit" id="confirmReservation" class="btn btn-gold summary-btn">{% translate "Confirm reservation" %}</button>
 
                     <ul class="summary-notes list-unstyled">
-                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>No payment taken online</li>
-                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Total price shown, no hidden fees</li>
-                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>We contact you to confirm the booking</li>
+                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{% translate "No payment taken online" %}</li>
+                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{% translate "Total price shown, no hidden fees" %}</li>
+                        <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{% translate "We contact you to confirm the booking" %}</li>
                         {% for t in site.terms %}{% if t.icon == "calendar" %}<li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{{ t.short }}</li>{% endif %}{% endfor %}
                     </ul>
-                    <p class="summary-terms">By confirming you accept our <a href="{% url 'rental_terms' %}" target="_blank" rel="noopener">rental terms</a>.</p>
+                    {% url 'rental_terms' as terms_url %}<p class="summary-terms">{% blocktranslate with url=terms_url %}By confirming you accept our <a href="{{ url }}" target="_blank" rel="noopener">rental terms</a>.{% endblocktranslate %}</p>
                 </aside>
             </div>
         </div>
@@ -176,10 +176,10 @@
 <!-- Telefon: totali dhe butoni gjithmonë të dukshëm poshtë -->
 <div class="checkout-bar d-lg-none">
     <div>
-        <span class="checkout-bar-label">Total</span>
+        <span class="checkout-bar-label">{% translate "Total" %}</span>
         <strong id="summaryTotalMobile">€0</strong>
     </div>
-    <button type="submit" form="reservationForm" class="btn btn-gold">Confirm</button>
+    <button type="submit" form="reservationForm" class="btn btn-gold">{% translate "Confirm" %}</button>
 </div>
 {% endblock %}
 

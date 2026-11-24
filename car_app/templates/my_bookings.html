@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% load static car_images %}
+{% load static i18n car_images %}
 
-{% block title %}My bookings | {{ site.name }}{% endblock %}
+{% block title %}{% translate "My bookings" %} | {{ site.name }}{% endblock %}
 {% block meta %}<meta name="robots" content="noindex">{% endblock %}
 
 {% block content %}
 <header class="page-head">
     <div class="container">
-        <h1>My bookings</h1>
-        <p>Hi {{ user.get_full_name|default:user.username }}. Here you can see your reservations and cancel upcoming ones.</p>
+        <h1>{% translate "My bookings" %}</h1>
+        <p>{% blocktranslate with name=user.get_full_name|default:user.username %}Hi {{ name }}. Here you can see your reservations and cancel upcoming ones.{% endblocktranslate %}</p>
     </div>
 </header>
 
@@ -17,27 +17,27 @@
 
         {% if not upcoming and not past %}
         <div class="fleet-empty">
-            <h2>No bookings yet</h2>
-            <p>When you reserve a car while signed in, it will show up here.</p>
-            <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
+            <h2>{% translate "No bookings yet" %}</h2>
+            <p>{% translate "When you reserve a car while signed in, it will show up here." %}</p>
+            <a href="{% url 'cars' %}" class="btn btn-gold">{% translate "Browse cars" %}</a>
         </div>
         {% endif %}
 
         {% if upcoming %}
-        <h2 class="bookings-title">Upcoming</h2>
+        <h2 class="bookings-title">{% translate "Upcoming" %}</h2>
         <div class="bookings">
             {% for b in upcoming %}{% include "_booking_card.html" %}{% endfor %}
         </div>
         {% endif %}
 
         {% if past %}
-        <h2 class="bookings-title">Past &amp; cancelled</h2>
+        <h2 class="bookings-title">{% translate "Past & cancelled" %}</h2>
         <div class="bookings bookings-past">
             {% for b in past %}{% include "_booking_card.html" %}{% endfor %}
         </div>
         {% endif %}
 
-        <p class="bookings-help">Need to change dates or have a question? <a href="{% url 'contact' %}">Contact us</a> or call <a href="tel:{{ site.phone_link }}">{{ site.phone }}</a>.</p>
+        {% url 'contact' as contact_url %}<p class="bookings-help">{% blocktranslate with url=contact_url tel=site.phone_link phone=site.phone %}Need to change dates or have a question? <a href="{{ url }}">Contact us</a> or call <a href="tel:{{ tel }}">{{ phone }}</a>.{% endblocktranslate %}</p>
     </div>
 </section>
 
@@ -50,7 +50,7 @@
             <p class="confirm-car"></p>
             <p class="confirm-text"></p>
             <div class="confirm-actions">
-                <button type="button" class="btn btn-nav-outline" data-bs-dismiss="modal">Keep booking</button>
+                <button type="button" class="btn btn-nav-outline" data-bs-dismiss="modal">{% translate "Keep booking" %}</button>
                 <button type="button" class="btn btn-danger confirm-yes"></button>
             </div>
         </div>
@@ -73,12 +73,12 @@
                 e.preventDefault();
                 form = f;
                 const pending = !!f.dataset.pending;
-                el.querySelector("#cancelModalTitle").textContent = pending ? "Cancel this booking?" : "Request cancellation?";
+                el.querySelector("#cancelModalTitle").textContent = pending ? "{% translate 'Cancel this booking?' %}" : "{% translate 'Request cancellation?' %}";
                 el.querySelector(".confirm-car").textContent = `${f.dataset.car} · ${f.dataset.dates}`;
                 el.querySelector(".confirm-text").textContent = pending
-                    ? "Your booking hasn't been confirmed yet, so it will be cancelled right away and the dates released."
-                    : "Your booking is already confirmed. We'll receive your request and contact you to arrange the cancellation.";
-                yes.textContent = pending ? "Yes, cancel booking" : "Send request";
+                    ? "{% filter escapejs %}{% translate "Your booking hasn't been confirmed yet, so it will be cancelled right away and the dates released." %}{% endfilter %}"
+                    : "{% filter escapejs %}{% translate "Your booking is already confirmed. We'll receive your request and contact you to arrange the cancellation." %}{% endfilter %}";
+                yes.textContent = pending ? "{% translate 'Yes, cancel booking' %}" : "{% translate 'Send request' %}";
                 modal.show();
             });
         });

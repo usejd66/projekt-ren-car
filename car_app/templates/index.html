@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% load static car_images %}
+{% load static i18n car_images %}
 
-{% block title %}Car Rental in {{ site.city }} | {{ site.name }}{% endblock %}
+{% block title %}{% blocktranslate with name=site.name city=site.city_in %}Car Rental in {{ city }} | {{ name }}{% endblocktranslate %}{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Rent a car in {{ site.city }} with {{ site.name }}: modern cars, clear prices and easy online booking. Pickup in {{ site.locations_text }}.">
+<meta name="description" content="{% blocktranslate with name=site.name city=site.city_in locations=site.locations_text %}Rent a car in {{ city }} with {{ name }}: modern cars, clear prices and easy online booking. Pickup in {{ locations }}.{% endblocktranslate %}">
 <meta name="author" content="{{ site.name }}">
-<meta property="og:title" content="{{ site.name }} – Car Rental in {{ site.city }}">
-<meta property="og:description" content="Modern cars, clear prices and easy online booking in {{ site.city }}.">
+<meta property="og:title" content="{% blocktranslate with name=site.name city=site.city_in %}{{ name }} – Car Rental in {{ city }}{% endblocktranslate %}">
+<meta property="og:description" content="{% blocktranslate with city=site.city_in %}Modern cars, clear prices and easy online booking in {{ city }}.{% endblocktranslate %}">
 <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}">
 <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:type" content="website">
@@ -27,7 +27,7 @@
     "email": "{{ site.email|escapejs }}",
     "address": {"@type": "PostalAddress", "addressLocality": "{{ site.city|escapejs }}", "addressCountry": "{{ site.country|escapejs }}"},
     "areaServed": [{% for loc in site.locations %}"{{ loc|escapejs }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
-    {% if min_price %}"priceRange": "From €{{ min_price|floatformat:'-2' }} per day",{% endif %}
+    {% if min_price %}"priceRange": "€{{ min_price|floatformat:'-2' }}+",{% endif %}
     "sameAs": ["{{ site.instagram|escapejs }}", "{{ site.facebook|escapejs }}"]
 }
 </script>
@@ -51,11 +51,11 @@
 <section class="hero">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-xl-7">
-                <h1 class="hero-title text-white">Car rental in {{ site.city }},<br>made simple.</h1>
-                <p class="hero-description">Modern, well-maintained cars with clear prices. Pick up in {{ site.locations_text }}.</p>
+            <div class="col-lg-10 col-xl-9">
+                <h1 class="hero-title text-white">{% blocktranslate with city=site.city_in %}Car rental in {{ city }},<br>made simple.{% endblocktranslate %}</h1>
+                <p class="hero-description">{% blocktranslate with locations=site.locations_text %}Modern, well-maintained cars with clear prices. Pick up in {{ locations }}.{% endblocktranslate %}</p>
                 {% if min_price %}
-                <p class="hero-price">From <strong>€{{ min_price|floatformat:"-2" }}</strong> per day</p>
+                <p class="hero-price">{% blocktranslate with price=min_price|floatformat:"-2" %}From <strong>€{{ price }}</strong> per day{% endblocktranslate %}</p>
                 {% endif %}
             </div>
         </div>
@@ -63,9 +63,9 @@
         <div class="hero-search">{% include "_trip_search.html" %}</div>
 
         <ul class="hero-trust list-unstyled">
-            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Total price shown before you book</li>
-            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Pickup in {{ site.locations|length }} location{{ site.locations|length|pluralize }}</li>
-            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>Book online in under 2 minutes</li>
+            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{% translate "Total price shown before you book" %}</li>
+            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{% blocktranslate count n=site.locations|length %}Pickup in {{ n }} location{% plural %}Pickup in {{ n }} locations{% endblocktranslate %}</li>
+            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg>{% translate "Book online in under 2 minutes" %}</li>
         </ul>
     </div>
 </section>
@@ -75,17 +75,17 @@
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">Choose your car</h2>
-                <p class="section-sub">From city cars to family vans, all with unlimited kilometres.</p>
+                <h2 class="section-title">{% translate "Choose your car" %}</h2>
+                <p class="section-sub">{% translate "From city cars to family vans, all with unlimited kilometres." %}</p>
             </div>
-            <a href="{% url 'cars' %}" class="link-arrow">View all cars <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+            <a href="{% url 'cars' %}" class="link-arrow">{% translate "View all cars" %} <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
         </div>
 
         <div class="category-grid">
             {% for c in categories %}
             <a href="{% url 'cars' %}?category={{ c.key }}" class="category-tile">
                 <span class="category-name">{{ c.label }}</span>
-                <span class="category-count">{{ c.count }} car{{ c.count|pluralize }}</span>
+                <span class="category-count">{% blocktranslate count n=c.count %}{{ n }} car{% plural %}{{ n }} cars{% endblocktranslate %}</span>
                 <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg>
             </a>
             {% endfor %}
@@ -108,11 +108,11 @@
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>{{ car.get_fuel_display }}</li>
                         </ul>
                         <div class="car-tile-foot">
-                            <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
+                            <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> {% translate "/ day" %}</p>
                         </div>
                         <div class="car-tile-actions">
-                            <a href="{{ car.get_absolute_url }}" class="btn btn-nav-outline">Details</a>
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}" class="btn btn-gold">Book now</a>
+                            <a href="{{ car.get_absolute_url }}" class="btn btn-nav-outline">{% translate "Details" %}</a>
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}" class="btn btn-gold">{% translate "Book now" %}</a>
                         </div>
                     </div>
                 </article>
@@ -128,25 +128,25 @@
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">How it works</h2>
-                <p class="section-sub">Three steps, no paperwork at the counter.</p>
+                <h2 class="section-title">{% translate "How it works" %}</h2>
+                <p class="section-sub">{% translate "Three steps, no paperwork at the counter." %}</p>
             </div>
         </div>
         <ol class="steps list-unstyled">
             <li class="step">
-                <span class="step-num">1</span>
-                <h3 class="step-title">Choose a car</h3>
-                <p>Browse the fleet and compare prices, seats and transmission.</p>
+                <span class="step-num">{% translate "Step" %} 1</span>
+                <h3 class="step-title">{% translate "Choose a car" %}</h3>
+                <p>{% translate "Browse the fleet and compare prices, seats and transmission." %}</p>
             </li>
             <li class="step">
-                <span class="step-num">2</span>
-                <h3 class="step-title">Pick dates &amp; location</h3>
-                <p>Select pickup and return dates. You see the total price right away.</p>
+                <span class="step-num">{% translate "Step" %} 2</span>
+                <h3 class="step-title">{% translate "Pick dates & location" %}</h3>
+                <p>{% translate "Select pickup and return dates. You see the total price right away." %}</p>
             </li>
             <li class="step">
-                <span class="step-num">3</span>
-                <h3 class="step-title">Collect your keys</h3>
-                <p>We confirm your booking and have the car ready when you arrive.</p>
+                <span class="step-num">{% translate "Step" %} 3</span>
+                <h3 class="step-title">{% translate "Collect your keys" %}</h3>
+                <p>{% translate "We confirm your booking and have the car ready when you arrive." %}</p>
             </li>
         </ol>
     </div>
@@ -157,10 +157,10 @@
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">Rental terms at a glance</h2>
-                <p class="section-sub">No surprises at pickup. Here is what's included and what we need from you.</p>
+                <h2 class="section-title">{% translate "Rental terms at a glance" %}</h2>
+                <p class="section-sub">{% translate "No surprises at pickup. Here is what's included and what we need from you." %}</p>
             </div>
-            <a href="{% url 'rental_terms' %}" class="link-arrow">Full rental terms <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+            <a href="{% url 'rental_terms' %}" class="link-arrow">{% translate "Full rental terms" %} <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
         </div>
         {% include "_terms_grid.html" %}
     </div>
@@ -171,26 +171,26 @@
     <div class="container">
         <div class="row align-items-center g-4 g-lg-5">
             <div class="col-lg-6">
-                <img src="{% static 'image/hero.webp' %}" alt="A {{ site.name }} rental car" class="why-image w-100 object-fit-cover" loading="lazy">
+                <img src="{% static 'image/hero.webp' %}" alt="{% blocktranslate with name=site.name %}A {{ name }} rental car{% endblocktranslate %}" class="why-image w-100 object-fit-cover" loading="lazy">
             </div>
             <div class="col-lg-6">
-                <h2 class="section-title mb-4">Why rent with {{ site.name }}</h2>
+                <h2 class="section-title mb-4">{% blocktranslate with name=site.name %}Why rent with {{ name }}{% endblocktranslate %}</h2>
                 <ul class="why-list list-unstyled">
                     <li>
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
-                        <div><h3>Well-maintained cars</h3><p>Every car is cleaned and checked before each rental.</p></div>
+                        <div><h3>{% translate "Well-maintained cars" %}</h3><p>{% translate "Every car is cleaned and checked before each rental." %}</p></div>
                     </li>
                     <li>
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
-                        <div><h3>Clear pricing</h3><p>One daily price. The total is calculated before you confirm.</p></div>
+                        <div><h3>{% translate "Clear pricing" %}</h3><p>{% translate "One daily price. The total is calculated before you confirm." %}</p></div>
                     </li>
                     <li>
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
-                        <div><h3>Flexible pickup</h3><p>Collect your car in {{ site.locations_text }}.</p></div>
+                        <div><h3>{% translate "Flexible pickup" %}</h3><p>{% blocktranslate with locations=site.locations_text %}Collect your car in {{ locations }}.{% endblocktranslate %}</p></div>
                     </li>
                     <li>
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
-                        <div><h3>Local support</h3><p>A real team in {{ site.city }} you can call or message during your rental.</p></div>
+                        <div><h3>{% translate "Local support" %}</h3><p>{% blocktranslate with city=site.city_in %}A real team in {{ city }} you can call or message during your rental.{% endblocktranslate %}</p></div>
                     </li>
                 </ul>
             </div>
@@ -204,9 +204,9 @@
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">What customers say</h2>
+                <h2 class="section-title">{% translate "What customers say" %}</h2>
                 {% if rating_total %}
-                <p class="section-sub"><svg class="icon text-gold me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg><strong class="text-dark">{{ rating_avg }}</strong> out of 5 &middot; {{ rating_total }} review{{ rating_total|pluralize }}</p>
+                <p class="section-sub"><svg class="icon text-gold me-1" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star"></use></svg>{% blocktranslate with avg=rating_avg count n=rating_total %}<strong class="text-dark">{{ avg }}</strong> out of 5 · {{ n }} review{% plural %}<strong class="text-dark">{{ avg }}</strong> out of 5 · {{ n }} reviews{% endblocktranslate %}</p>
                 {% endif %}
             </div>
         </div>
@@ -214,7 +214,7 @@
             {% for review in reviews %}
             <div class="col-md-4">
                 <figure class="review h-100">
-                    <div class="review-rating" aria-label="{{ review.rating }} out of 5">{% for i in "12345" %}<svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star{% if forloop.counter > review.rating %}-o{% endif %}"></use></svg>{% endfor %}</div>
+                    <div class="review-rating" aria-label="{% blocktranslate with r=review.rating %}{{ r }} out of 5{% endblocktranslate %}">{% for i in "12345" %}<svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-star{% if forloop.counter > review.rating %}-o{% endif %}"></use></svg>{% endfor %}</div>
                     <blockquote>{{ review.text }}</blockquote>
                     <figcaption>{{ review.name }}</figcaption>
                 </figure>
@@ -230,31 +230,31 @@
     <div class="container">
         <div class="row g-4 g-lg-5">
             <div class="col-lg-4">
-                <h2 class="section-title">Questions &amp; answers</h2>
-                <p class="section-sub mb-4">Can't find what you're looking for?</p>
-                <a href="{% url 'contact' %}" class="link-arrow">Contact us <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+                <h2 class="section-title">{% translate "Questions & answers" %}</h2>
+                <p class="section-sub mb-4">{% translate "Can't find what you're looking for?" %}</p>
+                <a href="{% url 'contact' %}" class="link-arrow">{% translate "Contact us" %} <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
             </div>
             <div class="col-lg-8">
                 <div class="accordion faq" id="faqAccordion">
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">What documents do I need to rent a car?</button></h3>
-                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">A valid driving licence and an identity document (ID card or passport). Additional requirements may apply depending on the vehicle.</div></div>
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">{% translate "What documents do I need to rent a car?" %}</button></h3>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">{% translate "A valid driving licence and an identity document (ID card or passport). Additional requirements may apply depending on the vehicle." %}</div></div>
                     </div>
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">How do I book a car?</button></h3>
-                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Choose a car on the Cars page or use the search above, select your dates and pickup location, and submit the reservation. We confirm it by email or phone.</div></div>
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">{% translate "How do I book a car?" %}</button></h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">{% translate "Choose a car on the Cars page or use the search above, select your dates and pickup location, and submit the reservation. We confirm it by email or phone." %}</div></div>
                     </div>
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">Can I choose a specific car?</button></h3>
-                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. You book the exact model you select. The calendar shows which dates are already taken.</div></div>
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">{% translate "Can I choose a specific car?" %}</button></h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">{% translate "Yes. You book the exact model you select. The calendar shows which dates are already taken." %}</div></div>
                     </div>
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">Can I cancel my reservation?</button></h3>
-                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">{% for t in site.terms %}{% if t.icon == "calendar" %}{{ t.text }} {% endif %}{% endfor %}See all <a href="{% url 'rental_terms' %}">rental terms</a>.</div></div>
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">{% translate "Can I cancel my reservation?" %}</button></h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">{% for t in site.terms %}{% if t.icon == "calendar" %}{{ t.text }} {% endif %}{% endfor %}{% url 'rental_terms' as terms_url %}{% blocktranslate with url=terms_url %}See all <a href="{{ url }}">rental terms</a>.{% endblocktranslate %}</div></div>
                     </div>
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">How can I contact {{ site.name }}?</button></h3>
-                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Call us on {{ site.phone }}, email {{ site.email }}, or use the form on the Contact page.</div></div>
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">{% blocktranslate with name=site.name %}How can I contact {{ name }}?{% endblocktranslate %}</button></h3>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">{% blocktranslate with phone=site.phone email=site.email %}Call us on {{ phone }}, email {{ email }}, or use the form on the Contact page.{% endblocktranslate %}</div></div>
                     </div>
                 </div>
             </div>
@@ -267,12 +267,12 @@
     <div class="container">
         <div class="cta-band-inner">
             <div>
-                <h2>Not sure which car to pick?</h2>
-                <p>Call us and we'll help you choose the right car for your trip.</p>
+                <h2>{% translate "Not sure which car to pick?" %}</h2>
+                <p>{% translate "Call us and we'll help you choose the right car for your trip." %}</p>
             </div>
             <div class="cta-band-actions">
                 <a href="tel:{{ site.phone_link }}" class="btn btn-light"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg>{{ site.phone }}</a>
-                <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
+                <a href="{% url 'cars' %}" class="btn btn-gold">{% translate "Browse cars" %}</a>
             </div>
         </div>
     </div>

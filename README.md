@@ -90,6 +90,25 @@ Gjithë marka është në **një skedar**: [`car_app/branding.py`](car_app/brand
 Emri, ngjyra dhe kontaktet përditësohen automatikisht në të gjitha faqet, në email-e,
 te butoni WhatsApp, te manifesti i aplikacionit (PWA) dhe te të dhënat për Google.
 
+## Gjuhët (shqip / anglisht)
+
+- `/` = shqip (gjuha kryesore), `/en/...` = anglisht. Butoni **SQ / EN** në navbar çon te e njëjta faqe në gjuhën tjetër.
+- Për një klient që e do faqen kryesisht në anglisht: `LANGUAGE_CODE = "en"` te `mysite/settings.py`.
+- Tekstet e kompanisë (qyteti, orari, kushtet e qirasë) te `branding.py` mund të shkruhen si `{"sq": "...", "en": "..."}`.
+- Emailet e klientit dërgohen në gjuhën në të cilën bëri rezervimin.
+- Ndryshove ose shtove tekst në faqe:
+  ```bash
+  python manage.py makemessages -l sq --ignore=venv
+  # shto përkthimin te locale/sq_translations.py, pastaj:
+  python locale/sq_translations.py && python manage.py compilemessages -l sq --ignore=venv
+  ```
+
+## Rezultatet dhe raporti mujor
+
+- Admin → **Rezultatet**: rezervimet, vlera, klikimet WhatsApp / telefon / email, mesazhet nga Contact, nga erdhën klientët (Google, Instagram, Facebook...) dhe krahasimi i 6 muajve.
+- Raporti mujor me email: `python manage.py send_monthly_report` (në server: cron më 1 të çdo muaji).
+- Për kampanjat përdor lidhje me `?utm_source=instagram` (ose `facebook`, `google` etj.) që burimi të dalë saktë.
+
 ## Emailet
 
 Faqja dërgon automatikisht:

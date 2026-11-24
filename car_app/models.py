@@ -7,10 +7,15 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
 from .images import make_variants
 
 logger = logging.getLogger(__name__)
+
+def default_language():
+    return settings.LANGUAGE_CODE
+
 
 ACTIVE_STATUSES = ("pending", "confirmed")
 
@@ -25,17 +30,17 @@ class Stamped(models.Model):
 
 class Car(Stamped):
     CATEGORY_CHOICES = [
-        ("economy", "Economy"),
-        ("suv", "SUV"),
-        ("luxury", "Luxury"),
-        ("van", "Family / Van"),
+        ("economy", _("Economy")),
+        ("suv", _("SUV")),
+        ("luxury", _("Luxury")),
+        ("van", _("Family / Van")),
     ]
-    TRANSMISSION_CHOICES = [("manual", "Manual"), ("automatic", "Automatic")]
+    TRANSMISSION_CHOICES = [("manual", _("Manual")), ("automatic", _("Automatic"))]
     FUEL_CHOICES = [
-        ("petrol", "Petrol"),
-        ("diesel", "Diesel"),
-        ("hybrid", "Hybrid"),
-        ("electric", "Electric"),
+        ("petrol", _("Petrol")),
+        ("diesel", _("Diesel")),
+        ("hybrid", _("Hybrid")),
+        ("electric", _("Electric")),
     ]
 
     brand = models.CharField(max_length=60)
@@ -114,6 +119,10 @@ class Reservation(Stamped):
     notes = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, editable=False)
+    language = models.CharField(
+        max_length=8, default=default_language, editable=False,
+        help_text="Gjuha në të cilën u bë rezervimi (emailet e klientit dërgohen në këtë gjuhë).",
+    )
     cancel_requested_at = models.DateTimeField(
         null=True, blank=True,
         help_text="Klienti kërkoi anulimin nga 'My bookings'. Vendos ti: ndrysho statusin në 'Anuluar' ose kontakto klientin.",
@@ -149,17 +158,17 @@ class Reservation(Stamped):
         if not (self.pickup_date and self.return_date):
             return
         if self.return_date <= self.pickup_date:
-            raise ValidationError("The return date must be after the pickup date.")
+            raise ValidationError(_("The return date must be after the pickup date."))
         if self._state.adding and self.pickup_date < timezone.localdate():
-            raise ValidationError("The pickup date cannot be in the past.")
+            raise ValidationError(_("The pickup date cannot be in the past."))
         if self.days > self.MAX_DAYS:
-            raise ValidationError(f"A reservation cannot be longer than {self.MAX_DAYS} days.")
+            raise ValidationError(_("A reservation cannot be longer than %(days)s days.") % {"days": self.MAX_DAYS})
         if (
             self.car_id
             and self.status in ACTIVE_STATUSES
             and self.overlapping(self.car_id, self.pickup_date, self.return_date, self.pk).exists()
         ):
-            raise ValidationError("This car is already booked on the selected dates.")
+            raise ValidationError(_("This car is already booked on the selected dates."))
 
     def save(self, *args, **kwargs):
         if self.car_id:

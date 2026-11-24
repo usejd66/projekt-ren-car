@@ -44,6 +44,7 @@
     if (!form || !window.RangePicker) return;
 
     const $ = (id) => document.getElementById(id);
+    const T = window.I18N;
     const price = parseFloat(form.dataset.price) || 0;
     const booked = JSON.parse($("bookedData").textContent); // [{from, to}]
     const start = $("bookPickup"), end = $("bookReturn");
@@ -57,8 +58,8 @@
     function update() {
         const days = range.nights();
         const hit = conflict();
-        showError(hit ? `Booked from ${RangePicker.nice(hit.from)} to ${RangePicker.nice(hit.to)}. Please choose other dates.` : "");
-        $("bookRateLabel").textContent = days ? `${money(price)} × ${days} ${days === 1 ? "day" : "days"}` : "Choose your dates";
+        showError(hit ? T.fmt(T.bookedFromTo, RangePicker.nice(hit.from), RangePicker.nice(hit.to)) : "");
+        $("bookRateLabel").textContent = days ? `${money(price)} × ${T.plural(days)}` : T.chooseDates;
         $("bookRate").textContent = days ? money(price * days) : "—";
         $("bookTotal").textContent = money(price * days);
 
@@ -66,13 +67,16 @@
         const barTotal = $("barTotal"), barLabel = $("barLabel"), barBtn = $("barBtn");
         if (barTotal) {
             if (days && !hit) {
-                barLabel.textContent = `${days} ${days === 1 ? "day" : "days"} total`;
+                barLabel.textContent = `${T.plural(days)} · ${T.total}`;
                 barTotal.textContent = money(price * days);
-                barBtn.textContent = "Continue";
+                barBtn.textContent = T.continueLabel;
             } else {
-                barLabel.textContent = "From";
-                barTotal.innerHTML = `${money(price)}<small> / day</small>`;
-                barBtn.textContent = "Check dates";
+                barLabel.textContent = T.from;
+                barTotal.textContent = money(price);
+                const small = document.createElement("small");
+                small.textContent = ` ${T.perDay}`;
+                barTotal.append(small);
+                barBtn.textContent = T.checkDates;
             }
         }
     }

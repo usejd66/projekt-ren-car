@@ -1,10 +1,10 @@
-{% autoescape off %}New reservation #{{ booking.pk }} – waiting for your confirmation.
+{% load i18n %}{% autoescape off %}{% blocktranslate with n=booking.pk %}New reservation #{{ n }}{% endblocktranslate %} – {% translate "A new booking is waiting for your confirmation." %}
 
 {% include "emails/_booking_lines.txt" %}
-Customer: {{ booking.full_name }}
-Email:    {{ booking.email }}
-Phone:    {{ booking.phone }}
-{% if booking.notes %}Notes:    {{ booking.notes }}
+{% translate "Customer" %}: {{ booking.full_name }}
+{% translate "Email" %}: {{ booking.email }}
+{% translate "Phone" %}: {{ booking.phone }}
+{% if booking.notes %}{% translate "Notes" %}: {{ booking.notes }}
 {% endif %}
-Open in admin: {{ admin_url }}
+{% translate "Open in admin" %}: {{ admin_url }}
 {% endautoescape %}

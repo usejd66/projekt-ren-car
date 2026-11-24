@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% load static car_images %}
+{% load static i18n car_images %}
 
-{% block title %}Car Rental {% if is_airport %}at{% else %}in{% endif %} {{ location }} | {{ site.name }}{% endblock %}
+{% block title %}{% if is_airport %}{% blocktranslate with loc=location name=site.name %}Car Rental at {{ loc }} | {{ name }}{% endblocktranslate %}{% else %}{% blocktranslate with loc=location name=site.name %}Car Rental in {{ loc }} | {{ name }}{% endblocktranslate %}{% endif %}{% endblock %}
 {% block meta %}
-<meta name="description" content="Rent a car {% if is_airport %}at{% else %}in{% endif %} {{ location }} with {{ site.name }}{% if min_price %} from €{{ min_price|floatformat:'-2' }} per day{% endif %}. Clear prices, unlimited kilometres and easy online booking.">
-<meta property="og:title" content="Car Rental {% if is_airport %}at{% else %}in{% endif %} {{ location }} | {{ site.name }}">
+<meta name="description" content="{% blocktranslate with loc=location name=site.name %}Rent a car in {{ loc }} with {{ name }}. Clear prices, unlimited kilometres and easy online booking.{% endblocktranslate %}">
+<meta property="og:title" content="{% blocktranslate with loc=location name=site.name %}Car Rental in {{ loc }} | {{ name }}{% endblocktranslate %}">
 {% endblock %}
 
 {% block head_extra %}
@@ -14,13 +14,13 @@
 {% block content %}
 <section class="cars-trip loc-hero">
     <div class="container">
-        <nav class="car-crumbs" aria-label="Breadcrumb">
-            <a href="{% url 'index' %}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ location }}</span>
+        <nav class="car-crumbs" aria-label="{% translate 'Breadcrumb' %}">
+            <a href="{% url 'index' %}">{% translate "Home" %}</a><span aria-hidden="true">/</span><span aria-current="page">{{ location }}</span>
         </nav>
-        <h1>Car rental {% if is_airport %}at{% else %}in{% endif %} {{ location }}</h1>
+        <h1>{% if is_airport %}{% blocktranslate with loc=location %}Car rental at {{ loc }}{% endblocktranslate %}{% else %}{% blocktranslate with loc=location %}Car rental in {{ loc }}{% endblocktranslate %}{% endif %}</h1>
         <p class="loc-lead">
-            {% if is_airport %}Pick up your car right when you land and start your trip without queues or taxis.{% else %}Collect your car in {{ location }} at a time that suits you and drive wherever you want.{% endif %}
-            {% if min_price %}Prices from <strong>€{{ min_price|floatformat:"-2" }} per day</strong>.{% endif %}
+            {% if is_airport %}{% translate "Pick up your car right when you land and start your trip without queues or taxis." %}{% else %}{% blocktranslate with loc=location %}Collect your car in {{ loc }} at a time that suits you and drive wherever you want.{% endblocktranslate %}{% endif %}
+            {% if min_price %}{% blocktranslate with price=min_price|floatformat:"-2" %}Prices from <strong>€{{ price }} per day</strong>.{% endblocktranslate %}{% endif %}
         </p>
         {% include "_trip_search.html" %}
     </div>
@@ -31,10 +31,10 @@
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">Cars available in {{ location }}</h2>
-                <p class="section-sub">Choose your dates above to see the total price.</p>
+                <h2 class="section-title">{% blocktranslate with loc=location %}Cars available in {{ loc }}{% endblocktranslate %}</h2>
+                <p class="section-sub">{% translate "Choose your dates above to see the total price." %}</p>
             </div>
-            <a href="{% url 'cars' %}?pickup_location={{ location|urlencode }}" class="link-arrow">All cars <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+            <a href="{% url 'cars' %}?pickup_location={{ location|urlencode }}" class="link-arrow">{% translate "All cars" %} <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
         </div>
         <div class="row g-4">
             {% for car in cars %}
@@ -49,10 +49,10 @@
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>{{ car.get_transmission_display }}</li>
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>{{ car.get_fuel_display }}</li>
                         </ul>
-                        <div class="car-tile-foot"><p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p></div>
+                        <div class="car-tile-foot"><p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> {% translate "/ day" %}</p></div>
                         <div class="car-tile-actions">
-                            <a href="{{ car.get_absolute_url }}?pickup_location={{ location|urlencode }}" class="btn btn-nav-outline">Details</a>
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}&pickup_location={{ location|urlencode }}" class="btn btn-gold">Book now</a>
+                            <a href="{{ car.get_absolute_url }}?pickup_location={{ location|urlencode }}" class="btn btn-nav-outline">{% translate "Details" %}</a>
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}&pickup_location={{ location|urlencode }}" class="btn btn-gold">{% translate "Book now" %}</a>
                         </div>
                     </div>
                 </article>
@@ -66,8 +66,8 @@
 <section class="section section-muted">
     <div class="container">
         <div class="section-head">
-            <div><h2 class="section-title">Rental terms</h2></div>
-            <a href="{% url 'rental_terms' %}" class="link-arrow">Full rental terms <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+            <div><h2 class="section-title">{% translate "Rental terms" %}</h2></div>
+            <a href="{% url 'rental_terms' %}" class="link-arrow">{% translate "Full rental terms" %} <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
         </div>
         {% include "_terms_grid.html" %}
     </div>
@@ -75,7 +75,7 @@
 
 <section class="section">
     <div class="container">
-        <h2 class="section-title mb-3">Other pickup locations</h2>
+        <h2 class="section-title mb-3">{% translate "Other pickup locations" %}</h2>
         <div class="chips">
             {% for loc in locations %}{% if loc != location %}<a href="{% url 'location' loc|slugify %}" class="chip">{{ loc }}</a>{% endif %}{% endfor %}
         </div>

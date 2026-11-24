@@ -1,13 +1,13 @@
-{% extends "emails/_base.html" %}
+{% extends "emails/_base.html" %}{% load i18n %}
 {% block content %}
-<h1 style="margin:0 0 8px;font-size:22px;">New reservation #{{ booking.pk }}</h1>
-<p style="margin:0;color:#334155;">A new booking is waiting for your confirmation.</p>
+<h1 style="margin:0 0 8px;font-size:22px;">{% blocktranslate with n=booking.pk %}New reservation #{{ n }}{% endblocktranslate %}</h1>
+<p style="margin:0;color:#334155;">{% translate "A new booking is waiting for your confirmation." %}</p>
 {% include "emails/_booking_table.html" %}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px;font-size:14px;">
-  <tr><td style="padding:4px 0;color:#64748b;width:90px;">Customer</td><td style="padding:4px 0;font-weight:600;">{{ booking.full_name }}</td></tr>
-  <tr><td style="padding:4px 0;color:#64748b;">Email</td><td style="padding:4px 0;"><a href="mailto:{{ booking.email }}" style="color:#0b0f19;">{{ booking.email }}</a></td></tr>
-  <tr><td style="padding:4px 0;color:#64748b;">Phone</td><td style="padding:4px 0;"><a href="tel:{{ booking.phone }}" style="color:#0b0f19;">{{ booking.phone }}</a></td></tr>
-  {% if booking.notes %}<tr><td style="padding:4px 0;color:#64748b;vertical-align:top;">Notes</td><td style="padding:4px 0;">{{ booking.notes|linebreaksbr }}</td></tr>{% endif %}
+  <tr><td style="padding:4px 0;color:#64748b;width:90px;">{% translate "Customer" %}</td><td style="padding:4px 0;font-weight:600;">{{ booking.full_name }}</td></tr>
+  <tr><td style="padding:4px 0;color:#64748b;">{% translate "Email" %}</td><td style="padding:4px 0;"><a href="mailto:{{ booking.email }}" style="color:#0b0f19;">{{ booking.email }}</a></td></tr>
+  <tr><td style="padding:4px 0;color:#64748b;">{% translate "Phone" %}</td><td style="padding:4px 0;"><a href="tel:{{ booking.phone }}" style="color:#0b0f19;">{{ booking.phone }}</a></td></tr>
+  {% if booking.notes %}<tr><td style="padding:4px 0;color:#64748b;vertical-align:top;">{% translate "Notes" %}</td><td style="padding:4px 0;">{{ booking.notes|linebreaksbr }}</td></tr>{% endif %}
 </table>
-<a href="{{ admin_url }}" style="display:inline-block;padding:12px 22px;background:{{ site.color }};color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">Open in admin</a>
+<a href="{{ admin_url }}" style="display:inline-block;padding:12px 22px;background:{{ site.color }};color:#ffffff;text-decoration:none;font-weight:700;border-radius:8px;">{% translate "Open in admin" %}</a>
 {% endblock %}

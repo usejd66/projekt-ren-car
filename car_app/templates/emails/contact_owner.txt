@@ -1,9 +1,9 @@
-{% autoescape off %}New message from the website
+{% load i18n %}{% autoescape off %}{% translate "New message from the website" %}
 
-From:    {{ message.name }} <{{ message.email }}>
-Subject: {{ message.subject }}
+{% translate "From" %}: {{ message.name }} <{{ message.email }}>
+{% translate "Subject" %}: {{ message.subject }}
 
 {{ message.message }}
 
-Reply to this email to answer {{ message.name }} directly.
+{% blocktranslate with name=message.name %}Reply to this email to answer {{ name }} directly.{% endblocktranslate %}
 {% endautoescape %}

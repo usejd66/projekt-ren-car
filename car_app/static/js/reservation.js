@@ -7,6 +7,7 @@ const [form, carSel, pickup, ret, pickLoc, err] =
     ["reservationForm", "carSelect", "pickupDate", "returnDate", "id_pickup_location", "formError"].map($);
 const booked = JSON.parse($("bookedData").textContent); // {car_id: [{from, to}]}
 const MS_DAY = 864e5;
+const T = window.I18N;
 
 /* ---------- Helpers ---------- */
 const car = () => {
@@ -29,7 +30,7 @@ function update() {
         ? Math.max(0, Math.round((Date.parse(ret.value) - Date.parse(pickup.value)) / MS_DAY)) : 0;
     const total = (c ? c.price : 0) * days;
 
-    showError(hit ? `This car is booked from ${fmt(hit.from)} to ${fmt(hit.to)}. Please choose different dates.` : "");
+    showError(hit ? T.fmt(T.bookedFromTo, fmt(hit.from), fmt(hit.to)) : "");
 
     // karta e makinës së zgjedhur
     $("selectedCarWrapper").classList.toggle("d-none", !c);
@@ -38,20 +39,20 @@ function update() {
         $("selectedCarImage").alt = c.name;
         set("selectedCarName", c.name);
         set("selectedCarCategory", c.category);
-        set("selectedCarSeats", `${c.seats} seats`);
+        set("selectedCarSeats", T.fmt(T.seats, c.seats));
         set("selectedCarTransmission", c.transmission);
         set("selectedCarFuel", c.fuel);
         set("selectedCarPrice", money(c.price));
     }
 
     // përmbledhja
-    set("summaryVehicle", c ? c.name : "No car selected");
+    set("summaryVehicle", c ? c.name : T.noCar);
     set("summaryPickup", pickup.value
         ? fmt(pickup.value) + (pickLoc.value ? ` · ${pickLoc.value}` : "")
         : (pickLoc.value || "—"));
     set("summaryReturn", ret.value ? fmt(ret.value) : "—");
-    set("summaryRateLabel", c && days ? `${money(c.price)} × ${days} ${days === 1 ? "day" : "days"}` : "Daily rate");
-    set("summaryRate", c ? (days ? money(total) : `${money(c.price)} / day`) : "—");
+    set("summaryRateLabel", c && days ? `${money(c.price)} × ${T.plural(days)}` : T.dailyRate);
+    set("summaryRate", c ? (days ? money(total) : `${money(c.price)} ${T.perDay}`) : "—");
     set("summaryTotal", money(total));
     set("summaryTotalMobile", money(total));
 }
@@ -77,11 +78,11 @@ pickLoc.addEventListener("change", update);
 
 form.addEventListener("submit", (e) => {
     const c = car();
-    const msg = !c ? "Please select a car."
-        : !pickLoc.value ? "Please select a pickup location."
-        : !pickup.value || !ret.value ? "Please select your dates."
-        : ret.value <= pickup.value ? "The return date must be after the pickup date."
-        : conflict(c) ? "This car is booked on the selected dates." : "";
+    const msg = !c ? T.selectCar
+        : !pickLoc.value ? T.selectLocation
+        : !pickup.value || !ret.value ? T.selectDates
+        : ret.value <= pickup.value ? T.returnAfter
+        : conflict(c) ? T.bookedOnDates : "";
 
     if (msg) {
         e.preventDefault();

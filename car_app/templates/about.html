@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}About Us | {{ site.name }}{% endblock %}
+{% block title %}{% translate "About Us" %} | {{ site.name }}{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="{{ site.name }} is a car rental company in {{ site.city }} offering modern cars, clear prices and simple online booking, with pickup in {{ site.locations_text }}.">
+    <meta name="description" content="{% blocktranslate with name=site.name city=site.city_in locations=site.locations_text %}{{ name }} is a car rental company in {{ city }} offering modern cars, clear prices and simple online booking, with pickup in {{ locations }}.{% endblocktranslate %}">
     <meta name="author" content="{{ site.name }}">
 {% endblock %}
 
 {% block content %}
 <header class="page-head">
     <div class="container">
-        <h1>About {{ site.name }}</h1>
-        <p>A local car rental company in {{ site.city }}, built around one idea: renting a car should be simple.</p>
+        <h1>{% blocktranslate with name=site.name %}About {{ name }}{% endblocktranslate %}</h1>
+        <p>{% blocktranslate with city=site.city_in %}A local car rental company in {{ city }}, built around one idea: renting a car should be simple.{% endblocktranslate %}</p>
     </div>
 </header>
 
@@ -21,15 +21,15 @@
     <div class="container">
         <div class="row align-items-center g-4 g-lg-5">
             <div class="col-lg-6">
-                <img src="{% static 'image/cars/range.webp' %}" alt="A {{ site.name }} rental car" class="about-image" width="1400" height="788" loading="lazy">
+                <img src="{% static 'image/cars/range.webp' %}" alt="{% blocktranslate with name=site.name %}A {{ name }} rental car{% endblocktranslate %}" class="about-image" width="1400" height="788" loading="lazy">
             </div>
             <div class="col-lg-6">
-                <h2 class="section-title mb-3">Your trip, our cars</h2>
+                <h2 class="section-title mb-3">{% translate "Your trip, our cars" %}</h2>
                 <div class="about-text">
-                    <p>Whether you are travelling for business, on holiday, or just need a reliable car for a few days, we want the rental to be the easy part of your trip.</p>
-                    <p>That is why you see the total price before you book, you can reserve online in a couple of minutes, and a real team in {{ site.city }} is there when you need help.</p>
+                    <p>{% translate "Whether you are travelling for business, on holiday, or just need a reliable car for a few days, we want the rental to be the easy part of your trip." %}</p>
+                    <p>{% blocktranslate with city=site.city_in %}That is why you see the total price before you book, you can reserve online in a couple of minutes, and a real team in {{ city }} is there when you need help.{% endblocktranslate %}</p>
                 </div>
-                <a href="{% url 'cars' %}" class="link-arrow">See our cars <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
+                <a href="{% url 'cars' %}" class="link-arrow">{% translate "See our cars" %} <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-arrow-right"></use></svg></a>
             </div>
         </div>
     </div>
@@ -40,25 +40,25 @@
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">What we stand for</h2>
-                <p class="section-sub">Three promises behind every rental.</p>
+                <h2 class="section-title">{% translate "What we stand for" %}</h2>
+                <p class="section-sub">{% translate "Three promises behind every rental." %}</p>
             </div>
         </div>
         <div class="values">
             <div class="value">
                 <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-car-side"></use></svg>
-                <h3>Well-kept cars</h3>
-                <p>Every car is cleaned and checked before each rental, so it is ready when you are.</p>
+                <h3>{% translate "Well-kept cars" %}</h3>
+                <p>{% translate "Every car is cleaned and checked before each rental, so it is ready when you are." %}</p>
             </div>
             <div class="value">
                 <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-check"></use></svg>
-                <h3>Clear prices</h3>
-                <p>One daily price and a total you see before you confirm. No surprises at pickup.</p>
+                <h3>{% translate "Clear prices" %}</h3>
+                <p>{% translate "One daily price and a total you see before you confirm. No surprises at pickup." %}</p>
             </div>
             <div class="value">
                 <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-headset"></use></svg>
-                <h3>Real support</h3>
-                <p>Questions before or during your rental? Call or message our team in {{ site.city }}.</p>
+                <h3>{% translate "Real support" %}</h3>
+                <p>{% blocktranslate with city=site.city_in %}Questions before or during your rental? Call or message our team in {{ city }}.{% endblocktranslate %}</p>
             </div>
         </div>
     </div>
@@ -69,15 +69,15 @@
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">Where to pick up your car</h2>
-                <p class="section-sub">Choose the location when you book.</p>
+                <h2 class="section-title">{% translate "Where to pick up your car" %}</h2>
+                <p class="section-sub">{% translate "Choose the location when you book." %}</p>
             </div>
         </div>
         <div class="category-grid locations-grid">
             {% for loc in site.locations %}
             <div class="category-tile">
                 <span class="category-name">{{ loc }}</span>
-                <span class="category-count">Pickup &amp; return</span>
+                <span class="category-count">{% translate "Pickup & return" %}</span>
                 <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg>
             </div>
             {% endfor %}
@@ -89,12 +89,12 @@
     <div class="container">
         <div class="cta-band-inner">
             <div>
-                <h2>Ready when you are</h2>
-                <p>Pick your dates and see which cars are available.</p>
+                <h2>{% translate "Ready when you are" %}</h2>
+                <p>{% translate "Pick your dates and see which cars are available." %}</p>
             </div>
             <div class="cta-band-actions">
-                <a href="{% url 'contact' %}" class="btn btn-light">Contact us</a>
-                <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
+                <a href="{% url 'contact' %}" class="btn btn-light">{% translate "Contact us" %}</a>
+                <a href="{% url 'cars' %}" class="btn btn-gold">{% translate "Browse cars" %}</a>
             </div>
         </div>
     </div>

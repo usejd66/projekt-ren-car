@@ -2,6 +2,7 @@ import hashlib
 from urllib.parse import urlparse
 from datetime import date
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -15,6 +16,8 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.text import slugify
+from django.utils.translation import get_language
+from django.utils.translation import gettext as _
 from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -48,14 +51,14 @@ def _parse_trip(get):
     try:
         start, end = date.fromisoformat(raw_start), date.fromisoformat(raw_end)
     except ValueError:
-        trip["error"] = "Please choose both a pickup and a return date."
+        trip["error"] = _("Please choose both a pickup and a return date.")
         return trip
     if start < timezone.localdate():
-        trip["error"] = "The pickup date cannot be in the past."
+        trip["error"] = _("The pickup date cannot be in the past.")
     elif end <= start:
-        trip["error"] = "The return date must be after the pickup date."
+        trip["error"] = _("The return date must be after the pickup date.")
     elif (end - start).days > Reservation.MAX_DAYS:
-        trip["error"] = f"A rental cannot be longer than {Reservation.MAX_DAYS} days."
+        trip["error"] = _("A rental cannot be longer than %(days)s days.") % {"days": Reservation.MAX_DAYS}
     else:
         trip.update(start=start, end=end, days=(end - start).days)
     return trip
@@ -224,7 +227,7 @@ def contact(request):
         Lead.objects.create(kind="contact", source=request.session.get("src", "direct"), page=request.path)
         messages.success(
             request,
-            "Thank you! Your message has been sent. We'll get back to you shortly.",
+            _("Thank you! Your message has been sent. We'll get back to you shortly."),
         )
         return redirect("contact")
 
@@ -271,12 +274,12 @@ def reservation(request):
             ).exists():
                 form.add_error(
                     None,
-                    "This car was just booked for the selected dates. "
-                    "Please choose different dates.",
+                    _("This car was just booked for the selected dates. Please choose different dates."),
                 )
             else:
                 booking = form.save(commit=False)
                 booking.user = user if user.is_authenticated else None
+                booking.language = get_language() or settings.LANGUAGE_CODE
                 booking.save()
 
                 emails.booking_received(booking)
@@ -322,19 +325,19 @@ def my_bookings(request):
 def cancel_booking(request, pk):
     booking = get_object_or_404(Reservation, pk=pk, user=request.user)  # vetëm rezervimet e veta
     if not booking.can_cancel:
-        messages.error(request, "This booking can no longer be cancelled online. Please contact us.")
+        messages.error(request, _("This booking can no longer be cancelled online. Please contact us."))
     elif booking.status == "pending":
         # ende i pakonfirmuar: anulohet menjëherë, datat lirohen
         booking.status = "cancelled"
         booking.save(update_fields=["status"])
         emails.booking_cancelled_by_customer(booking, requested=False)
-        messages.success(request, f"Booking #{booking.pk} has been cancelled.")
+        messages.success(request, _("Booking #%(n)s has been cancelled.") % {"n": booking.pk})
     else:
         # i konfirmuar: kërkesë që e shqyrton pronari
         booking.cancel_requested_at = timezone.now()
         booking.save(update_fields=["cancel_requested_at"])
         emails.booking_cancelled_by_customer(booking, requested=True)
-        messages.success(request, "Your cancellation request was sent. We'll contact you shortly.")
+        messages.success(request, _("Your cancellation request was sent. We'll contact you shortly."))
     return redirect("my_bookings")
 
 
@@ -383,7 +386,7 @@ def signup(request):
 
             messages.success(
                 request,
-                f"Your account has been created. Welcome to {branding.BRAND['name']}!",
+                _("Your account has been created. Welcome to %(name)s!") % {"name": branding.BRAND["name"]},
             )
             return redirect("index")
     else:
@@ -400,7 +403,7 @@ def subscribe(request):
             form.save()
             messages.success(
                 request,
-                "Thank you! You are now subscribed to our newsletter.",
+                _("Thank you! You are now subscribed to our newsletter."),
             )
         else:
             email_errors = form.errors.get("email")

@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Create Account | {{ site.name }}{% endblock %}
+{% block title %}{% translate "Create Account" %} | {{ site.name }}{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Create your {{ site.name }} account to reserve your next rental car faster.">
+<meta name="description" content="{% blocktranslate with name=site.name %}Create your {{ name }} account to reserve your next rental car faster.{% endblocktranslate %}">
 <meta name="robots" content="noindex">
 {% endblock %}
 
 {% block content %}
 <section class="auth">
     <div class="auth-card">
-        <h1>Create your account</h1>
-        <p class="auth-sub">Book faster next time, with your details already filled in.</p>
+        <h1>{% translate "Create your account" %}</h1>
+        <p class="auth-sub">{% translate "Book faster next time, with your details already filled in." %}</p>
 
         {% if form.non_field_errors %}
         <div class="alert alert-danger" role="alert">{% for e in form.non_field_errors %}{{ e }} {% endfor %}</div>
@@ -22,35 +22,35 @@
             {% csrf_token %}
 
             <div class="mb-3">
-                <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                <label for="{{ form.username.id_for_label }}" class="form-label">{% translate "Username" %}</label>
                 {{ form.username }}
                 {% for e in form.username.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
             </div>
 
             <div class="mb-3">
-                <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                <label for="{{ form.email.id_for_label }}" class="form-label">{% translate "Email" %}</label>
                 {{ form.email }}
                 {% for e in form.email.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
             </div>
 
             <div class="mb-3">
-                <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
+                <label for="{{ form.password1.id_for_label }}" class="form-label">{% translate "Password" %}</label>
                 <div class="password-field">
                     {{ form.password1 }}
-                    <button class="password-toggle" type="button" aria-label="Show or hide password"
+                    <button class="password-toggle" type="button" aria-label="{% translate 'Show or hide password' %}"
                             onclick="togglePassword('{{ form.password1.id_for_label }}', this)">
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-eye"></use></svg>
                     </button>
                 </div>
                 {% for e in form.password1.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
-                <p class="form-text">At least 8 characters, not only numbers.</p>
+                <p class="form-text">{% translate "At least 8 characters, not only numbers." %}</p>
             </div>
 
             <div class="mb-4">
-                <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm password</label>
+                <label for="{{ form.password2.id_for_label }}" class="form-label">{% translate "Confirm password" %}</label>
                 <div class="password-field">
                     {{ form.password2 }}
-                    <button class="password-toggle" type="button" aria-label="Show or hide password"
+                    <button class="password-toggle" type="button" aria-label="{% translate 'Show or hide password' %}"
                             onclick="togglePassword('{{ form.password2.id_for_label }}', this)">
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-eye"></use></svg>
                     </button>
@@ -58,10 +58,10 @@
                 {% for e in form.password2.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
             </div>
 
-            <button type="submit" class="btn btn-gold summary-btn mt-0">Create account</button>
+            <button type="submit" class="btn btn-gold summary-btn mt-0">{% translate "Create account" %}</button>
         </form>
 
-        <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+        <p class="auth-switch">{% translate "Already have an account?" %} <a href="{% url 'login' %}">{% translate "Sign in" %}</a></p>
     </div>
 </section>
 {% endblock %}

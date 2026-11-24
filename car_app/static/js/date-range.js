@@ -18,6 +18,16 @@ window.RangePicker = (() => {
     const iso = (d) => flatpickr.formatDate(d, "Y-m-d");
     const nice = (value) => (value ? value.split("-").reverse().join("/") : "");
     const mobile = window.matchMedia("(max-width: 575.98px)");
+    const T = window.I18N || { selectPickup: "Select pickup date", selectReturn: "Select return date",
+                               thenReturn: "Then choose the return date", pickupOn: "Pickup: {date}", lang: "en",
+                               fmt: (s, a) => s.replace(/\{\w+\}/, a) };
+    // emrat shqip të muajve dhe ditëve (flatpickr është anglisht si parazgjedhje)
+    const SQ = {
+        weekdays: { shorthand: ["Die", "Hën", "Mar", "Mër", "Enj", "Pre", "Sht"],
+                    longhand: ["E Diel", "E Hënë", "E Martë", "E Mërkurë", "E Enjte", "E Premte", "E Shtunë"] },
+        months: { shorthand: ["Jan", "Shk", "Mar", "Pri", "Maj", "Qer", "Kor", "Gus", "Sht", "Tet", "Nën", "Dhj"],
+                  longhand: ["Janar", "Shkurt", "Mars", "Prill", "Maj", "Qershor", "Korrik", "Gusht", "Shtator", "Tetor", "Nëntor", "Dhjetor"] },
+    };
 
     /* Pozicionimi i kalendarit. Pozicionimi i vetë flatpickr, kur kalendari nuk nxë në
        ekran, lexon CSS-në e domain-eve të tjera (Google Fonts, CDN) dhe hedh SecurityError. */
@@ -58,8 +68,8 @@ window.RangePicker = (() => {
             endDisplay.value = nice(end.value);
             if (hint) {
                 const pickingEnd = active === endDisplay && start.value;
-                hint.firstChild.textContent = pickingEnd ? "Select return date" : "Select pickup date";
-                hint.lastChild.textContent = pickingEnd ? `Pickup: ${nice(start.value)}` : "Then choose the return date";
+                hint.firstChild.textContent = pickingEnd ? T.selectReturn : T.selectPickup;
+                hint.lastChild.textContent = pickingEnd ? T.fmt(T.pickupOn, nice(start.value)) : T.thenReturn;
             }
             startDisplay.classList.toggle("is-picking", active === startDisplay && fp.isOpen);
             endDisplay.classList.toggle("is-picking", active === endDisplay && fp.isOpen);
@@ -74,7 +84,7 @@ window.RangePicker = (() => {
             clickOpens: false,
             positionElement: startDisplay,
             position: place,
-            locale: { firstDayOfWeek: 1, rangeSeparator: " – " },
+            locale: { ...(T.lang === "sq" ? SQ : {}), firstDayOfWeek: 1, rangeSeparator: " – " },
             disable: [(d) => isBooked(iso(d))],
             onDayCreate: (_, __, inst, el) => { if (isBooked(iso(el.dateObj))) el.classList.add("booked"); },
             onReady: (_, __, inst) => {

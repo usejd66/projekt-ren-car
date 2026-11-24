@@ -1,10 +1,10 @@
-{% autoescape off %}Hi {{ booking.full_name }},
+{% load i18n %}{% autoescape off %}{% blocktranslate with name=booking.full_name %}Hi {{ name }},{% endblocktranslate %}
 
-Your reservation #{{ booking.pk }} for the {{ booking.car }} ({{ booking.pickup_date|date:"j M" }} – {{ booking.return_date|date:"j M Y" }}) has been cancelled.
+{% blocktranslate with n=booking.pk car=booking.car start=booking.pickup_date|date:"j M" end=booking.return_date|date:"j M Y" %}Your reservation #{{ n }} for the {{ car }} ({{ start }} – {{ end }}) has been cancelled.{% endblocktranslate %}
 
-If this is unexpected or you'd like to book different dates, reply to this email or call {{ site.phone }}.
+{% translate "If this is unexpected or you'd like to book different dates, reply to this email or call" %} {{ site.phone }}.
 
-See available cars: {{ site_url }}{% url 'cars' %}
+{% translate "See available cars" %}: {{ site_url }}{% url 'cars' %}
 
 {{ site.name }}
 {% endautoescape %}

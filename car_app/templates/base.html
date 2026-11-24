@@ -1,10 +1,10 @@
-{% load static %}
+{% load static i18n i18n_urls %}{% get_current_language as LANG %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANG }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>{% block title %}{{ site.name }} – Car Rental in {{ site.city }}{% endblock %}</title>
+    <title>{% block title %}{% blocktranslate with name=site.name city=site.city_in %}{{ name }} – Car Rental in {{ city }}{% endblocktranslate %}{% endblock %}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/favicon-32.png' %}">
     <link rel="apple-touch-icon" href="{% static 'image/apple-touch-icon.png' %}">
     <link rel="manifest" href="{% url 'manifest' %}">
@@ -12,12 +12,15 @@
     <meta name="apple-mobile-web-app-title" content="{{ site.name }}">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="canonical" href="{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
+    {# Google: e njëjta faqe në gjuhët e tjera #}
+    {% languages as langs %}{% for code, name in langs %}<link rel="alternate" hreflang="{{ code }}" href="{{ request.scheme }}://{{ request.get_host }}{% lang_url code %}">
+    {% endfor %}<link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{% lang_url 'sq' %}">
 
     {% block meta %}
-    <meta name="description" content="Rent a car in {{ site.city }} with {{ site.name }}: modern cars, clear prices and easy online booking.">
+    <meta name="description" content="{% blocktranslate with name=site.name city=site.city_in %}Rent a car in {{ city }} with {{ name }}: modern cars, clear prices and easy online booking.{% endblocktranslate %}">
     <meta name="author" content="{{ site.name }}">
-    <meta property="og:title" content="{{ site.name }} – Car Rental in {{ site.city }}">
-    <meta property="og:description" content="Modern cars, clear prices and easy online booking in {{ site.city }}.">
+    <meta property="og:title" content="{% blocktranslate with name=site.name city=site.city_in %}{{ name }} – Car Rental in {{ city }}{% endblocktranslate %}">
+    <meta property="og:description" content="{% blocktranslate with city=site.city_in %}Modern cars, clear prices and easy online booking in {{ city }}.{% endblocktranslate %}">
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'image/og-image.jpg' %}">
     <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
     <meta property="og:type" content="website">
@@ -48,7 +51,7 @@
         <a class="navbar-brand d-flex align-items-center gap-2 me-lg-5" href="{% url 'index' %}">
             {% include "_logo.html" %}
         </a>
-        <button class="navbar-toggler nav-burger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-label="Open menu">
+        <button class="navbar-toggler nav-burger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-label="{% translate 'Open menu' %}">
             <span></span><span></span><span></span>
         </button>
 
@@ -58,23 +61,24 @@
                 <a class="d-flex align-items-center gap-2" href="{% url 'index' %}" id="mainNavbarLabel">
                     {% include "_logo.html" %}
                 </a>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#mainNavbar" aria-label="Close menu"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#mainNavbar" aria-label="{% translate 'Close menu' %}"></button>
             </div>
             <div class="offcanvas-body d-flex flex-column flex-lg-row align-items-lg-center">
                 <ul class="navbar-nav mx-lg-auto">
-                    <li class="nav-item"><a class="nav-link {% if page == 'index' %}active{% endif %}" href="{% url 'index' %}" {% if page == 'index' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-house"></use></svg>Home</a></li>
-                    <li class="nav-item"><a class="nav-link {% if page == 'cars' %}active{% endif %}" href="{% url 'cars' %}" {% if page == 'cars' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-car"></use></svg>Cars</a></li>
-                    <li class="nav-item"><a class="nav-link {% if page == 'about' %}active{% endif %}" href="{% url 'about' %}" {% if page == 'about' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-info"></use></svg>About Us</a></li>
-                    <li class="nav-item"><a class="nav-link {% if page == 'contact' %}active{% endif %}" href="{% url 'contact' %}" {% if page == 'contact' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg>Contact</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'index' %}active{% endif %}" href="{% url 'index' %}" {% if page == 'index' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-house"></use></svg>{% translate "Home" %}</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'cars' %}active{% endif %}" href="{% url 'cars' %}" {% if page == 'cars' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-car"></use></svg>{% translate "Cars" %}</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'about' %}active{% endif %}" href="{% url 'about' %}" {% if page == 'about' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-circle-info"></use></svg>{% translate "About Us" %}</a></li>
+                    <li class="nav-item"><a class="nav-link {% if page == 'contact' %}active{% endif %}" href="{% url 'contact' %}" {% if page == 'contact' %}aria-current="page"{% endif %}><svg class="icon d-lg-none" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg>{% translate "Contact" %}</a></li>
                 </ul>
+                {% include "_lang.html" %}
                 <div class="nav-actions d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 gap-lg-3">
                     {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'logout' %}" class="nav-signout">{% csrf_token %}<button type="submit" class="btn btn-link">Sign out</button></form>
-                    <a href="{% url 'my_bookings' %}" class="btn btn-nav-outline{% if page == 'my_bookings' %} active{% endif %}"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>My bookings</a>
+                    <form method="post" action="{% url 'logout' %}" class="nav-signout">{% csrf_token %}<button type="submit" class="btn btn-link">{% translate "Sign out" %}</button></form>
+                    <a href="{% url 'my_bookings' %}" class="btn btn-nav-outline{% if page == 'my_bookings' %} active{% endif %}"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{% translate "My bookings" %}</a>
                     {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-nav-outline">Sign In</a>
+                    <a href="{% url 'login' %}" class="btn btn-nav-outline">{% translate "Sign In" %}</a>
                     {% endif %}
-                    <a href="{% url 'reservation' %}" class="btn btn-gold text-nowrap"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-calendar-check"></use></svg>Reserve Now</a>
+                    <a href="{% url 'reservation' %}" class="btn btn-gold text-nowrap"><svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-calendar-check"></use></svg>{% translate "Reserve Now" %}</a>
                 </div>
             </div>
         </div>
@@ -94,37 +98,37 @@
         <div class="footer-top">
             <div class="footer-brand">
                 <a href="{% url 'index' %}" class="footer-brand-link">{% include "_logo.html" with footer=True %}</a>
-                <p>Car rental in {{ site.city }} with modern cars, clear prices and simple online booking.</p>
+                <p>{% blocktranslate with city=site.city_in %}Car rental in {{ city }} with modern cars, clear prices and simple online booking.{% endblocktranslate %}</p>
                 <form method="post" action="{% url 'subscribe' %}" class="footer-subscribe">
                     {% csrf_token %}
-                    <label for="subscribeEmail">Get offers by email</label>
+                    <label for="subscribeEmail">{% translate "Get offers by email" %}</label>
                     <div class="footer-subscribe-row">
-                        <input type="email" name="email" id="subscribeEmail" class="form-control" placeholder="Your email address" autocomplete="email" required>
-                        <button type="submit" class="btn btn-gold">Subscribe</button>
+                        <input type="email" name="email" id="subscribeEmail" class="form-control" placeholder="{% translate 'Your email address' %}" autocomplete="email" required>
+                        <button type="submit" class="btn btn-gold">{% translate "Subscribe" %}</button>
                     </div>
                 </form>
             </div>
 
-            <nav class="footer-col" aria-label="Footer">
-                <h2>Explore</h2>
+            <nav class="footer-col" aria-label="{% translate 'Footer' %}">
+                <h2>{% translate "Explore" %}</h2>
                 <ul class="list-unstyled">
-                    <li><a href="{% url 'cars' %}">Our cars</a></li>
-                    <li><a href="{% url 'reservation' %}">Reserve a car</a></li>
-                    <li><a href="{% url 'rental_terms' %}">Rental terms</a></li>
-                    <li><a href="{% url 'about' %}">About us</a></li>
-                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                    <li><a href="{% url 'cars' %}">{% translate "Our cars" %}</a></li>
+                    <li><a href="{% url 'reservation' %}">{% translate "Reserve a car" %}</a></li>
+                    <li><a href="{% url 'rental_terms' %}">{% translate "Rental terms" %}</a></li>
+                    <li><a href="{% url 'about' %}">{% translate "About us" %}</a></li>
+                    <li><a href="{% url 'contact' %}">{% translate "Contact" %}</a></li>
                 </ul>
             </nav>
 
             <div class="footer-col">
-                <h2>Pickup locations</h2>
+                <h2>{% translate "Pickup locations" %}</h2>
                 <ul class="list-unstyled">
                     {% for loc in site.locations %}<li><a href="{% url 'location' loc|slugify %}">{{ loc }}</a></li>{% endfor %}
                 </ul>
             </div>
 
             <div class="footer-col">
-                <h2>Contact</h2>
+                <h2>{% translate "Contact" %}</h2>
                 <ul class="list-unstyled footer-contact">
                     <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg><a href="tel:{{ site.phone_link }}">{{ site.phone }}</a></li>
                     <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
@@ -135,7 +139,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© {% now "Y" %} {{ site.name }}. All rights reserved.</p>
+            <p>© {% now "Y" %} {{ site.name }}. {% translate "All rights reserved." %}</p>
             <div class="footer-social">
                 <a href="{{ site.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-instagram"></use></svg></a>
                 <a href="{{ site.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-facebook-f"></use></svg></a>
@@ -146,12 +150,13 @@
 </footer>
 
 <!-- WhatsApp: gjithmonë i dukshëm (shumica e klientëve preferojnë të shkruajnë këtu) -->
-<a class="wa-fab" href="https://wa.me/{{ site.whatsapp }}?text={% filter urlencode %}Hi {{ site.name }}, I'd like to rent a car.{% endfilter %}"
-   target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+<a class="wa-fab" href="https://wa.me/{{ site.whatsapp }}?text={% filter urlencode %}{% blocktranslate with name=site.name %}Hi {{ name }}, I'd like to rent a car.{% endblocktranslate %}{% endfilter %}"
+   target="_blank" rel="noopener noreferrer" aria-label="{% translate 'Chat with us on WhatsApp' %}">
     <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-whatsapp"></use></svg>
-    <span class="wa-fab-label">Chat with us</span>
+    <span class="wa-fab-label">{% translate "Chat with us" %}</span>
 </a>
 
+{% include "_js_i18n.html" %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 {% block scripts %}{% endblock %}
 <script src="{% static 'js/script.js' %}"></script>

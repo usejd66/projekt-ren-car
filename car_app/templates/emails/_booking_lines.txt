@@ -1,5 +1,5 @@
-Reservation: #{{ booking.pk }}
-Car:         {{ booking.car }}
-Pickup:      {{ booking.pickup_date|date:"D j M Y" }} – {{ booking.pickup_location }}
-Return:      {{ booking.return_date|date:"D j M Y" }} ({{ booking.days }} day{{ booking.days|pluralize }})
-Total:       €{{ booking.total_price|floatformat:"-2" }}
+{% load i18n %}{% translate "Reservation" %}: #{{ booking.pk }}
+{% translate "Car" %}: {{ booking.car }}
+{% translate "Pickup" %}: {{ booking.pickup_date|date:"D j M Y" }} – {{ booking.pickup_location }}
+{% translate "Return" %}: {{ booking.return_date|date:"D j M Y" }} ({% blocktranslate count n=booking.days %}{{ n }} day{% plural %}{{ n }} days{% endblocktranslate %})
+{% translate "Total" %}: €{{ booking.total_price|floatformat:"-2" }}

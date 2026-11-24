@@ -15,14 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from car_app.urls import page_patterns
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("car_app.urls")),
+    path("", include("car_app.urls")),  # manifest, sw.js, robots.txt, sitemap.xml
 ]
+# faqet në çdo gjuhë: "/" = gjuha kryesore (settings.LANGUAGE_CODE), "/en/..." = anglisht
+urlpatterns += i18n_patterns(*page_patterns, prefix_default_language=False)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

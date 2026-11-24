@@ -1,7 +1,7 @@
-{# Formulari i kërkimit (vendi + datat). Përdoret në faqen kryesore dhe te Cars. #}
+{% load i18n %}{# Formulari i kërkimit (vendi + datat). Përdoret në faqen kryesore dhe te Cars. #}
 <form class="trip-search" method="get" action="{% url 'cars' %}" novalidate>
     <div class="trip-search-field">
-        <label for="tripLocation">Pickup location</label>
+        <label for="tripLocation">{% translate "Pickup location" %}</label>
         <select id="tripLocation" name="pickup_location" class="form-select">
             {% for loc in locations %}
             <option value="{{ loc }}" {% if trip.location == loc %}selected{% endif %}>{{ loc }}</option>
@@ -12,12 +12,12 @@
     <input type="hidden" id="tripPickup" name="pickup_date" value="{{ trip.start|date:'Y-m-d' }}">
     <input type="hidden" id="tripReturn" name="return_date" value="{{ trip.end|date:'Y-m-d' }}">
     <div class="trip-search-field">
-        <label for="tripPickupAlt">Pickup date</label>
-        <input type="text" id="tripPickupAlt" class="form-control" placeholder="Add date" autocomplete="off" inputmode="none">
+        <label for="tripPickupAlt">{% translate "Pickup date" %}</label>
+        <input type="text" id="tripPickupAlt" class="form-control" placeholder="{% translate 'Add date' %}" autocomplete="off" inputmode="none">
     </div>
     <div class="trip-search-field">
-        <label for="tripReturnAlt">Return date</label>
-        <input type="text" id="tripReturnAlt" class="form-control" placeholder="Add date" autocomplete="off" inputmode="none">
+        <label for="tripReturnAlt">{% translate "Return date" %}</label>
+        <input type="text" id="tripReturnAlt" class="form-control" placeholder="{% translate 'Add date' %}" autocomplete="off" inputmode="none">
     </div>
-    <button type="submit" class="btn btn-gold trip-search-btn">{{ button|default:"Find a car" }}</button>
+    <button type="submit" class="btn btn-gold trip-search-btn">{% if button %}{{ button }}{% else %}{% translate "Find a car" %}{% endif %}</button>
 </form>

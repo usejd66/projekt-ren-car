@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',  # gjuha nga URL-ja (/ = shqip, /en/ = anglisht)
     'car_app.middleware.TrafficSourceMiddleware',  # nga erdhi vizitori (Google, Instagram...)
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -111,9 +112,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# Gjuha kryesore (pa prefiks në URL: "/") dhe gjuhët e tjera ("/en/...").
+# Për një klient që e do faqen kryesisht në anglisht: LANGUAGE_CODE = "en".
+LANGUAGE_CODE = "sq"
+LANGUAGES = [
+    ("sq", "Shqip"),
+    ("en", "English"),
+]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Tirane'
 
 USE_I18N = True
 
@@ -138,6 +146,8 @@ STORAGES = {
 if "test" in sys.argv:
     # testet nuk kanë nevojë për collectstatic
     STORAGES["staticfiles"]["BACKEND"] = "django.contrib.staticfiles.storage.StaticFilesStorage"
+    # testet ekzistuese kontrollojnë tekstet në anglisht; shqipja testohet veç në /sq/
+    LANGUAGE_CODE = "en"
 
 
 # Default primary key field type

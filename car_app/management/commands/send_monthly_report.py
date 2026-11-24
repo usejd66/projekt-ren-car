@@ -11,6 +11,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.formats import date_format
+from django.utils.translation import gettext as _
 
 from car_app import branding, stats
 
@@ -31,7 +33,8 @@ class Command(BaseCommand):
             "prev": stats.period_stats(prev_start, prev_end),
             "results_url": settings.SITE_URL.rstrip("/") + reverse("admin:car_app_lead_changelist"),
         }
-        subject = f"{ctx['site']['name']} – monthly report {start:%B %Y}: {ctx['s']['bookings']} bookings"
+        subject = _("%(name)s – monthly report %(month)s: %(n)s bookings") % {
+            "name": ctx["site"]["name"], "month": date_format(start, "F Y"), "n": ctx["s"]["bookings"]}
         to = [options["to"] or settings.BOOKINGS_EMAIL]
         msg = EmailMultiAlternatives(subject, render_to_string("emails/monthly_report.txt", ctx),
                                      settings.DEFAULT_FROM_EMAIL, to)

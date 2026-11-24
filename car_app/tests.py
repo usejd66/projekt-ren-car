@@ -13,6 +13,11 @@ from .models import Car, Lead, Reservation
 
 class BaseCase(TestCase):
     def setUp(self):
+        # një kërkesë te /sq/ e lë shqipen aktive; çdo test fillon nga gjuha kryesore
+        from django.conf import settings
+        from django.utils import translation
+        translation.activate(settings.LANGUAGE_CODE)
+        self.addCleanup(translation.deactivate)
         self.car = Car.objects.create(brand="Audi", name="A4", price_per_day=50)
         self.today = timezone.localdate()
 
@@ -405,7 +410,7 @@ class BrandingTest(TestCase):
 
         from . import branding
         new = {"name": "AutoKos", "logo_first": "AUTO", "logo_second": "KOS", "color": "#1d4ed8",
-               "city": "Prishtina", "phone": "+383 44 000 000"}
+               "city": "Prishtina", "city_in": {"sq": "Prishtinë", "en": "Prishtina"}, "phone": "+383 44 000 000"}
         with mock.patch.dict(branding.BRAND, new):
             r = self.client.get(reverse("index"))
             self.assertContains(r, "<title>Car Rental in Prishtina | AutoKos</title>", html=True)
@@ -478,7 +483,7 @@ class TrackingTest(BaseCase):
 class SeoAndTermsTest(BaseCase):
     def test_rental_terms_page_and_sections(self):
         from . import branding
-        first = branding.BRAND["terms"][0]
+        first = branding.site("en")["terms"][0]
         self.assertContains(self.client.get(reverse("rental_terms")), first["text"])
         self.assertContains(self.client.get(reverse("index")), first["short"])
         self.assertContains(self.client.get(self.car.get_absolute_url()), first["short"])
@@ -507,3 +512,54 @@ class SeoAndTermsTest(BaseCase):
     def test_canonical_ignores_tracking_params(self):
         r = self.client.get(reverse("cars"), {"utm_source": "instagram"})
         self.assertContains(r, '<link rel="canonical" href="http://testserver/cars/">', html=True)
+
+
+
+class I18nTest(BaseCase):
+    """Shqip + anglisht. Në teste gjuha kryesore është anglishtja, ndaj shqipja është te /sq/."""
+
+    def test_albanian_pages(self):
+        r = self.client.get("/sq/")
+        self.assertContains(r, '<html lang="sq">')
+        self.assertContains(r, "Makina me qira në Tiranë")
+        self.assertContains(r, "Zgjidhni makinën")
+        self.assertContains(self.client.get("/sq/cars/"), "Makinat tona")
+        self.assertContains(self.client.get(f"/sq/cars/{self.car.pk}/{self.car.slug}/"), "Vazhdo me rezervimin")
+
+    def test_english_pages_and_hreflang(self):
+        r = self.client.get("/")
+        self.assertContains(r, '<html lang="en">')
+        self.assertContains(r, "Choose your car")
+        self.assertContains(r, 'hreflang="sq" href="http://testserver/sq/"')
+        self.assertContains(r, 'hreflang="en" href="http://testserver/"')
+
+    def test_language_switch_keeps_page_and_query(self):
+        r = self.client.get("/cars/", {"category": "suv"})
+        self.assertContains(r, 'href="/sq/cars/?category=suv"')
+
+    def test_choices_and_terms_are_translated(self):
+        self.car.is_featured = True
+        self.car.save()
+        r = self.client.get("/sq/")
+        self.assertContains(r, "Ekonomike")
+        self.assertContains(r, "21+ vjeç")
+
+    def test_booking_language_drives_customer_email(self):
+        from django.core import mail
+        with self.captureOnCommitCallbacks(execute=True):
+            self.client.post("/sq/reservation/", {
+                "car": self.car.pk, "full_name": "Ana Hoxha", "email": "ana@test.al", "phone": "+355 69 123 4567",
+                "pickup_date": (self.today + timedelta(days=1)).isoformat(),
+                "return_date": (self.today + timedelta(days=3)).isoformat(),
+                "pickup_location": "Tirana",
+            })
+        booking = Reservation.objects.get()
+        self.assertEqual(booking.language, "sq")
+        customer, owner = mail.outbox
+        self.assertIn("E morëm rezervimin tuaj", customer.subject)
+        self.assertIn("Përshëndetje Ana Hoxha", customer.body)
+        self.assertIn("New reservation", owner.subject)  # pronari: gjuha kryesore (në teste: anglisht)
+
+    def test_albanian_form_errors(self):
+        r = self.client.post("/sq/reservation/", {"car": self.car.pk, "phone": "abc"})
+        self.assertContains(r, "Ju lutem shkruani një numër telefoni të vlefshëm.")

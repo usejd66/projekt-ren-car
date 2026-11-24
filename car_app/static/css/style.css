@@ -259,7 +259,7 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, .wa-fab) {
 }
 
 .hero-description {
-    max-width: 520px;
+    max-width: 560px;
     margin-bottom: 1rem;
     font-size: clamp(1rem, .4vw + .9rem, 1.2rem);
     line-height: 1.6;
@@ -493,7 +493,6 @@ body:has(.offcanvas-lg.show, .offcanvas-lg.showing) :is(#backToTop, .wa-fab) {
     font-weight: 800;
 }
 
-.step-num::before { content: "Step "; }
 .step-title { margin-bottom: .5rem; font-size: 1.2rem; font-weight: 700; }
 
 /* Pse ne */
@@ -1314,3 +1313,30 @@ a.contact-item:hover { border-color: var(--black); box-shadow: 0 6px 18px rgba(1
 /* Faqet e vendeve të marrjes (SEO) */
 .loc-hero h1 { margin-bottom: .5rem; }
 .loc-lead { max-width: 640px; margin: 0 0 1.25rem; color: #334155; font-size: 1.05rem; }
+
+
+/* Butoni i gjuhës (SQ / EN) */
+.lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-right: .75rem;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+}
+.lang-switch a {
+    padding: .3rem .6rem;
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    line-height: 1;
+}
+.lang-switch a:hover { color: var(--black); }
+.lang-switch a.active { background: var(--black); color: #fff; }
+
+@media (max-width: 991.98px) {
+    .lang-switch { align-self: flex-start; margin: 1rem 0 0 1rem; }
+}

@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Rental terms | {{ site.name }}{% endblock %}
+{% block title %}{% translate "Rental terms" %} | {{ site.name }}{% endblock %}
 {% block meta %}
-<meta name="description" content="{{ site.name }} rental terms: driver requirements, deposit, insurance, fuel policy, mileage and cancellation.">
+<meta name="description" content="{% blocktranslate with name=site.name %}{{ name }} rental terms: driver requirements, deposit, insurance, fuel policy, mileage and cancellation.{% endblocktranslate %}">
 {% endblock %}
 
 {% block content %}
 <header class="page-head">
     <div class="container">
-        <h1>Rental terms</h1>
-        <p>Everything you need to know before you book. Clear and simple, no small print.</p>
+        <h1>{% translate "Rental terms" %}</h1>
+        <p>{% translate "Everything you need to know before you book. Clear and simple, no small print." %}</p>
     </div>
 </header>
 
@@ -29,9 +29,9 @@
             {% endfor %}
         </div>
         <div class="terms-cta">
-            <p>Still have a question about the terms?</p>
-            <a href="{% url 'contact' %}" class="btn btn-nav-outline">Contact us</a>
-            <a href="{% url 'cars' %}" class="btn btn-gold">Browse cars</a>
+            <p>{% translate "Still have a question about the terms?" %}</p>
+            <a href="{% url 'contact' %}" class="btn btn-nav-outline">{% translate "Contact us" %}</a>
+            <a href="{% url 'cars' %}" class="btn btn-gold">{% translate "Browse cars" %}</a>
         </div>
     </div>
 </section>

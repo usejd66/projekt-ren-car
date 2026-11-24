@@ -1,0 +1,1925 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-24 13:06+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sq\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: car_app/emails.py:49
+#, python-format
+msgid "We received your reservation #%(n)s – %(car)s"
+msgstr "E morëm rezervimin tuaj #%(n)s – %(car)s"
+
+#: car_app/emails.py:53
+#, python-format
+msgid "New reservation #%(n)s: %(car)s, %(start)s – %(end)s"
+msgstr "Rezervim i ri #%(n)s: %(car)s, %(start)s – %(end)s"
+
+#: car_app/emails.py:65
+#, python-format
+msgid "Your booking #%(n)s is confirmed – %(car)s"
+msgstr "Rezervimi juaj #%(n)s u konfirmua – %(car)s"
+
+#: car_app/emails.py:66 car_app/emails.py:89
+#, python-format
+msgid "Your booking #%(n)s was cancelled"
+msgstr "Rezervimi juaj #%(n)s u anulua"
+
+#: car_app/emails.py:74
+#, python-format
+msgid "Contact form: %(subject)s"
+msgstr "Formulari i kontaktit: %(subject)s"
+
+#: car_app/emails.py:82
+#, python-format
+msgid "Cancellation request: reservation #%(n)s – %(car)s"
+msgstr "Kërkesë anulimi: rezervimi #%(n)s – %(car)s"
+
+#: car_app/emails.py:84
+#, python-format
+msgid "Cancelled by customer: reservation #%(n)s – %(car)s"
+msgstr "Anuluar nga klienti: rezervimi #%(n)s – %(car)s"
+
+#: car_app/forms.py:37 car_app/templates/_trip_search.html:4
+#: car_app/templates/car_detail.html:145 car_app/templates/reservation.html:94
+msgid "Pickup location"
+msgstr "Vendi i marrjes"
+
+#: car_app/forms.py:38
+msgid "Select a location"
+msgstr "Zgjidhni vendin"
+
+#: car_app/forms.py:45 car_app/templates/emails/_booking_lines.txt:2
+#: car_app/templates/emails/_booking_table.html:3
+#: car_app/templates/reservation.html:47
+msgid "Car"
+msgstr "Makina"
+
+#: car_app/forms.py:45 car_app/templates/reservation.html:121
+msgid "Full name"
+msgstr "Emri i plotë"
+
+#: car_app/forms.py:45 car_app/forms.py:88 car_app/forms.py:92
+#: car_app/templates/contact.html:41 car_app/templates/contact.html:72
+#: car_app/templates/emails/booking_new_owner.html:8
+#: car_app/templates/emails/booking_new_owner.txt:5
+#: car_app/templates/reservation.html:126 car_app/templates/signup.html:31
+msgid "Email"
+msgstr "Email"
+
+#: car_app/forms.py:45 car_app/templates/emails/booking_new_owner.html:9
+#: car_app/templates/emails/booking_new_owner.txt:6
+#: car_app/templates/reservation.html:131
+msgid "Phone"
+msgstr "Telefoni"
+
+#: car_app/forms.py:46 car_app/templates/_trip_search.html:15
+#: car_app/templates/reservation.html:101
+msgid "Pickup date"
+msgstr "Data e marrjes"
+
+#: car_app/forms.py:46 car_app/templates/_trip_search.html:19
+#: car_app/templates/reservation.html:107
+msgid "Return date"
+msgstr "Data e kthimit"
+
+#: car_app/forms.py:46 car_app/templates/emails/booking_new_owner.html:10
+#: car_app/templates/emails/booking_new_owner.txt:7
+#: car_app/templates/reservation.html:136
+msgid "Notes"
+msgstr "Shënime"
+
+#: car_app/forms.py:49
+msgid "First and last name"
+msgstr "Emri dhe mbiemri"
+
+#: car_app/forms.py:64
+msgid "Please enter your first and last name."
+msgstr "Ju lutem shkruani emrin dhe mbiemrin."
+
+#: car_app/forms.py:70
+msgid "Please enter a valid phone number."
+msgstr "Ju lutem shkruani një numër telefoni të vlefshëm."
+
+#: car_app/forms.py:77 car_app/models.py:159 car_app/views.py:57
+msgid "The pickup date cannot be in the past."
+msgstr "Data e marrjes nuk mund të jetë në të kaluarën."
+
+#: car_app/forms.py:79 car_app/models.py:157
+#: car_app/templates/_js_i18n.html:22 car_app/views.py:59
+msgid "The return date must be after the pickup date."
+msgstr "Data e kthimit duhet të jetë pas datës së marrjes."
+
+#: car_app/forms.py:88 car_app/templates/contact.html:67
+msgid "Name"
+msgstr "Emri"
+
+#: car_app/forms.py:88 car_app/templates/contact.html:77
+#: car_app/templates/emails/contact_owner.txt:4
+msgid "Subject"
+msgstr "Subjekti"
+
+#: car_app/forms.py:88 car_app/templates/contact.html:82
+msgid "Message"
+msgstr "Mesazhi"
+
+#: car_app/forms.py:101
+msgid "An account with this email already exists."
+msgstr "Ekziston tashmë një llogari me këtë email."
+
+#: car_app/forms.py:109
+msgid "This email is already subscribed."
+msgstr "Ky email është abonuar tashmë."
+
+#: car_app/management/commands/send_monthly_report.py:36
+#, python-format
+msgid "%(name)s – monthly report %(month)s: %(n)s bookings"
+msgstr "%(name)s – raporti mujor %(month)s: %(n)s rezervime"
+
+#: car_app/models.py:29
+msgid "Economy"
+msgstr "Ekonomike"
+
+#: car_app/models.py:30
+msgid "SUV"
+msgstr "SUV"
+
+#: car_app/models.py:31
+msgid "Luxury"
+msgstr "Luksoze"
+
+#: car_app/models.py:32
+msgid "Family / Van"
+msgstr "Familjare / Van"
+
+#: car_app/models.py:34
+msgid "Manual"
+msgstr "Manuale"
+
+#: car_app/models.py:34
+msgid "Automatic"
+msgstr "Automatike"
+
+#: car_app/models.py:36
+msgid "Petrol"
+msgstr "Benzinë"
+
+#: car_app/models.py:37
+msgid "Diesel"
+msgstr "Naftë"
+
+#: car_app/models.py:38
+msgid "Hybrid"
+msgstr "Hibride"
+
+#: car_app/models.py:39
+msgid "Electric"
+msgstr "Elektrike"
+
+#: car_app/models.py:161
+#, python-format
+msgid "A reservation cannot be longer than %(days)s days."
+msgstr "Një rezervim nuk mund të jetë më i gjatë se %(days)s ditë."
+
+#: car_app/models.py:167
+msgid "This car is already booked on the selected dates."
+msgstr "Kjo makinë është e zënë në datat e zgjedhura."
+
+#: car_app/templates/_booking_card.html:11
+msgid "Cancelled"
+msgstr "Anuluar"
+
+#: car_app/templates/_booking_card.html:13
+msgid "Cancellation requested"
+msgstr "Kërkuar anulimi"
+
+#: car_app/templates/_booking_card.html:15
+msgid "Completed"
+msgstr "Përfunduar"
+
+#: car_app/templates/_booking_card.html:17
+msgid "Confirmed"
+msgstr "Konfirmuar"
+
+#: car_app/templates/_booking_card.html:19
+msgid "Awaiting confirmation"
+msgstr "Në pritje të konfirmimit"
+
+#: car_app/templates/_booking_card.html:22
+#, python-format
+msgid "Reservation #%(n)s · booked %(date)s"
+msgstr "Rezervimi #%(n)s · bërë më %(date)s"
+
+#: car_app/templates/_booking_card.html:24
+#: car_app/templates/car_detail.html:136
+#: car_app/templates/emails/_booking_lines.txt:3
+#: car_app/templates/emails/_booking_table.html:4
+#: car_app/templates/reservation.html:151
+#: car_app/templates/reservation_success.html:26
+msgid "Pickup"
+msgstr "Marrja"
+
+#: car_app/templates/_booking_card.html:25
+#: car_app/templates/car_detail.html:140
+#: car_app/templates/emails/_booking_lines.txt:4
+#: car_app/templates/emails/_booking_table.html:5
+#: car_app/templates/reservation.html:152
+#: car_app/templates/reservation_success.html:27
+msgid "Return"
+msgstr "Kthimi"
+
+#: car_app/templates/_booking_card.html:25 car_app/templates/cars.html:25
+#: car_app/templates/emails/_booking_lines.txt:4
+#: car_app/templates/emails/_booking_table.html:5
+#: car_app/templates/reservation_success.html:27
+#, python-format
+msgid "%(n)s day"
+msgid_plural "%(n)s days"
+msgstr[0] "%(n)s ditë"
+msgstr[1] "%(n)s ditë"
+
+#: car_app/templates/_booking_card.html:30
+#: car_app/templates/car_detail.html:154
+#: car_app/templates/emails/_booking_lines.txt:5
+#: car_app/templates/emails/_booking_table.html:6
+#: car_app/templates/reservation.html:157
+#: car_app/templates/reservation.html:179
+#: car_app/templates/reservation_success.html:28
+msgid "Total"
+msgstr "Totali"
+
+#: car_app/templates/_booking_card.html:38
+msgid "Cancel booking"
+msgstr "Anulo rezervimin"
+
+#: car_app/templates/_booking_card.html:38
+msgid "Request cancellation"
+msgstr "Kërko anulimin"
+
+#: car_app/templates/_booking_card.html:42
+msgid "Book again"
+msgstr "Rezervo sërish"
+
+#: car_app/templates/_js_i18n.html:6
+msgid "Select pickup date"
+msgstr "Zgjidhni datën e marrjes"
+
+#: car_app/templates/_js_i18n.html:7
+msgid "Select return date"
+msgstr "Zgjidhni datën e kthimit"
+
+#: car_app/templates/_js_i18n.html:8
+msgid "Then choose the return date"
+msgstr "Pastaj zgjidhni datën e kthimit"
+
+#: car_app/templates/_js_i18n.html:9
+#, python-brace-format
+msgid "Pickup: {date}"
+msgstr "Marrja: {date}"
+
+#: car_app/templates/_js_i18n.html:10
+msgid "day"
+msgstr "ditë"
+
+#: car_app/templates/_js_i18n.html:11
+msgid "days"
+msgstr "ditë"
+
+#: car_app/templates/_js_i18n.html:12 car_app/templates/car_detail.html:124
+#: car_app/templates/car_detail.html:187 car_app/templates/car_detail.html:208
+#: car_app/templates/cars.html:119 car_app/templates/index.html:111
+#: car_app/templates/location.html:52 car_app/templates/reservation.html:63
+#: car_app/templates/reservation.html:82
+msgid "/ day"
+msgstr "/ ditë"
+
+#: car_app/templates/_js_i18n.html:13
+#, python-brace-format
+msgid "{n} seats"
+msgstr "{n} ulëse"
+
+#: car_app/templates/_js_i18n.html:14 car_app/templates/reservation.html:148
+msgid "No car selected"
+msgstr "Asnjë makinë e zgjedhur"
+
+#: car_app/templates/_js_i18n.html:15 car_app/templates/reservation.html:156
+msgid "Daily rate"
+msgstr "Çmimi ditor"
+
+#: car_app/templates/_js_i18n.html:16 car_app/templates/car_detail.html:153
+msgid "Choose your dates"
+msgstr "Zgjidhni datat"
+
+#: car_app/templates/_js_i18n.html:17
+#, python-brace-format
+msgid ""
+"This car is booked from {start} to {end}. Please choose different dates."
+msgstr ""
+"Kjo makinë është e zënë nga {start} deri më {end}. Ju lutem zgjidhni data të"
+" tjera."
+
+#: car_app/templates/_js_i18n.html:18
+msgid "This car is booked on the selected dates."
+msgstr "Kjo makinë është e zënë në datat e zgjedhura."
+
+#: car_app/templates/_js_i18n.html:19
+msgid "Please select a car."
+msgstr "Ju lutem zgjidhni një makinë."
+
+#: car_app/templates/_js_i18n.html:20
+msgid "Please select a pickup location."
+msgstr "Ju lutem zgjidhni vendin e marrjes."
+
+#: car_app/templates/_js_i18n.html:21
+msgid "Please select your dates."
+msgstr "Ju lutem zgjidhni datat."
+
+#: car_app/templates/_js_i18n.html:23 car_app/templates/car_detail.html:207
+#: car_app/templates/emails/contact_owner.html:4
+#: car_app/templates/emails/contact_owner.txt:3
+msgid "From"
+msgstr "Nga"
+
+#: car_app/templates/_js_i18n.html:24
+msgid "total"
+msgstr "gjithsej"
+
+#: car_app/templates/_js_i18n.html:25
+msgid "Continue"
+msgstr "Vazhdo"
+
+#: car_app/templates/_js_i18n.html:26 car_app/templates/car_detail.html:210
+msgid "Check dates"
+msgstr "Shiko datat"
+
+#: car_app/templates/_lang.html:2
+msgid "Language"
+msgstr "Gjuha"
+
+#: car_app/templates/_trip_search.html:16
+#: car_app/templates/_trip_search.html:20
+#: car_app/templates/car_detail.html:137 car_app/templates/car_detail.html:141
+msgid "Add date"
+msgstr "Shto datën"
+
+#: car_app/templates/_trip_search.html:22
+msgid "Find a car"
+msgstr "Gjej makinë"
+
+#: car_app/templates/about.html:4 car_app/templates/base.html:70
+msgid "About Us"
+msgstr "Rreth nesh"
+
+#: car_app/templates/about.html:7
+#, python-format
+msgid ""
+"%(name)s is a car rental company in %(city)s offering modern cars, clear "
+"prices and simple online booking, with pickup in %(locations)s."
+msgstr ""
+"%(name)s është një kompani me makina me qira në %(city)s, me makina moderne,"
+" çmime të qarta dhe rezervim të thjeshtë online, me marrje në %(locations)s."
+
+#: car_app/templates/about.html:14
+#, python-format
+msgid "About %(name)s"
+msgstr "Rreth %(name)s"
+
+#: car_app/templates/about.html:15
+#, python-format
+msgid ""
+"A local car rental company in %(city)s, built around one idea: renting a car"
+" should be simple."
+msgstr ""
+"Një kompani vendase me makina me qira në %(city)s, e ndërtuar mbi një ide: "
+"marrja e një makine me qira duhet të jetë e thjeshtë."
+
+#: car_app/templates/about.html:24 car_app/templates/index.html:174
+#, python-format
+msgid "A %(name)s rental car"
+msgstr "Një makinë me qira e %(name)s"
+
+#: car_app/templates/about.html:27
+msgid "Your trip, our cars"
+msgstr "Udhëtimi juaj, makinat tona"
+
+#: car_app/templates/about.html:29
+msgid ""
+"Whether you are travelling for business, on holiday, or just need a reliable"
+" car for a few days, we want the rental to be the easy part of your trip."
+msgstr ""
+"Qoftë për punë, për pushime apo thjesht ju duhet një makinë e sigurt për "
+"disa ditë, duam që qiraja të jetë pjesa më e lehtë e udhëtimit tuaj."
+
+#: car_app/templates/about.html:30
+#, python-format
+msgid ""
+"That is why you see the total price before you book, you can reserve online "
+"in a couple of minutes, and a real team in %(city)s is there when you need "
+"help."
+msgstr ""
+"Prandaj e shihni çmimin total para se të rezervoni, mund të rezervoni online"
+" për pak minuta dhe një ekip i vërtetë në %(city)s është aty kur ju duhet "
+"ndihmë."
+
+#: car_app/templates/about.html:32
+msgid "See our cars"
+msgstr "Shikoni makinat tona"
+
+#: car_app/templates/about.html:43
+msgid "What we stand for"
+msgstr "Për çfarë qëndrojmë"
+
+#: car_app/templates/about.html:44
+msgid "Three promises behind every rental."
+msgstr "Tri premtime pas çdo qiraje."
+
+#: car_app/templates/about.html:50
+msgid "Well-kept cars"
+msgstr "Makina të mirëmbajtura"
+
+#: car_app/templates/about.html:51
+msgid ""
+"Every car is cleaned and checked before each rental, so it is ready when you"
+" are."
+msgstr ""
+"Çdo makinë pastrohet dhe kontrollohet para çdo qiraje, që të jetë gati kur "
+"jeni ju."
+
+#: car_app/templates/about.html:55
+msgid "Clear prices"
+msgstr "Çmime të qarta"
+
+#: car_app/templates/about.html:56
+msgid ""
+"One daily price and a total you see before you confirm. No surprises at "
+"pickup."
+msgstr ""
+"Një çmim ditor dhe një total që e shihni para se të konfirmoni. Pa surpriza "
+"në marrje."
+
+#: car_app/templates/about.html:60
+msgid "Real support"
+msgstr "Mbështetje e vërtetë"
+
+#: car_app/templates/about.html:61
+#, python-format
+msgid ""
+"Questions before or during your rental? Call or message our team in "
+"%(city)s."
+msgstr ""
+"Keni pyetje para ose gjatë qirasë? Telefononi ose shkruani ekipit tonë në "
+"%(city)s."
+
+#: car_app/templates/about.html:72
+msgid "Where to pick up your car"
+msgstr "Ku ta merrni makinën"
+
+#: car_app/templates/about.html:73
+msgid "Choose the location when you book."
+msgstr "Zgjidhni vendin kur rezervoni."
+
+#: car_app/templates/about.html:80 car_app/templates/reservation.html:88
+msgid "Pickup & return"
+msgstr "Marrja & kthimi"
+
+#: car_app/templates/about.html:92
+msgid "Ready when you are"
+msgstr "Gati kur jeni ju"
+
+#: car_app/templates/about.html:93
+msgid "Pick your dates and see which cars are available."
+msgstr "Zgjidhni datat dhe shikoni cilat makina janë të lira."
+
+#: car_app/templates/about.html:96 car_app/templates/contact.html:14
+#: car_app/templates/index.html:235 car_app/templates/rental_terms.html:33
+msgid "Contact us"
+msgstr "Na kontaktoni"
+
+#: car_app/templates/about.html:97 car_app/templates/index.html:275
+#: car_app/templates/my_bookings.html:22
+#: car_app/templates/rental_terms.html:34
+msgid "Browse cars"
+msgstr "Shiko makinat"
+
+#: car_app/templates/base.html:7 car_app/templates/base.html:22
+#: car_app/templates/index.html:9
+#, python-format
+msgid "%(name)s – Car Rental in %(city)s"
+msgstr "%(name)s – Makina me qira në %(city)s"
+
+#: car_app/templates/base.html:20
+#, python-format
+msgid ""
+"Rent a car in %(city)s with %(name)s: modern cars, clear prices and easy "
+"online booking."
+msgstr ""
+"Merrni makinë me qira në %(city)s me %(name)s: makina moderne, çmime të "
+"qarta dhe rezervim i lehtë online."
+
+#: car_app/templates/base.html:23 car_app/templates/index.html:10
+#, python-format
+msgid "Modern cars, clear prices and easy online booking in %(city)s."
+msgstr ""
+"Makina moderne, çmime të qarta dhe rezervim i lehtë online në %(city)s."
+
+#: car_app/templates/base.html:54
+msgid "Open menu"
+msgstr "Hap menunë"
+
+#: car_app/templates/base.html:64
+msgid "Close menu"
+msgstr "Mbyll menunë"
+
+#: car_app/templates/base.html:68 car_app/templates/location.html:18
+msgid "Home"
+msgstr "Kreu"
+
+#: car_app/templates/base.html:69 car_app/templates/car_detail.html:49
+msgid "Cars"
+msgstr "Makinat"
+
+#: car_app/templates/base.html:71 car_app/templates/base.html:119
+#: car_app/templates/base.html:131 car_app/templates/contact.html:4
+msgid "Contact"
+msgstr "Kontakt"
+
+#: car_app/templates/base.html:76
+msgid "Sign out"
+msgstr "Dil"
+
+#: car_app/templates/base.html:77 car_app/templates/my_bookings.html:4
+#: car_app/templates/my_bookings.html:10
+msgid "My bookings"
+msgstr "Rezervimet e mia"
+
+#: car_app/templates/base.html:79 car_app/templates/login.html:4
+msgid "Sign In"
+msgstr "Hyr"
+
+#: car_app/templates/base.html:81
+msgid "Reserve Now"
+msgstr "Rezervo tani"
+
+#: car_app/templates/base.html:101
+#, python-format
+msgid ""
+"Car rental in %(city)s with modern cars, clear prices and simple online "
+"booking."
+msgstr ""
+"Makina me qira në %(city)s, me makina moderne, çmime të qarta dhe rezervim "
+"të thjeshtë online."
+
+#: car_app/templates/base.html:104
+msgid "Get offers by email"
+msgstr "Merrni oferta me email"
+
+#: car_app/templates/base.html:106
+msgid "Your email address"
+msgstr "Adresa juaj e email-it"
+
+#: car_app/templates/base.html:107
+msgid "Subscribe"
+msgstr "Abonohu"
+
+#: car_app/templates/base.html:112
+msgid "Footer"
+msgstr "Fundi i faqes"
+
+#: car_app/templates/base.html:113
+msgid "Explore"
+msgstr "Eksploro"
+
+#: car_app/templates/base.html:115 car_app/templates/cars.html:17
+msgid "Our cars"
+msgstr "Makinat tona"
+
+#: car_app/templates/base.html:116
+msgid "Reserve a car"
+msgstr "Rezervo një makinë"
+
+#: car_app/templates/base.html:117 car_app/templates/car_detail.html:114
+#: car_app/templates/location.html:69 car_app/templates/rental_terms.html:4
+#: car_app/templates/rental_terms.html:12
+msgid "Rental terms"
+msgstr "Kushtet e qirasë"
+
+#: car_app/templates/base.html:118
+msgid "About us"
+msgstr "Rreth nesh"
+
+#: car_app/templates/base.html:124 car_app/templates/contact.html:53
+msgid "Pickup locations"
+msgstr "Vendet e marrjes"
+
+#: car_app/templates/base.html:142
+msgid "All rights reserved."
+msgstr "Të gjitha të drejtat e rezervuara."
+
+#: car_app/templates/base.html:153
+#, python-format
+msgid "Hi %(name)s, I'd like to rent a car."
+msgstr "Përshëndetje %(name)s, dua të marr një makinë me qira."
+
+#: car_app/templates/base.html:154
+msgid "Chat with us on WhatsApp"
+msgstr "Na shkruani në WhatsApp"
+
+#: car_app/templates/base.html:156
+msgid "Chat with us"
+msgstr "Na shkruani"
+
+#: car_app/templates/car_detail.html:4
+#, python-format
+msgid "%(car)s – rent from €%(price)s/day | %(name)s"
+msgstr "%(car)s – me qira nga €%(price)s/ditë | %(name)s"
+
+#: car_app/templates/car_detail.html:8
+#, python-format
+msgid ""
+"Rent the %(car)s in %(city)s from €%(price)s per day. %(gear)s, %(fuel)s, "
+"%(seats)s seats. Check availability and book online."
+msgstr ""
+"Merrni me qira %(car)s në %(city)s nga €%(price)s në ditë. %(gear)s, "
+"%(fuel)s, %(seats)s ulëse. Shikoni disponueshmërinë dhe rezervoni online."
+
+#: car_app/templates/car_detail.html:9
+#, python-format
+msgid "%(car)s – %(name)s car rental"
+msgstr "%(car)s – makina me qira %(name)s"
+
+#: car_app/templates/car_detail.html:10
+#, python-format
+msgid "From €%(price)s per day · %(gear)s · %(seats)s seats"
+msgstr "Nga €%(price)s në ditë · %(gear)s · %(seats)s ulëse"
+
+#: car_app/templates/car_detail.html:48 car_app/templates/location.html:17
+#: car_app/templates/reservation.html:18
+msgid "Breadcrumb"
+msgstr "Navigimi"
+
+#: car_app/templates/car_detail.html:61
+#, python-format
+msgid "Photos of the %(car)s"
+msgstr "Fotot e %(car)s"
+
+#: car_app/templates/car_detail.html:68
+msgid "Previous photo"
+msgstr "Foto e mëparshme"
+
+#: car_app/templates/car_detail.html:69
+msgid "Next photo"
+msgstr "Foto tjetër"
+
+#: car_app/templates/car_detail.html:75
+msgid "Choose photo"
+msgstr "Zgjidhni foton"
+
+#: car_app/templates/car_detail.html:76 car_app/templates/car_detail.html:78
+msgid "Photo"
+msgstr "Foto"
+
+#: car_app/templates/car_detail.html:89
+msgid "Seats"
+msgstr "Ulëse"
+
+#: car_app/templates/car_detail.html:90 car_app/templates/cars.html:69
+msgid "Transmission"
+msgstr "Kambio"
+
+#: car_app/templates/car_detail.html:91
+msgid "Fuel"
+msgstr "Karburanti"
+
+#: car_app/templates/car_detail.html:92
+msgid "Year"
+msgstr "Viti"
+
+#: car_app/templates/car_detail.html:97
+msgid "About this car"
+msgstr "Rreth kësaj makine"
+
+#: car_app/templates/car_detail.html:103
+msgid "Included in the price"
+msgstr "Të përfshira në çmim"
+
+#: car_app/templates/car_detail.html:105
+msgid "Unlimited kilometres"
+msgstr "Kilometra pa limit"
+
+#: car_app/templates/car_detail.html:106
+#, python-format
+msgid "Pickup in %(locations)s"
+msgstr "Marrje në %(locations)s"
+
+#: car_app/templates/car_detail.html:107
+msgid "Cleaned and checked before every rental"
+msgstr "E pastruar dhe e kontrolluar para çdo qiraje"
+
+#: car_app/templates/car_detail.html:108
+msgid "Local support during your rental"
+msgstr "Mbështetje vendase gjatë qirasë"
+
+#: car_app/templates/car_detail.html:115 car_app/templates/car_detail.html:190
+#: car_app/templates/cars.html:125 car_app/templates/index.html:114
+#: car_app/templates/location.html:54
+msgid "Details"
+msgstr "Detajet"
+
+#: car_app/templates/car_detail.html:127
+#, python-format
+msgid "Book the %(car)s"
+msgstr "Rezervo %(car)s"
+
+#: car_app/templates/car_detail.html:157
+msgid "Continue to booking"
+msgstr "Vazhdo me rezervimin"
+
+#: car_app/templates/car_detail.html:160
+#: car_app/templates/reservation.html:163
+msgid "No payment taken online"
+msgstr "Pa pagesë online"
+
+#: car_app/templates/car_detail.html:161
+msgid "Booked dates are crossed out"
+msgstr "Datat e zëna janë të vizatuara"
+
+#: car_app/templates/car_detail.html:164
+msgid "Currently unavailable"
+msgstr "Aktualisht e padisponueshme"
+
+#: car_app/templates/car_detail.html:165
+msgid ""
+"This car can't be booked right now. Have a look at similar cars below or "
+"contact us."
+msgstr ""
+"Kjo makinë nuk mund të rezervohet tani. Shikoni makinat e ngjashme më poshtë"
+" ose na kontaktoni."
+
+#: car_app/templates/car_detail.html:166
+msgid "Browse available cars"
+msgstr "Shiko makinat e lira"
+
+#: car_app/templates/car_detail.html:175
+msgid "Similar cars"
+msgstr "Makina të ngjashme"
+
+#: car_app/templates/car_detail.html:176
+#, python-format
+msgid "See all %(cat)s"
+msgstr "Shiko të gjitha: %(cat)s"
+
+#: car_app/templates/car_detail.html:191 car_app/templates/cars.html:126
+#: car_app/templates/index.html:115 car_app/templates/location.html:55
+msgid "Book now"
+msgstr "Rezervo"
+
+#: car_app/templates/cars.html:3
+msgid "Available Cars"
+msgstr "Makinat e lira"
+
+#: car_app/templates/cars.html:3
+msgid "Our Cars"
+msgstr "Makinat tona"
+
+#: car_app/templates/cars.html:5
+#, python-format
+msgid ""
+"Browse the %(name)s fleet in %(city)s: filter by category, transmission and "
+"price, check availability for your dates and book online."
+msgstr ""
+"Shikoni flotën e %(name)s në %(city)s: filtroni sipas kategorisë, kambios "
+"dhe çmimit, shikoni disponueshmërinë për datat tuaja dhe rezervoni online."
+
+#: car_app/templates/cars.html:17
+msgid "Available cars"
+msgstr "Makinat e lira"
+
+#: car_app/templates/cars.html:18
+msgid "Update"
+msgstr "Përditëso"
+
+#: car_app/templates/cars.html:26
+#, python-format
+msgid "Pickup: %(loc)s"
+msgstr "Marrja: %(loc)s"
+
+#: car_app/templates/cars.html:27
+msgid "Clear dates"
+msgstr "Hiq datat"
+
+#: car_app/templates/cars.html:38
+msgid "Categories"
+msgstr "Kategoritë"
+
+#: car_app/templates/cars.html:39
+msgid "All"
+msgstr "Të gjitha"
+
+#: car_app/templates/cars.html:45 car_app/templates/cars.html:52
+msgid "Filters"
+msgstr "Filtrat"
+
+#: car_app/templates/cars.html:53
+msgid "Close"
+msgstr "Mbyll"
+
+#: car_app/templates/cars.html:65
+msgid "Search"
+msgstr "Kërko"
+
+#: car_app/templates/cars.html:66
+msgid "Brand or model"
+msgstr "Marka ose modeli"
+
+#: car_app/templates/cars.html:71 car_app/templates/cars.html:79
+msgid "Any"
+msgstr "Çdo"
+
+#: car_app/templates/cars.html:78
+msgid "Max price / day"
+msgstr "Çmimi maks. / ditë"
+
+#: car_app/templates/cars.html:82
+msgid "Sort by"
+msgstr "Rendit sipas"
+
+#: car_app/templates/cars.html:84
+msgid "Newest"
+msgstr "Më të rejat"
+
+#: car_app/templates/cars.html:85
+msgid "Price: low to high"
+msgstr "Çmimi: nga më i ulëti"
+
+#: car_app/templates/cars.html:86
+msgid "Price: high to low"
+msgstr "Çmimi: nga më i larti"
+
+#: car_app/templates/cars.html:90
+msgid "Apply"
+msgstr "Apliko"
+
+#: car_app/templates/cars.html:91
+msgid "Reset"
+msgstr "Pastro"
+
+#: car_app/templates/cars.html:98
+#, python-format
+msgid "%(n)s car available for your dates"
+msgid_plural "%(n)s cars available for your dates"
+msgstr[0] "%(n)s makinë e lirë për datat tuaja"
+msgstr[1] "%(n)s makina të lira për datat tuaja"
+
+#: car_app/templates/cars.html:98
+#, python-format
+msgid "%(n)s car found"
+msgid_plural "%(n)s cars found"
+msgstr[0] "U gjet %(n)s makinë"
+msgstr[1] "U gjetën %(n)s makina"
+
+#: car_app/templates/cars.html:114
+#, python-format
+msgid "%(n)s seat"
+msgid_plural "%(n)s seats"
+msgstr[0] "%(n)s ulëse"
+msgstr[1] "%(n)s ulëse"
+
+#: car_app/templates/cars.html:121
+#, python-format
+msgid "<strong>€%(total)s</strong> total · %(n)s day"
+msgid_plural "<strong>€%(total)s</strong> total · %(n)s days"
+msgstr[0] "<strong>€%(total)s</strong> gjithsej · %(n)s ditë"
+msgstr[1] "<strong>€%(total)s</strong> gjithsej · %(n)s ditë"
+
+#: car_app/templates/cars.html:135
+msgid "No cars available for these dates"
+msgstr "Nuk ka makina të lira për këto data"
+
+#: car_app/templates/cars.html:135
+msgid "No cars match your search"
+msgstr "Asnjë makinë nuk përputhet me kërkimin"
+
+#: car_app/templates/cars.html:136
+msgid "Try different dates or remove some filters."
+msgstr "Provoni data të tjera ose hiqni disa filtra."
+
+#: car_app/templates/cars.html:136
+msgid "Try removing some filters."
+msgstr "Provoni të hiqni disa filtra."
+
+#: car_app/templates/cars.html:137
+msgid "Show all cars"
+msgstr "Shiko të gjitha makinat"
+
+#: car_app/templates/cars.html:143
+msgid "Pages"
+msgstr "Faqet"
+
+#: car_app/templates/cars.html:145
+msgid "Previous"
+msgstr "Para"
+
+#: car_app/templates/cars.html:147
+#, python-format
+msgid "Page %(n)s of %(total)s"
+msgstr "Faqja %(n)s nga %(total)s"
+
+#: car_app/templates/cars.html:149
+msgid "Next"
+msgstr "Pas"
+
+#: car_app/templates/contact.html:7
+#, python-format
+msgid ""
+"Contact %(name)s in %(city)s for help choosing a car, making a reservation "
+"or any question about renting a car."
+msgstr ""
+"Kontaktoni %(name)s në %(city)s për ndihmë me zgjedhjen e makinës, "
+"rezervimin ose çdo pyetje për qiranë."
+
+#: car_app/templates/contact.html:15
+msgid ""
+"Need help choosing a car or have a question about a booking? We usually "
+"reply within a few hours."
+msgstr ""
+"Ju duhet ndihmë me zgjedhjen e makinës apo keni një pyetje për një rezervim?"
+" Zakonisht përgjigjemi brenda pak orësh."
+
+#: car_app/templates/contact.html:29
+msgid "Call us"
+msgstr "Na telefononi"
+
+#: car_app/templates/contact.html:35
+msgid "Message us any time"
+msgstr "Na shkruani në çdo kohë"
+
+#: car_app/templates/contact.html:47
+msgid "Opening hours"
+msgstr "Orari"
+
+#: car_app/templates/contact.html:62
+msgid "Send us a message"
+msgstr "Na dërgoni një mesazh"
+
+#: car_app/templates/contact.html:87
+msgid "Send message"
+msgstr "Dërgo mesazhin"
+
+#: car_app/templates/contact.html:97
+#, python-format
+msgid "%(name)s location on the map"
+msgstr "Vendndodhja e %(name)s në hartë"
+
+#: car_app/templates/emails/_booking_lines.txt:1
+#: car_app/templates/emails/_booking_table.html:2
+msgid "Reservation"
+msgstr "Rezervimi"
+
+#: car_app/templates/emails/booking_cancel_owner.html:3
+#: car_app/templates/emails/booking_cancel_owner.txt:1
+#, python-format
+msgid "Cancellation request #%(n)s"
+msgstr "Kërkesë anulimi #%(n)s"
+
+#: car_app/templates/emails/booking_cancel_owner.html:3
+#: car_app/templates/emails/booking_cancel_owner.txt:2
+#, python-format
+msgid "Booking #%(n)s cancelled by the customer"
+msgstr "Rezervimi #%(n)s u anulua nga klienti"
+
+#: car_app/templates/emails/booking_cancel_owner.html:4
+#: car_app/templates/emails/booking_cancel_owner.txt:2
+#, python-format
+msgid ""
+"%(name)s asked to cancel this <strong>confirmed</strong> booking. Please "
+"decide in the admin and let the customer know."
+msgstr ""
+"%(name)s kërkoi anulimin e këtij rezervimi të <strong>konfirmuar</strong>. "
+"Vendosni te admin-i dhe njoftoni klientin."
+
+#: car_app/templates/emails/booking_cancel_owner.html:4
+#: car_app/templates/emails/booking_cancel_owner.txt:3
+#, python-format
+msgid ""
+"%(name)s cancelled this booking before it was confirmed. The dates are free "
+"again."
+msgstr ""
+"%(name)s e anuloi këtë rezervim para se të konfirmohej. Datat janë sërish të"
+" lira."
+
+#: car_app/templates/emails/booking_cancel_owner.html:6
+#: car_app/templates/emails/booking_cancel_owner.txt:6
+#: car_app/templates/emails/booking_new_owner.html:7
+#: car_app/templates/emails/booking_new_owner.txt:4
+msgid "Customer"
+msgstr "Klienti"
+
+#: car_app/templates/emails/booking_cancel_owner.html:7
+#: car_app/templates/emails/booking_cancel_owner.txt:8
+#: car_app/templates/emails/booking_new_owner.html:12
+#: car_app/templates/emails/booking_new_owner.txt:9
+msgid "Open in admin"
+msgstr "Hape te admin-i"
+
+#: car_app/templates/emails/booking_cancelled.html:3
+msgid "Your booking was cancelled"
+msgstr "Rezervimi juaj u anulua"
+
+#: car_app/templates/emails/booking_cancelled.html:4
+#, python-format
+msgid ""
+"Hi %(name)s, your reservation #%(n)s for the %(car)s (%(start)s – %(end)s) "
+"has been cancelled."
+msgstr ""
+"Përshëndetje %(name)s, rezervimi juaj #%(n)s për %(car)s (%(start)s – "
+"%(end)s) u anulua."
+
+#: car_app/templates/emails/booking_cancelled.html:5
+#: car_app/templates/emails/booking_cancelled.txt:5
+msgid ""
+"If this is unexpected or you'd like to book different dates, reply to this "
+"email or call"
+msgstr ""
+"Nëse kjo është e papritur ose dëshironi të rezervoni data të tjera, "
+"përgjigjuni këtij email-i ose telefononi"
+
+#: car_app/templates/emails/booking_cancelled.html:6
+#: car_app/templates/emails/booking_cancelled.txt:7
+msgid "See available cars"
+msgstr "Shiko makinat e lira"
+
+#: car_app/templates/emails/booking_cancelled.txt:1
+#: car_app/templates/emails/booking_confirmed.txt:1
+#: car_app/templates/emails/booking_received.txt:1
+#, python-format
+msgid "Hi %(name)s,"
+msgstr "Përshëndetje %(name)s,"
+
+#: car_app/templates/emails/booking_cancelled.txt:3
+#, python-format
+msgid ""
+"Your reservation #%(n)s for the %(car)s (%(start)s – %(end)s) has been "
+"cancelled."
+msgstr "Rezervimi juaj #%(n)s për %(car)s (%(start)s – %(end)s) u anulua."
+
+#: car_app/templates/emails/booking_confirmed.html:3
+msgid "Your booking is confirmed"
+msgstr "Rezervimi juaj u konfirmua"
+
+#: car_app/templates/emails/booking_confirmed.html:4
+#, python-format
+msgid "Hi %(name)s, good news: your %(car)s will be ready for you."
+msgstr "Përshëndetje %(name)s, lajm i mirë: %(car)s do të jetë gati për ju."
+
+#: car_app/templates/emails/booking_confirmed.html:6
+msgid "At pickup, please bring:"
+msgstr "Në marrje, ju lutem sillni:"
+
+#: car_app/templates/emails/booking_confirmed.html:7
+msgid "A valid driving licence and an ID card or passport."
+msgstr "Patentën e vlefshme dhe kartën e identitetit ose pasaportën."
+
+#: car_app/templates/emails/booking_confirmed.html:8
+msgid "Need to change something? Reply to this email or call"
+msgstr "Doni të ndryshoni diçka? Përgjigjuni këtij email-i ose telefononi"
+
+#: car_app/templates/emails/booking_confirmed.txt:3
+#, python-format
+msgid ""
+"Good news: your booking is confirmed and your %(car)s will be ready for you."
+msgstr ""
+"Lajm i mirë: rezervimi juaj u konfirmua dhe %(car)s do të jetë gati për ju."
+
+#: car_app/templates/emails/booking_confirmed.txt:6
+msgid ""
+"At pickup, please bring a valid driving licence and an ID card or passport."
+msgstr ""
+"Në marrje, ju lutem sillni patentën e vlefshme dhe kartën e identitetit ose "
+"pasaportën."
+
+#: car_app/templates/emails/booking_confirmed.txt:8
+#, python-format
+msgid "Need to change something? Reply to this email or call %(phone)s."
+msgstr ""
+"Doni të ndryshoni diçka? Përgjigjuni këtij email-i ose telefononi %(phone)s."
+
+#: car_app/templates/emails/booking_new_owner.html:3
+#: car_app/templates/emails/booking_new_owner.txt:1
+#, python-format
+msgid "New reservation #%(n)s"
+msgstr "Rezervim i ri #%(n)s"
+
+#: car_app/templates/emails/booking_new_owner.html:4
+#: car_app/templates/emails/booking_new_owner.txt:1
+msgid "A new booking is waiting for your confirmation."
+msgstr "Një rezervim i ri pret konfirmimin tuaj."
+
+#: car_app/templates/emails/booking_received.html:3
+msgid "We received your reservation"
+msgstr "E morëm rezervimin tuaj"
+
+#: car_app/templates/emails/booking_received.html:4
+#, python-format
+msgid ""
+"Hi %(name)s, thank you for choosing %(site_name)s. We'll check availability "
+"and contact you shortly to confirm your booking."
+msgstr ""
+"Përshëndetje %(name)s, faleminderit që zgjodhët %(site_name)s. Do të "
+"kontrollojmë disponueshmërinë dhe do t'ju kontaktojmë së shpejti për të "
+"konfirmuar rezervimin."
+
+#: car_app/templates/emails/booking_received.html:6
+msgid "What happens next?"
+msgstr "Çfarë ndodh më pas?"
+
+#: car_app/templates/emails/booking_received.html:7
+#: car_app/templates/emails/booking_received.txt:6
+msgid ""
+"You'll get another email as soon as your booking is confirmed. No payment is"
+" taken online."
+msgstr ""
+"Do të merrni një email tjetër sapo rezervimi të konfirmohet. Nuk merret "
+"asnjë pagesë online."
+
+#: car_app/templates/emails/booking_received.html:8
+msgid "Questions? Just reply to this email or call us on"
+msgstr "Keni pyetje? Thjesht përgjigjuni këtij email-i ose na telefononi në"
+
+#: car_app/templates/emails/booking_received.txt:3
+#, python-format
+msgid ""
+"Thank you for choosing %(site_name)s. We received your reservation and will "
+"contact you shortly to confirm it."
+msgstr ""
+"Faleminderit që zgjodhët %(site_name)s. E morëm rezervimin tuaj dhe do t'ju "
+"kontaktojmë së shpejti për ta konfirmuar."
+
+#: car_app/templates/emails/booking_received.txt:8
+#, python-format
+msgid "Questions? Reply to this email or call %(phone)s."
+msgstr "Keni pyetje? Përgjigjuni këtij email-i ose telefononi %(phone)s."
+
+#: car_app/templates/emails/contact_owner.html:3
+#: car_app/templates/emails/contact_owner.txt:1
+msgid "New message from the website"
+msgstr "Mesazh i ri nga faqja"
+
+#: car_app/templates/emails/contact_owner.html:7
+#: car_app/templates/emails/contact_owner.txt:8
+#, python-format
+msgid "Reply to this email to answer %(name)s directly."
+msgstr "Përgjigjuni këtij email-i për t'i shkruar direkt %(name)s."
+
+#: car_app/templates/emails/monthly_report.html:3
+#: car_app/templates/emails/monthly_report.txt:1
+#, python-format
+msgid "Your website in %(month)s"
+msgstr "Faqja juaj në %(month)s"
+
+#: car_app/templates/emails/monthly_report.html:4
+#, python-format
+msgid "How many customers the %(name)s website brought this month."
+msgstr "Sa klientë solli faqja e %(name)s këtë muaj."
+
+#: car_app/templates/emails/monthly_report.html:8
+#: car_app/templates/emails/monthly_report.txt:3
+msgid "Bookings"
+msgstr "Rezervime"
+
+#: car_app/templates/emails/monthly_report.html:10
+#: car_app/templates/emails/monthly_report.txt:3
+#, python-format
+msgid "%(n)s the month before"
+msgstr "%(n)s muajin e kaluar"
+
+#: car_app/templates/emails/monthly_report.html:14
+#: car_app/templates/emails/monthly_report.txt:4
+msgid "Booking value"
+msgstr "Vlera e rezervimeve"
+
+#: car_app/templates/emails/monthly_report.html:16
+#: car_app/templates/emails/monthly_report.txt:4
+#, python-format
+msgid "€%(n)s the month before"
+msgstr "€%(n)s muajin e kaluar"
+
+#: car_app/templates/emails/monthly_report.html:21
+#: car_app/templates/emails/monthly_report.txt:5
+msgid "WhatsApp clicks"
+msgstr "Klikime WhatsApp"
+
+#: car_app/templates/emails/monthly_report.html:22
+#: car_app/templates/emails/monthly_report.txt:6
+msgid "Phone clicks"
+msgstr "Klikime telefon"
+
+#: car_app/templates/emails/monthly_report.html:23
+#: car_app/templates/emails/monthly_report.txt:7
+msgid "Contact messages"
+msgstr "Mesazhe nga Contact"
+
+#: car_app/templates/emails/monthly_report.html:24
+#: car_app/templates/emails/monthly_report.txt:8
+msgid "Email clicks"
+msgstr "Klikime email"
+
+#: car_app/templates/emails/monthly_report.html:27
+#: car_app/templates/emails/monthly_report.txt:10
+msgid "Where customers came from"
+msgstr "Nga erdhën klientët"
+
+#: car_app/templates/emails/monthly_report.html:29
+#: car_app/templates/emails/monthly_report.txt:11
+#, python-format
+msgid "%(b)s bookings · %(c)s contacts"
+msgstr "%(b)s rezervime · %(c)s kontakte"
+
+#: car_app/templates/emails/monthly_report.html:33
+#: car_app/templates/emails/monthly_report.txt:13
+msgid "Most booked cars"
+msgstr "Makinat më të rezervuara"
+
+#: car_app/templates/emails/monthly_report.html:38
+#: car_app/templates/emails/monthly_report.txt:16
+msgid "See all results"
+msgstr "Shiko të gjitha rezultatet"
+
+#: car_app/templates/index.html:4
+#, python-format
+msgid "Car Rental in %(city)s | %(name)s"
+msgstr "Makina me qira në %(city)s | %(name)s"
+
+#: car_app/templates/index.html:7
+#, python-format
+msgid ""
+"Rent a car in %(city)s with %(name)s: modern cars, clear prices and easy "
+"online booking. Pickup in %(locations)s."
+msgstr ""
+"Merrni makinë me qira në %(city)s me %(name)s: makina moderne, çmime të "
+"qarta dhe rezervim i lehtë online. Marrje në %(locations)s."
+
+#: car_app/templates/index.html:55
+#, python-format
+msgid "Car rental in %(city)s,<br>made simple."
+msgstr "Qira makinash në %(city)s,<br>e thjeshtë."
+
+#: car_app/templates/index.html:56
+#, python-format
+msgid ""
+"Modern, well-maintained cars with clear prices. Pick up in %(locations)s."
+msgstr ""
+"Makina moderne dhe të mirëmbajtura, me çmime të qarta. Marrje në "
+"%(locations)s."
+
+#: car_app/templates/index.html:58
+#, python-format
+msgid "From <strong>€%(price)s</strong> per day"
+msgstr "Nga <strong>€%(price)s</strong> në ditë"
+
+#: car_app/templates/index.html:66
+msgid "Total price shown before you book"
+msgstr "Çmimi total para se të rezervoni"
+
+#: car_app/templates/index.html:67
+#, python-format
+msgid "Pickup in %(n)s location"
+msgid_plural "Pickup in %(n)s locations"
+msgstr[0] "Marrje në %(n)s vend"
+msgstr[1] "Marrje në %(n)s vende"
+
+#: car_app/templates/index.html:68
+msgid "Book online in under 2 minutes"
+msgstr "Rezervoni online për më pak se 2 minuta"
+
+#: car_app/templates/index.html:78
+msgid "Choose your car"
+msgstr "Zgjidhni makinën"
+
+#: car_app/templates/index.html:79
+msgid "From city cars to family vans, all with unlimited kilometres."
+msgstr ""
+"Nga makinat e qytetit te furgonët familjarë, të gjitha me kilometra pa "
+"limit."
+
+#: car_app/templates/index.html:81
+msgid "View all cars"
+msgstr "Shiko të gjitha makinat"
+
+#: car_app/templates/index.html:88
+#, python-format
+msgid "%(n)s car"
+msgid_plural "%(n)s cars"
+msgstr[0] "%(n)s makinë"
+msgstr[1] "%(n)s makina"
+
+#: car_app/templates/index.html:131
+msgid "How it works"
+msgstr "Si funksionon"
+
+#: car_app/templates/index.html:132
+msgid "Three steps, no paperwork at the counter."
+msgstr "Tre hapa, pa letra në sportel."
+
+#: car_app/templates/index.html:137 car_app/templates/index.html:142
+#: car_app/templates/index.html:147
+msgid "Step"
+msgstr "Hapi"
+
+#: car_app/templates/index.html:138
+msgid "Choose a car"
+msgstr "Zgjidhni makinën"
+
+#: car_app/templates/index.html:139
+msgid "Browse the fleet and compare prices, seats and transmission."
+msgstr "Shikoni flotën dhe krahasoni çmimet, ulëset dhe kambion."
+
+#: car_app/templates/index.html:143
+msgid "Pick dates & location"
+msgstr "Zgjidhni datat & vendin"
+
+#: car_app/templates/index.html:144
+msgid "Select pickup and return dates. You see the total price right away."
+msgstr ""
+"Zgjidhni datat e marrjes dhe kthimit. Çmimin total e shihni menjëherë."
+
+#: car_app/templates/index.html:148
+msgid "Collect your keys"
+msgstr "Merrni çelësat"
+
+#: car_app/templates/index.html:149
+msgid "We confirm your booking and have the car ready when you arrive."
+msgstr "Ne e konfirmojmë rezervimin dhe makina është gati kur të vini."
+
+#: car_app/templates/index.html:160
+msgid "Rental terms at a glance"
+msgstr "Kushtet e qirasë shkurt"
+
+#: car_app/templates/index.html:161
+msgid ""
+"No surprises at pickup. Here is what's included and what we need from you."
+msgstr "Pa surpriza në marrje. Ja çfarë përfshihet dhe çfarë na duhet nga ju."
+
+#: car_app/templates/index.html:163 car_app/templates/location.html:70
+msgid "Full rental terms"
+msgstr "Të gjitha kushtet"
+
+#: car_app/templates/index.html:177
+#, python-format
+msgid "Why rent with %(name)s"
+msgstr "Pse të zgjidhni %(name)s"
+
+#: car_app/templates/index.html:181
+msgid "Well-maintained cars"
+msgstr "Makina të mirëmbajtura"
+
+#: car_app/templates/index.html:181
+msgid "Every car is cleaned and checked before each rental."
+msgstr "Çdo makinë pastrohet dhe kontrollohet para çdo qiraje."
+
+#: car_app/templates/index.html:185
+msgid "Clear pricing"
+msgstr "Çmime të qarta"
+
+#: car_app/templates/index.html:185
+msgid "One daily price. The total is calculated before you confirm."
+msgstr "Një çmim ditor. Totali llogaritet para se të konfirmoni."
+
+#: car_app/templates/index.html:189
+msgid "Flexible pickup"
+msgstr "Marrje fleksibile"
+
+#: car_app/templates/index.html:189
+#, python-format
+msgid "Collect your car in %(locations)s."
+msgstr "Merreni makinën në %(locations)s."
+
+#: car_app/templates/index.html:193
+msgid "Local support"
+msgstr "Mbështetje vendase"
+
+#: car_app/templates/index.html:193
+#, python-format
+msgid "A real team in %(city)s you can call or message during your rental."
+msgstr ""
+"Një ekip i vërtetë në %(city)s që mund ta telefononi ose t'i shkruani gjatë "
+"qirasë."
+
+#: car_app/templates/index.html:207
+msgid "What customers say"
+msgstr "Çfarë thonë klientët"
+
+#: car_app/templates/index.html:209
+#, python-format
+msgid "<strong class=\"text-dark\">%(avg)s</strong> out of 5 · %(n)s review"
+msgid_plural ""
+"<strong class=\"text-dark\">%(avg)s</strong> out of 5 · %(n)s reviews"
+msgstr[0] "<strong class=\"text-dark\">%(avg)s</strong> nga 5 · %(n)s vlerësim"
+msgstr[1] "<strong class=\"text-dark\">%(avg)s</strong> nga 5 · %(n)s vlerësime"
+
+#: car_app/templates/index.html:217
+#, python-format
+msgid "%(r)s out of 5"
+msgstr "%(r)s nga 5"
+
+#: car_app/templates/index.html:233
+msgid "Questions & answers"
+msgstr "Pyetje & përgjigje"
+
+#: car_app/templates/index.html:234
+msgid "Can't find what you're looking for?"
+msgstr "Nuk e gjeni atë që kërkoni?"
+
+#: car_app/templates/index.html:240
+msgid "What documents do I need to rent a car?"
+msgstr "Çfarë dokumentesh më duhen për të marrë një makinë me qira?"
+
+#: car_app/templates/index.html:241
+msgid ""
+"A valid driving licence and an identity document (ID card or passport). "
+"Additional requirements may apply depending on the vehicle."
+msgstr ""
+"Patentë e vlefshme dhe një dokument identifikimi (kartë identiteti ose "
+"pasaportë). Për disa makina mund të ketë kërkesa shtesë."
+
+#: car_app/templates/index.html:244
+msgid "How do I book a car?"
+msgstr "Si rezervoj një makinë?"
+
+#: car_app/templates/index.html:245
+msgid ""
+"Choose a car on the Cars page or use the search above, select your dates and"
+" pickup location, and submit the reservation. We confirm it by email or "
+"phone."
+msgstr ""
+"Zgjidhni një makinë te faqja Makinat ose përdorni kërkimin më sipër, "
+"zgjidhni datat dhe vendin e marrjes dhe dërgoni rezervimin. Ne e konfirmojmë"
+" me email ose telefon."
+
+#: car_app/templates/index.html:248
+msgid "Can I choose a specific car?"
+msgstr "A mund të zgjedh një makinë të caktuar?"
+
+#: car_app/templates/index.html:249
+msgid ""
+"Yes. You book the exact model you select. The calendar shows which dates are"
+" already taken."
+msgstr ""
+"Po. Rezervoni pikërisht modelin që zgjidhni. Kalendari tregon cilat data "
+"janë të zëna."
+
+#: car_app/templates/index.html:252
+msgid "Can I cancel my reservation?"
+msgstr "A mund ta anuloj rezervimin?"
+
+#: car_app/templates/index.html:253
+#, python-format
+msgid "See all <a href=\"%(url)s\">rental terms</a>."
+msgstr "Shikoni të gjitha <a href=\"%(url)s\">kushtet e qirasë</a>."
+
+#: car_app/templates/index.html:256
+#, python-format
+msgid "How can I contact %(name)s?"
+msgstr "Si mund ta kontaktoj %(name)s?"
+
+#: car_app/templates/index.html:257
+#, python-format
+msgid ""
+"Call us on %(phone)s, email %(email)s, or use the form on the Contact page."
+msgstr ""
+"Na telefononi në %(phone)s, na shkruani në %(email)s ose përdorni formularin"
+" te faqja Kontakt."
+
+#: car_app/templates/index.html:270
+msgid "Not sure which car to pick?"
+msgstr "Nuk jeni i sigurt cilën makinë të zgjidhni?"
+
+#: car_app/templates/index.html:271
+msgid "Call us and we'll help you choose the right car for your trip."
+msgstr ""
+"Na telefononi dhe ju ndihmojmë të zgjidhni makinën e duhur për udhëtimin "
+"tuaj."
+
+#: car_app/templates/location.html:4
+#, python-format
+msgid "Car Rental at %(loc)s | %(name)s"
+msgstr "Makina me qira – %(loc)s | %(name)s"
+
+#: car_app/templates/location.html:4 car_app/templates/location.html:7
+#, python-format
+msgid "Car Rental in %(loc)s | %(name)s"
+msgstr "Makina me qira – %(loc)s | %(name)s"
+
+#: car_app/templates/location.html:6
+#, python-format
+msgid ""
+"Rent a car in %(loc)s with %(name)s. Clear prices, unlimited kilometres and "
+"easy online booking."
+msgstr ""
+"Makina me qira – %(loc)s, me %(name)s. Çmime të qarta, kilometra pa limit "
+"dhe rezervim i lehtë online."
+
+#: car_app/templates/location.html:20
+#, python-format
+msgid "Car rental at %(loc)s"
+msgstr "Makina me qira – %(loc)s"
+
+#: car_app/templates/location.html:20
+#, python-format
+msgid "Car rental in %(loc)s"
+msgstr "Makina me qira – %(loc)s"
+
+#: car_app/templates/location.html:22
+msgid ""
+"Pick up your car right when you land and start your trip without queues or "
+"taxis."
+msgstr ""
+"Merreni makinën sapo të zbrisni nga avioni dhe nisni udhëtimin pa radhë dhe "
+"pa taksi."
+
+#: car_app/templates/location.html:22
+#, python-format
+msgid ""
+"Collect your car in %(loc)s at a time that suits you and drive wherever you "
+"want."
+msgstr ""
+"Merreni makinën – %(loc)s – në orën që ju përshtatet dhe udhëtoni ku të "
+"doni."
+
+#: car_app/templates/location.html:23
+#, python-format
+msgid "Prices from <strong>€%(price)s per day</strong>."
+msgstr "Çmime nga <strong>€%(price)s në ditë</strong>."
+
+#: car_app/templates/location.html:34
+#, python-format
+msgid "Cars available in %(loc)s"
+msgstr "Makinat e lira – %(loc)s"
+
+#: car_app/templates/location.html:35
+msgid "Choose your dates above to see the total price."
+msgstr "Zgjidhni datat më sipër për të parë çmimin total."
+
+#: car_app/templates/location.html:37
+msgid "All cars"
+msgstr "Të gjitha makinat"
+
+#: car_app/templates/location.html:78
+msgid "Other pickup locations"
+msgstr "Vende të tjera marrjeje"
+
+#: car_app/templates/login.html:7
+#, python-format
+msgid ""
+"Sign in to your %(name)s account to manage your car rental reservations."
+msgstr "Hyni në llogarinë tuaj %(name)s për të menaxhuar rezervimet."
+
+#: car_app/templates/login.html:14
+msgid "Welcome back"
+msgstr "Mirë se u kthyet"
+
+#: car_app/templates/login.html:15
+#, python-format
+msgid "Sign in to your %(name)s account."
+msgstr "Hyni në llogarinë tuaj %(name)s."
+
+#: car_app/templates/login.html:18
+msgid "The username or password is incorrect. Please try again."
+msgstr "Emri i përdoruesit ose fjalëkalimi është i gabuar. Provoni sërish."
+
+#: car_app/templates/login.html:26 car_app/templates/signup.html:25
+msgid "Username"
+msgstr "Emri i përdoruesit"
+
+#: car_app/templates/login.html:32 car_app/templates/signup.html:37
+msgid "Password"
+msgstr "Fjalëkalimi"
+
+#: car_app/templates/login.html:36 car_app/templates/signup.html:40
+#: car_app/templates/signup.html:53
+msgid "Show or hide password"
+msgstr "Shfaq ose fshih fjalëkalimin"
+
+#: car_app/templates/login.html:42 car_app/templates/signup.html:64
+msgid "Sign in"
+msgstr "Hyr"
+
+#: car_app/templates/login.html:45
+#, python-format
+msgid "New to %(name)s?"
+msgstr "I ri te %(name)s?"
+
+#: car_app/templates/login.html:45
+msgid "Create an account"
+msgstr "Krijoni një llogari"
+
+#: car_app/templates/my_bookings.html:11
+#, python-format
+msgid ""
+"Hi %(name)s. Here you can see your reservations and cancel upcoming ones."
+msgstr ""
+"Përshëndetje %(name)s. Këtu shihni rezervimet tuaja dhe mund të anuloni ato "
+"që vijnë."
+
+#: car_app/templates/my_bookings.html:20
+msgid "No bookings yet"
+msgstr "Ende asnjë rezervim"
+
+#: car_app/templates/my_bookings.html:21
+msgid "When you reserve a car while signed in, it will show up here."
+msgstr "Kur rezervoni një makinë ndërsa jeni i kyçur, ajo do të shfaqet këtu."
+
+#: car_app/templates/my_bookings.html:27
+msgid "Upcoming"
+msgstr "Të ardhshme"
+
+#: car_app/templates/my_bookings.html:34
+msgid "Past & cancelled"
+msgstr "Të kaluara & të anuluara"
+
+#: car_app/templates/my_bookings.html:40
+#, python-format
+msgid ""
+"Need to change dates or have a question? <a href=\"%(url)s\">Contact us</a> "
+"or call <a href=\"tel:%(tel)s\">%(phone)s</a>."
+msgstr ""
+"Doni të ndryshoni datat apo keni një pyetje? <a href=\"%(url)s\">Na "
+"kontaktoni</a> ose telefononi <a href=\"tel:%(tel)s\">%(phone)s</a>."
+
+#: car_app/templates/my_bookings.html:53
+msgid "Keep booking"
+msgstr "Mbaje rezervimin"
+
+#: car_app/templates/my_bookings.html:76
+msgid "Cancel this booking?"
+msgstr "Ta anuloni këtë rezervim?"
+
+#: car_app/templates/my_bookings.html:76
+msgid "Request cancellation?"
+msgstr "Të kërkoni anulimin?"
+
+#: car_app/templates/my_bookings.html:79
+msgid ""
+"Your booking hasn't been confirmed yet, so it will be cancelled right away "
+"and the dates released."
+msgstr ""
+"Rezervimi juaj nuk është konfirmuar ende, ndaj do të anulohet menjëherë dhe "
+"datat do të lirohen."
+
+#: car_app/templates/my_bookings.html:80
+msgid ""
+"Your booking is already confirmed. We'll receive your request and contact "
+"you to arrange the cancellation."
+msgstr ""
+"Rezervimi juaj është i konfirmuar. Do ta marrim kërkesën dhe do t'ju "
+"kontaktojmë për anulimin."
+
+#: car_app/templates/my_bookings.html:81
+msgid "Yes, cancel booking"
+msgstr "Po, anuloje"
+
+#: car_app/templates/my_bookings.html:81
+msgid "Send request"
+msgstr "Dërgo kërkesën"
+
+#: car_app/templates/offline.html:3 car_app/templates/offline.html:9
+msgid "You're offline"
+msgstr "Jeni pa internet"
+
+#: car_app/templates/offline.html:10
+msgid ""
+"Check your internet connection and try again. You can still call or message "
+"us."
+msgstr ""
+"Kontrolloni lidhjen me internetin dhe provoni sërish. Mund të na telefononi "
+"ose të na shkruani."
+
+#: car_app/templates/offline.html:11
+msgid "Try again"
+msgstr "Provo sërish"
+
+#: car_app/templates/rental_terms.html:6
+#, python-format
+msgid ""
+"%(name)s rental terms: driver requirements, deposit, insurance, fuel policy,"
+" mileage and cancellation."
+msgstr ""
+"Kushtet e qirasë së %(name)s: kërkesat për shoferin, depozita, sigurimi, "
+"karburanti, kilometrat dhe anulimi."
+
+#: car_app/templates/rental_terms.html:13
+msgid ""
+"Everything you need to know before you book. Clear and simple, no small "
+"print."
+msgstr ""
+"Gjithçka që duhet të dini para se të rezervoni. E qartë dhe e thjeshtë, pa "
+"shkrime të vogla."
+
+#: car_app/templates/rental_terms.html:32
+msgid "Still have a question about the terms?"
+msgstr "Keni ende pyetje për kushtet?"
+
+#: car_app/templates/reservation.html:3
+msgid "Reserve a Car"
+msgstr "Rezervo një makinë"
+
+#: car_app/templates/reservation.html:5
+#, python-format
+msgid ""
+"Reserve your %(name)s rental car online: choose your car, dates and pickup "
+"location and see the total price before you confirm."
+msgstr ""
+"Rezervoni online makinën me qira te %(name)s: zgjidhni makinën, datat dhe "
+"vendin e marrjes dhe shikoni çmimin total para se të konfirmoni."
+
+#: car_app/templates/reservation.html:19
+msgid "Back to cars"
+msgstr "Kthehu te makinat"
+
+#: car_app/templates/reservation.html:23
+msgid "Complete your reservation"
+msgstr "Përfundoni rezervimin"
+
+#: car_app/templates/reservation.html:24
+msgid "It takes about 2 minutes. No payment is taken online."
+msgstr "Zgjat rreth 2 minuta. Nuk merret asnjë pagesë online."
+
+#: car_app/templates/reservation.html:29
+msgid "Please check the highlighted fields."
+msgstr "Ju lutem kontrolloni fushat e theksuara."
+
+#: car_app/templates/reservation.html:45
+msgid "Your car"
+msgstr "Makina juaj"
+
+#: car_app/templates/reservation.html:49
+msgid "Select a car…"
+msgstr "Zgjidhni një makinë…"
+
+#: car_app/templates/reservation.html:102
+#: car_app/templates/reservation.html:108
+msgid "Select date"
+msgstr "Zgjidhni datën"
+
+#: car_app/templates/reservation.html:113
+msgid ""
+"Dates that are already booked for this car are crossed out in the calendar."
+msgstr ""
+"Datat që janë tashmë të zëna për këtë makinë janë të vizatuara në kalendar."
+
+#: car_app/templates/reservation.html:118
+msgid "Driver details"
+msgstr "Të dhënat e shoferit"
+
+#: car_app/templates/reservation.html:136
+msgid "optional"
+msgstr "opsionale"
+
+#: car_app/templates/reservation.html:146
+msgid "Booking summary"
+msgstr "Përmbledhja e rezervimit"
+
+#: car_app/templates/reservation.html:160
+msgid "Confirm reservation"
+msgstr "Konfirmo rezervimin"
+
+#: car_app/templates/reservation.html:164
+msgid "Total price shown, no hidden fees"
+msgstr "Çmimi total i dukshëm, pa tarifa të fshehura"
+
+#: car_app/templates/reservation.html:165
+msgid "We contact you to confirm the booking"
+msgstr "Ju kontaktojmë për të konfirmuar rezervimin"
+
+#: car_app/templates/reservation.html:168
+#, python-format
+msgid ""
+"By confirming you accept our <a href=\"%(url)s\" target=\"_blank\" "
+"rel=\"noopener\">rental terms</a>."
+msgstr ""
+"Duke konfirmuar pranoni <a href=\"%(url)s\" target=\"_blank\" "
+"rel=\"noopener\">kushtet e qirasë</a>."
+
+#: car_app/templates/reservation.html:182
+msgid "Confirm"
+msgstr "Konfirmo"
+
+#: car_app/templates/reservation_success.html:3
+#: car_app/templates/reservation_success.html:13
+msgid "Reservation received"
+msgstr "Rezervimi u mor"
+
+#: car_app/templates/reservation_success.html:14
+#, python-format
+msgid ""
+"Thank you, %(name)s. We'll contact you at <strong>%(email)s</strong> or "
+"<strong>%(phone)s</strong> to confirm your booking."
+msgstr ""
+"Faleminderit, %(name)s. Do t'ju kontaktojmë në <strong>%(email)s</strong> "
+"ose <strong>%(phone)s</strong> për të konfirmuar rezervimin."
+
+#: car_app/templates/reservation_success.html:20
+#, python-format
+msgid "Reservation #%(n)s"
+msgstr "Rezervimi #%(n)s"
+
+#: car_app/templates/reservation_success.html:33
+msgid "Back to home"
+msgstr "Kthehu në kreu"
+
+#: car_app/templates/reservation_success.html:35
+msgid "View my bookings"
+msgstr "Shiko rezervimet e mia"
+
+#: car_app/templates/reservation_success.html:37
+msgid "Browse more cars"
+msgstr "Shiko makina të tjera"
+
+#: car_app/templates/signup.html:4
+msgid "Create Account"
+msgstr "Krijo llogari"
+
+#: car_app/templates/signup.html:7
+#, python-format
+msgid "Create your %(name)s account to reserve your next rental car faster."
+msgstr ""
+"Krijoni llogarinë tuaj %(name)s për të rezervuar më shpejt herën tjetër."
+
+#: car_app/templates/signup.html:14
+msgid "Create your account"
+msgstr "Krijoni llogarinë tuaj"
+
+#: car_app/templates/signup.html:15
+msgid "Book faster next time, with your details already filled in."
+msgstr "Rezervoni më shpejt herën tjetër, me të dhënat tuaja të plotësuara."
+
+#: car_app/templates/signup.html:46
+msgid "At least 8 characters, not only numbers."
+msgstr "Të paktën 8 karaktere, jo vetëm numra."
+
+#: car_app/templates/signup.html:50
+msgid "Confirm password"
+msgstr "Konfirmoni fjalëkalimin"
+
+#: car_app/templates/signup.html:61
+msgid "Create account"
+msgstr "Krijo llogarinë"
+
+#: car_app/templates/signup.html:64
+msgid "Already have an account?"
+msgstr "Keni tashmë llogari?"
+
+#: car_app/views.py:54
+msgid "Please choose both a pickup and a return date."
+msgstr "Ju lutem zgjidhni datën e marrjes dhe të kthimit."
+
+#: car_app/views.py:61
+#, python-format
+msgid "A rental cannot be longer than %(days)s days."
+msgstr "Qiraja nuk mund të jetë më e gjatë se %(days)s ditë."
+
+#: car_app/views.py:230
+msgid "Thank you! Your message has been sent. We'll get back to you shortly."
+msgstr "Faleminderit! Mesazhi u dërgua. Do t'ju përgjigjemi së shpejti."
+
+#: car_app/views.py:277
+msgid ""
+"This car was just booked for the selected dates. Please choose different "
+"dates."
+msgstr ""
+"Kjo makinë sapo u rezervua për datat e zgjedhura. Ju lutem zgjidhni data të "
+"tjera."
+
+#: car_app/views.py:328
+msgid "This booking can no longer be cancelled online. Please contact us."
+msgstr "Ky rezervim nuk mund të anulohet më online. Ju lutem na kontaktoni."
+
+#: car_app/views.py:334
+#, python-format
+msgid "Booking #%(n)s has been cancelled."
+msgstr "Rezervimi #%(n)s u anulua."
+
+#: car_app/views.py:340
+msgid "Your cancellation request was sent. We'll contact you shortly."
+msgstr "Kërkesa për anulim u dërgua. Do t'ju kontaktojmë së shpejti."
+
+#: car_app/views.py:389
+#, python-format
+msgid "Your account has been created. Welcome to %(name)s!"
+msgstr "Llogaria juaj u krijua. Mirë se vini te %(name)s!"
+
+#: car_app/views.py:406
+msgid "Thank you! You are now subscribed to our newsletter."
+msgstr "Faleminderit! Tani jeni abonuar në buletinin tonë."

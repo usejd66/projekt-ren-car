@@ -1,4 +1,4 @@
-{% load static car_images %}
+{% load static i18n car_images %}
 <article class="booking">
     <a href="{{ b.car.get_absolute_url }}" class="booking-img">
         <img src="{% car_img_url b.car 480 %}" alt="{{ b.car }}" loading="lazy">
@@ -8,26 +8,26 @@
         <div class="booking-top">
             <h3>{{ b.car }}</h3>
             {% if b.status == "cancelled" %}
-            <span class="badge-status is-muted">Cancelled</span>
+            <span class="badge-status is-muted">{% translate "Cancelled" %}</span>
             {% elif b.cancel_requested_at %}
-            <span class="badge-status is-warn">Cancellation requested</span>
+            <span class="badge-status is-warn">{% translate "Cancellation requested" %}</span>
             {% elif b.status == "confirmed" and not b.is_upcoming %}
-            <span class="badge-status is-muted">Completed</span>
+            <span class="badge-status is-muted">{% translate "Completed" %}</span>
             {% elif b.status == "confirmed" %}
-            <span class="badge-status is-ok">Confirmed</span>
+            <span class="badge-status is-ok">{% translate "Confirmed" %}</span>
             {% else %}
-            <span class="badge-status is-warn">Awaiting confirmation</span>
+            <span class="badge-status is-warn">{% translate "Awaiting confirmation" %}</span>
             {% endif %}
         </div>
-        <p class="booking-ref">Reservation #{{ b.pk }} · booked {{ b.created_at|date:"j M Y" }}</p>
+        <p class="booking-ref">{% blocktranslate with n=b.pk date=b.created_at|date:"j M Y" %}Reservation #{{ n }} · booked {{ date }}{% endblocktranslate %}</p>
         <dl class="booking-dates">
-            <div><dt>Pickup</dt><dd><span class="d-none d-md-inline">{{ b.pickup_date|date:"D" }} </span>{{ b.pickup_date|date:"j M Y" }}<span>{{ b.pickup_location }}</span></dd></div>
-            <div><dt>Return</dt><dd><span class="d-none d-md-inline">{{ b.return_date|date:"D" }} </span>{{ b.return_date|date:"j M Y" }}<span>{{ b.days }} day{{ b.days|pluralize }}</span></dd></div>
+            <div><dt>{% translate "Pickup" %}</dt><dd><span class="d-none d-md-inline">{{ b.pickup_date|date:"D" }} </span>{{ b.pickup_date|date:"j M Y" }}<span>{{ b.pickup_location }}</span></dd></div>
+            <div><dt>{% translate "Return" %}</dt><dd><span class="d-none d-md-inline">{{ b.return_date|date:"D" }} </span>{{ b.return_date|date:"j M Y" }}<span>{% blocktranslate count n=b.days %}{{ n }} day{% plural %}{{ n }} days{% endblocktranslate %}</span></dd></div>
         </dl>
     </div>
 
     <div class="booking-side">
-        <p class="booking-total"><span>Total</span>€{{ b.total_price|floatformat:"-2" }}</p>
+        <p class="booking-total"><span>{% translate "Total" %}</span>€{{ b.total_price|floatformat:"-2" }}</p>
         {% if b.can_cancel %}
         {# konfirmimi bëhet me dritaren #cancelModal te my_bookings.html (pa JS dërgohet direkt) #}
         <form method="post" action="{% url 'cancel_booking' b.pk %}" class="cancel-form"
@@ -35,11 +35,11 @@
               data-pending="{% if b.status == 'pending' %}1{% endif %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-nav-outline booking-cancel">
-                {% if b.status == "pending" %}Cancel booking{% else %}Request cancellation{% endif %}
+                {% if b.status == "pending" %}{% translate "Cancel booking" %}{% else %}{% translate "Request cancellation" %}{% endif %}
             </button>
         </form>
         {% elif not b.is_upcoming %}
-        <a href="{{ b.car.get_absolute_url }}" class="btn btn-nav-outline">Book again</a>
+        <a href="{{ b.car.get_absolute_url }}" class="btn btn-nav-outline">{% translate "Book again" %}</a>
         {% endif %}
     </div>
 </article>

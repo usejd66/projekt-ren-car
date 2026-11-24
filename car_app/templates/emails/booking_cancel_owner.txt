@@ -1,8 +1,9 @@
-{% autoescape off %}{% if requested %}Cancellation request for reservation #{{ booking.pk }}.
-{{ booking.full_name }} asked to cancel this confirmed booking. Please decide in the admin and let the customer know.{% else %}Reservation #{{ booking.pk }} was cancelled by the customer before it was confirmed. The dates are free again.{% endif %}
+{% load i18n %}{% autoescape off %}{% if requested %}{% blocktranslate with n=booking.pk %}Cancellation request #{{ n }}{% endblocktranslate %}
+{% filter striptags %}{% blocktranslate with name=booking.full_name %}{{ name }} asked to cancel this <strong>confirmed</strong> booking. Please decide in the admin and let the customer know.{% endblocktranslate %}{% endfilter %}{% else %}{% blocktranslate with n=booking.pk %}Booking #{{ n }} cancelled by the customer{% endblocktranslate %}
+{% blocktranslate with name=booking.full_name %}{{ name }} cancelled this booking before it was confirmed. The dates are free again.{% endblocktranslate %}{% endif %}
 
 {% include "emails/_booking_lines.txt" %}
-Customer: {{ booking.full_name }} – {{ booking.email }} – {{ booking.phone }}
+{% translate "Customer" %}: {{ booking.full_name }} – {{ booking.email }} – {{ booking.phone }}
 
-Open in admin: {{ admin_url }}
+{% translate "Open in admin" %}: {{ admin_url }}
 {% endautoescape %}

@@ -1,11 +1,11 @@
-{% autoescape off %}Hi {{ booking.full_name }},
+{% load i18n %}{% autoescape off %}{% blocktranslate with name=booking.full_name %}Hi {{ name }},{% endblocktranslate %}
 
-Good news: your booking is confirmed and your {{ booking.car }} will be ready for you.
+{% blocktranslate with car=booking.car %}Good news: your booking is confirmed and your {{ car }} will be ready for you.{% endblocktranslate %}
 
 {% include "emails/_booking_lines.txt" %}
-At pickup, please bring a valid driving licence and an ID card or passport.
+{% translate "At pickup, please bring a valid driving licence and an ID card or passport." %}
 
-Need to change something? Reply to this email or call {{ site.phone }}.
+{% blocktranslate with phone=site.phone %}Need to change something? Reply to this email or call {{ phone }}.{% endblocktranslate %}
 
 {{ site.name }}
 {% endautoescape %}

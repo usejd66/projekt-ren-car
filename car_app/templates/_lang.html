@@ -1,0 +1,6 @@
+{% load i18n i18n_urls %}{% get_current_language as LANG %}
+<div class="lang-switch" role="group" aria-label="{% translate 'Language' %}">
+    {% languages as langs %}{% for code, name in langs %}
+    <a href="{% lang_url code %}" hreflang="{{ code }}" lang="{{ code }}" class="{% if code == LANG %}active{% endif %}" {% if code == LANG %}aria-current="true"{% endif %} title="{{ name }}">{{ code|upper }}</a>
+    {% endfor %}
+</div>

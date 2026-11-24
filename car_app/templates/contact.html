@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Contact | {{ site.name }}{% endblock %}
+{% block title %}{% translate "Contact" %} | {{ site.name }}{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Contact {{ site.name }} in {{ site.city }} for help choosing a car, making a reservation or any question about renting a car.">
+<meta name="description" content="{% blocktranslate with name=site.name city=site.city_in %}Contact {{ name }} in {{ city }} for help choosing a car, making a reservation or any question about renting a car.{% endblocktranslate %}">
 <meta name="author" content="{{ site.name }}">
 {% endblock %}
 
 {% block content %}
 <header class="page-head">
     <div class="container">
-        <h1>Contact us</h1>
-        <p>Need help choosing a car or have a question about a booking? We usually reply within a few hours.</p>
+        <h1>{% translate "Contact us" %}</h1>
+        <p>{% translate "Need help choosing a car or have a question about a booking? We usually reply within a few hours." %}</p>
     </div>
 </header>
 
@@ -26,31 +26,31 @@
                     <li>
                         <a href="tel:{{ site.phone_link }}" class="contact-item">
                             <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-phone"></use></svg></span>
-                            <span><strong>Call us</strong>{{ site.phone }}</span>
+                            <span><strong>{% translate "Call us" %}</strong>{{ site.phone }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener noreferrer" class="contact-item">
                             <span class="contact-icon contact-icon-wa"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-whatsapp"></use></svg></span>
-                            <span><strong>WhatsApp</strong>Message us any time</span>
+                            <span><strong>WhatsApp</strong>{% translate "Message us any time" %}</span>
                         </a>
                     </li>
                     <li>
                         <a href="mailto:{{ site.email }}" class="contact-item">
                             <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-envelope"></use></svg></span>
-                            <span><strong>Email</strong>{{ site.email }}</span>
+                            <span><strong>{% translate "Email" %}</strong>{{ site.email }}</span>
                         </a>
                     </li>
                     <li>
                         <div class="contact-item">
                             <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-clock"></use></svg></span>
-                            <span><strong>Opening hours</strong>{{ site.hours }}</span>
+                            <span><strong>{% translate "Opening hours" %}</strong>{{ site.hours }}</span>
                         </div>
                     </li>
                     <li>
                         <div class="contact-item">
                             <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg></span>
-                            <span><strong>Pickup locations</strong>{{ site.locations|join:", " }}</span>
+                            <span><strong>{% translate "Pickup locations" %}</strong>{{ site.locations|join:", " }}</span>
                         </div>
                     </li>
                 </ul>
@@ -59,32 +59,32 @@
             <!-- FORMULARI -->
             <div class="col-lg-7">
                 <div class="checkout-card checkout mb-0">
-                    <h2 class="checkout-card-title">Send us a message</h2>
+                    <h2 class="checkout-card-title">{% translate "Send us a message" %}</h2>
                     <form method="post" action="{% url 'contact' %}" novalidate>
                         {% csrf_token %}
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="id_name" class="form-label">Name</label>
+                                <label for="id_name" class="form-label">{% translate "Name" %}</label>
                                 {{ form.name }}
                                 {% for e in form.name.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                             </div>
                             <div class="col-md-6">
-                                <label for="id_email" class="form-label">Email</label>
+                                <label for="id_email" class="form-label">{% translate "Email" %}</label>
                                 {{ form.email }}
                                 {% for e in form.email.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                             </div>
                             <div class="col-12">
-                                <label for="id_subject" class="form-label">Subject</label>
+                                <label for="id_subject" class="form-label">{% translate "Subject" %}</label>
                                 {{ form.subject }}
                                 {% for e in form.subject.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                             </div>
                             <div class="col-12">
-                                <label for="id_message" class="form-label">Message</label>
+                                <label for="id_message" class="form-label">{% translate "Message" %}</label>
                                 {{ form.message }}
                                 {% for e in form.message.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-gold summary-btn">Send message</button>
+                        <button type="submit" class="btn btn-gold summary-btn">{% translate "Send message" %}</button>
                     </form>
                 </div>
             </div>
@@ -94,7 +94,7 @@
 
 <!-- HARTA -->
 <section class="contact-map">
-    <iframe src="https://www.google.com/maps?q={{ site.map_query|urlencode }}&output=embed" title="{{ site.name }} location on the map"
+    <iframe src="https://www.google.com/maps?q={{ site.map_query|urlencode }}&output=embed" title="{% blocktranslate with name=site.name %}{{ name }} location on the map{% endblocktranslate %}"
             loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
 </section>
 {% endblock %}

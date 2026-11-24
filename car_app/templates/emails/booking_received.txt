@@ -1,11 +1,11 @@
-{% autoescape off %}Hi {{ booking.full_name }},
+{% load i18n %}{% autoescape off %}{% blocktranslate with name=booking.full_name %}Hi {{ name }},{% endblocktranslate %}
 
-Thank you for choosing {{ site.name }}. We received your reservation and will contact you shortly to confirm it.
+{% blocktranslate with site_name=site.name %}Thank you for choosing {{ site_name }}. We received your reservation and will contact you shortly to confirm it.{% endblocktranslate %}
 
 {% include "emails/_booking_lines.txt" %}
-You'll get another email as soon as your booking is confirmed. No payment is taken online.
+{% translate "You'll get another email as soon as your booking is confirmed. No payment is taken online." %}
 
-Questions? Reply to this email or call {{ site.phone }}.
+{% blocktranslate with phone=site.phone %}Questions? Reply to this email or call {{ phone }}.{% endblocktranslate %}
 
 {{ site.name }}
 {% endautoescape %}

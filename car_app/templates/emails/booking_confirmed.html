@@ -1,9 +1,9 @@
-{% extends "emails/_base.html" %}
+{% extends "emails/_base.html" %}{% load i18n %}
 {% block content %}
-<h1 style="margin:0 0 8px;font-size:22px;">Your booking is confirmed ✓</h1>
-<p style="margin:0;color:#334155;">Hi {{ booking.full_name }}, good news: your {{ booking.car }} will be ready for you.</p>
+<h1 style="margin:0 0 8px;font-size:22px;">{% translate "Your booking is confirmed" %} ✓</h1>
+<p style="margin:0;color:#334155;">{% blocktranslate with name=booking.full_name car=booking.car %}Hi {{ name }}, good news: your {{ car }} will be ready for you.{% endblocktranslate %}</p>
 {% include "emails/_booking_table.html" %}
-<p style="margin:0 0 6px;color:#334155;"><strong>At pickup, please bring:</strong></p>
-<p style="margin:0;color:#334155;">A valid driving licence and an ID card or passport.</p>
-<p style="margin:20px 0 0;color:#334155;">Need to change something? Reply to this email or call <a href="tel:{{ site.phone_link }}" style="color:{{ site.color }};">{{ site.phone }}</a>.</p>
+<p style="margin:0 0 6px;color:#334155;"><strong>{% translate "At pickup, please bring:" %}</strong></p>
+<p style="margin:0;color:#334155;">{% translate "A valid driving licence and an ID card or passport." %}</p>
+<p style="margin:20px 0 0;color:#334155;">{% translate "Need to change something? Reply to this email or call" %} <a href="tel:{{ site.phone_link }}" style="color:{{ site.color }};">{{ site.phone }}</a>.</p>
 {% endblock %}

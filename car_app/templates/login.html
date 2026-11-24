@@ -1,21 +1,21 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Sign In | {{ site.name }}{% endblock %}
+{% block title %}{% translate "Sign In" %} | {{ site.name }}{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="Sign in to your {{ site.name }} account to manage your car rental reservations.">
+    <meta name="description" content="{% blocktranslate with name=site.name %}Sign in to your {{ name }} account to manage your car rental reservations.{% endblocktranslate %}">
     <meta name="robots" content="noindex">
 {% endblock %}
 
 {% block content %}
 <section class="auth">
     <div class="auth-card">
-        <h1>Welcome back</h1>
-        <p class="auth-sub">Sign in to your {{ site.name }} account.</p>
+        <h1>{% translate "Welcome back" %}</h1>
+        <p class="auth-sub">{% blocktranslate with name=site.name %}Sign in to your {{ name }} account.{% endblocktranslate %}</p>
 
         {% if form.non_field_errors %}
-        <div class="alert alert-danger" role="alert">The username or password is incorrect. Please try again.</div>
+        <div class="alert alert-danger" role="alert">{% translate "The username or password is incorrect. Please try again." %}</div>
         {% endif %}
 
         <form method="post" action="{% url 'login' %}" class="checkout" novalidate>
@@ -23,26 +23,26 @@
             <input type="hidden" name="next" value="{{ next }}">
 
             <div class="mb-3">
-                <label for="id_username" class="form-label">Username</label>
+                <label for="id_username" class="form-label">{% translate "Username" %}</label>
                 <input type="text" name="username" id="id_username" class="form-control{% if form.non_field_errors %} is-invalid{% endif %}"
                        value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required autofocus>
             </div>
 
             <div class="mb-4">
-                <label for="id_password" class="form-label">Password</label>
+                <label for="id_password" class="form-label">{% translate "Password" %}</label>
                 <div class="password-field">
                     <input type="password" name="password" id="id_password" class="form-control{% if form.non_field_errors %} is-invalid{% endif %}"
                            autocomplete="current-password" required>
-                    <button class="password-toggle" type="button" aria-label="Show or hide password" onclick="togglePassword('id_password', this)">
+                    <button class="password-toggle" type="button" aria-label="{% translate 'Show or hide password' %}" onclick="togglePassword('id_password', this)">
                         <svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-eye"></use></svg>
                     </button>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-gold summary-btn mt-0">Sign in</button>
+            <button type="submit" class="btn btn-gold summary-btn mt-0">{% translate "Sign in" %}</button>
         </form>
 
-        <p class="auth-switch">New to {{ site.name }}? <a href="{% url 'signup' %}">Create an account</a></p>
+        <p class="auth-switch">{% blocktranslate with name=site.name %}New to {{ name }}?{% endblocktranslate %} <a href="{% url 'signup' %}">{% translate "Create an account" %}</a></p>
     </div>
 </section>
 {% endblock %}

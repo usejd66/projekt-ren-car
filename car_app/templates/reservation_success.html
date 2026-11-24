@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% load static car_images %}
-{% block title %}Reservation received | {{ site.name }}{% endblock %}
+{% load static i18n car_images %}
+{% block title %}{% translate "Reservation received" %} | {{ site.name }}{% endblock %}
 {% block meta %}
     <meta name="robots" content="noindex">
 {% endblock %}
@@ -10,31 +10,31 @@
 <div class="container">
     <div class="done">
         <div class="done-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-check"></use></svg></div>
-        <h1>Reservation received</h1>
-        <p class="done-lead">Thank you, {{ booking.full_name }}. We'll contact you at <strong>{{ booking.email }}</strong> or <strong>{{ booking.phone }}</strong> to confirm your booking.</p>
+        <h1>{% translate "Reservation received" %}</h1>
+        <p class="done-lead">{% blocktranslate with name=booking.full_name email=booking.email phone=booking.phone %}Thank you, {{ name }}. We'll contact you at <strong>{{ email }}</strong> or <strong>{{ phone }}</strong> to confirm your booking.{% endblocktranslate %}</p>
 
         <div class="done-card">
             <div class="done-car">
                 <img src="{% car_img_url booking.car 480 %}" alt="{{ booking.car }}">
                 <div>
-                    <p class="done-ref">Reservation #{{ booking.pk }}</p>
+                    <p class="done-ref">{% blocktranslate with n=booking.pk %}Reservation #{{ n }}{% endblocktranslate %}</p>
                     <h2>{{ booking.car }}</h2>
                     <p class="text-secondary mb-0">{{ booking.car.get_category_display }} · {{ booking.car.get_transmission_display }}</p>
                 </div>
             </div>
             <dl class="done-details">
-                <div><dt>Pickup</dt><dd>{{ booking.pickup_date|date:"D j M Y" }}<span>{{ booking.pickup_location }}</span></dd></div>
-                <div><dt>Return</dt><dd>{{ booking.return_date|date:"D j M Y" }}<span>{{ booking.days }} day{{ booking.days|pluralize }}</span></dd></div>
-                <div class="done-total"><dt>Total</dt><dd>€{{ booking.total_price|floatformat:"-2" }}</dd></div>
+                <div><dt>{% translate "Pickup" %}</dt><dd>{{ booking.pickup_date|date:"D j M Y" }}<span>{{ booking.pickup_location }}</span></dd></div>
+                <div><dt>{% translate "Return" %}</dt><dd>{{ booking.return_date|date:"D j M Y" }}<span>{% blocktranslate count n=booking.days %}{{ n }} day{% plural %}{{ n }} days{% endblocktranslate %}</span></dd></div>
+                <div class="done-total"><dt>{% translate "Total" %}</dt><dd>€{{ booking.total_price|floatformat:"-2" }}</dd></div>
             </dl>
         </div>
 
         <div class="done-actions">
-            <a href="{% url 'index' %}" class="btn btn-gold">Back to home</a>
+            <a href="{% url 'index' %}" class="btn btn-gold">{% translate "Back to home" %}</a>
             {% if user.is_authenticated %}
-            <a href="{% url 'my_bookings' %}" class="btn btn-nav-outline">View my bookings</a>
+            <a href="{% url 'my_bookings' %}" class="btn btn-nav-outline">{% translate "View my bookings" %}</a>
             {% else %}
-            <a href="{% url 'cars' %}" class="btn btn-nav-outline">Browse more cars</a>
+            <a href="{% url 'cars' %}" class="btn btn-nav-outline">{% translate "Browse more cars" %}</a>
             {% endif %}
         </div>
     </div>

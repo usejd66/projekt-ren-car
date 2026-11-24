@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% load static car_images %}
-{% block title %}{% if trip.start %}Available Cars{% else %}Our Cars{% endif %} | {{ site.name }}{% endblock %}
+{% load static i18n car_images %}
+{% block title %}{% if trip.start %}{% translate "Available Cars" %}{% else %}{% translate "Our Cars" %}{% endif %} | {{ site.name }}{% endblock %}
 {% block meta %}
-    <meta name="description" content="Browse the {{ site.name }} fleet in {{ site.city }}: filter by category, transmission and price, check availability for your dates and book online.">
+    <meta name="description" content="{% blocktranslate with name=site.name city=site.city_in %}Browse the {{ name }} fleet in {{ city }}: filter by category, transmission and price, check availability for your dates and book online.{% endblocktranslate %}">
     <meta name="author" content="{{ site.name }}">
 {% endblock %}
 
@@ -14,17 +14,17 @@
 <!-- KËRKIMI SIPAS DATAVE -->
 <section class="cars-trip">
     <div class="container">
-        <h1>{% if trip.start %}Available cars{% else %}Our cars{% endif %}</h1>
-        {% include "_trip_search.html" with button="Update" %}
+        <h1>{% if trip.start %}{% translate "Available cars" %}{% else %}{% translate "Our cars" %}{% endif %}</h1>
+        {% translate "Update" as update_label %}{% include "_trip_search.html" with button=update_label %}
 
         {% if trip.error %}
         <div class="alert alert-warning mt-3 mb-0" role="alert">{{ trip.error }}</div>
         {% elif trip.start %}
         <div class="trip-summary">
             <span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-calendar"></use></svg><strong>{{ trip.start|date:"D j M" }}</strong> &ndash; <strong>{{ trip.end|date:"D j M Y" }}</strong></span>
-            <span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-clock"></use></svg>{{ trip.days }} day{{ trip.days|pluralize }}</span>
-            {% if trip.location %}<span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg>Pickup: {{ trip.location }}</span>{% endif %}
-            <a href="{% url 'cars' %}" class="ms-auto small text-secondary">Clear dates</a>
+            <span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-clock"></use></svg>{% blocktranslate count n=trip.days %}{{ n }} day{% plural %}{{ n }} days{% endblocktranslate %}</span>
+            {% if trip.location %}<span><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-location-dot"></use></svg>{% blocktranslate with loc=trip.location %}Pickup: {{ loc }}{% endblocktranslate %}</span>{% endif %}
+            <a href="{% url 'cars' %}" class="ms-auto small text-secondary">{% translate "Clear dates" %}</a>
         </div>
         {% endif %}
     </div>
@@ -35,22 +35,22 @@
 
         <!-- KATEGORITË + FILTRAT -->
         <div class="fleet-toolbar">
-            <nav class="chips" aria-label="Categories">
-                <a href="?{{ qs_no_category }}" class="chip{% if not filters.category %} active{% endif %}">All</a>
+            <nav class="chips" aria-label="{% translate 'Categories' %}">
+                <a href="?{{ qs_no_category }}" class="chip{% if not filters.category %} active{% endif %}">{% translate "All" %}</a>
                 {% for value, label in categories %}
                 <a href="?{% if qs_no_category %}{{ qs_no_category }}&{% endif %}category={{ value }}" class="chip{% if filters.category == value %} active{% endif %}">{{ label }}</a>
                 {% endfor %}
             </nav>
             <button class="btn btn-nav-outline fleet-filter-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#fleetFilters" aria-controls="fleetFilters">
-                <svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-sliders"></use></svg>Filters{% if active_filters %} ({{ active_filters }}){% endif %}
+                <svg class="icon me-2" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-sliders"></use></svg>{% translate "Filters" %}{% if active_filters %} ({{ active_filters }}){% endif %}
             </button>
         </div>
 
         {# Desktop: filtrat në rresht. Telefon: panel që del nga poshtë. #}
         <div class="offcanvas-lg offcanvas-bottom fleet-filters" id="fleetFilters" tabindex="-1" aria-labelledby="fleetFiltersLabel">
             <div class="offcanvas-header d-lg-none">
-                <h2 class="h5 fw-bold mb-0" id="fleetFiltersLabel">Filters</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#fleetFilters" aria-label="Close"></button>
+                <h2 class="h5 fw-bold mb-0" id="fleetFiltersLabel">{% translate "Filters" %}</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#fleetFilters" aria-label="{% translate 'Close' %}"></button>
             </div>
             <div class="offcanvas-body">
                 <form method="get" action="{% url 'cars' %}" class="fleet-filter-form">
@@ -62,40 +62,40 @@
                     {% endif %}
 
                     <div class="fleet-field fleet-field-search">
-                        <label for="filterQ">Search</label>
-                        <input type="search" name="q" id="filterQ" class="form-control" placeholder="Brand or model" value="{{ filters.q }}">
+                        <label for="filterQ">{% translate "Search" %}</label>
+                        <input type="search" name="q" id="filterQ" class="form-control" placeholder="{% translate 'Brand or model' %}" value="{{ filters.q }}">
                     </div>
                     <div class="fleet-field">
-                        <label for="filterTransmission">Transmission</label>
+                        <label for="filterTransmission">{% translate "Transmission" %}</label>
                         <select name="transmission" id="filterTransmission" class="form-select">
-                            <option value="">Any</option>
+                            <option value="">{% translate "Any" %}</option>
                             {% for value, label in transmissions %}
                             <option value="{{ value }}" {% if filters.transmission == value %}selected{% endif %}>{{ label }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="fleet-field">
-                        <label for="filterPrice">Max price / day</label>
-                        <input type="number" name="max_price" id="filterPrice" class="form-control" min="0" inputmode="numeric" placeholder="Any" value="{{ filters.max_price }}">
+                        <label for="filterPrice">{% translate "Max price / day" %}</label>
+                        <input type="number" name="max_price" id="filterPrice" class="form-control" min="0" inputmode="numeric" placeholder="{% translate 'Any' %}" value="{{ filters.max_price }}">
                     </div>
                     <div class="fleet-field">
-                        <label for="filterSort">Sort by</label>
+                        <label for="filterSort">{% translate "Sort by" %}</label>
                         <select name="sort" id="filterSort" class="form-select">
-                            <option value="newest" {% if filters.sort == 'newest' %}selected{% endif %}>Newest</option>
-                            <option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>Price: low to high</option>
-                            <option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>Price: high to low</option>
+                            <option value="newest" {% if filters.sort == 'newest' %}selected{% endif %}>{% translate "Newest" %}</option>
+                            <option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>{% translate "Price: low to high" %}</option>
+                            <option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>{% translate "Price: high to low" %}</option>
                         </select>
                     </div>
                     <div class="fleet-actions">
-                        <button type="submit" class="btn btn-gold">Apply</button>
-                        {% if active_filters %}<a href="{% url 'cars' %}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-nav-outline">Reset</a>{% endif %}
+                        <button type="submit" class="btn btn-gold">{% translate "Apply" %}</button>
+                        {% if active_filters %}<a href="{% url 'cars' %}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-nav-outline">{% translate "Reset" %}</a>{% endif %}
                     </div>
                 </form>
             </div>
         </div>
 
         <p class="fleet-count">
-            {{ page_obj.paginator.count }} car{{ page_obj.paginator.count|pluralize }} {% if trip.start %}available for your dates{% else %}found{% endif %}
+            {% if trip.start %}{% blocktranslate count n=page_obj.paginator.count %}{{ n }} car available for your dates{% plural %}{{ n }} cars available for your dates{% endblocktranslate %}{% else %}{% blocktranslate count n=page_obj.paginator.count %}{{ n }} car found{% plural %}{{ n }} cars found{% endblocktranslate %}{% endif %}
         </p>
 
         <!-- MAKINAT -->
@@ -111,19 +111,19 @@
                         <p class="car-tile-cat">{{ car.get_category_display }}{% if car.year %} · {{ car.year }}{% endif %}</p>
                         <h2 class="car-tile-name"><a href="{{ car.get_absolute_url }}{% if book_qs %}?{{ book_qs }}{% endif %}">{{ car }}</a></h2>
                         <ul class="car-tile-specs list-unstyled">
-                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{{ car.seats }} seats</li>
+                            <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-user"></use></svg>{% blocktranslate count n=car.seats %}{{ n }} seat{% plural %}{{ n }} seats{% endblocktranslate %}</li>
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gears"></use></svg>{{ car.get_transmission_display }}</li>
                             <li><svg class="icon" aria-hidden="true"><use href="{% static 'icons.svg' %}#i-gas-pump"></use></svg>{{ car.get_fuel_display }}</li>
                         </ul>
                         <div class="car-tile-foot">
-                            <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> / day</p>
+                            <p class="car-tile-price"><strong>€{{ car.price_per_day|floatformat:"-2" }}</strong> {% translate "/ day" %}</p>
                             {% if trip.start %}
-                            <p class="car-tile-total"><strong>€{{ car.trip_total|floatformat:"-2" }}</strong> total · {{ trip.days }} day{{ trip.days|pluralize }}</p>
+                            <p class="car-tile-total">{% blocktranslate with total=car.trip_total|floatformat:"-2" count n=trip.days %}<strong>€{{ total }}</strong> total · {{ n }} day{% plural %}<strong>€{{ total }}</strong> total · {{ n }} days{% endblocktranslate %}</p>
                             {% endif %}
                         </div>
                         <div class="car-tile-actions">
-                            <a href="{{ car.get_absolute_url }}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-nav-outline">Details</a>
-                            <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}" class="btn btn-gold">Book now</a>
+                            <a href="{{ car.get_absolute_url }}{% if book_qs %}?{{ book_qs }}{% endif %}" class="btn btn-nav-outline">{% translate "Details" %}</a>
+                            <a href="{% url 'reservation' %}?car={{ car.pk }}{% if book_qs %}&{{ book_qs }}{% endif %}" class="btn btn-gold">{% translate "Book now" %}</a>
                         </div>
                     </div>
                 </article>
@@ -132,21 +132,21 @@
         </div>
         {% else %}
         <div class="fleet-empty">
-            <h2>{% if trip.start %}No cars available for these dates{% else %}No cars match your search{% endif %}</h2>
-            <p>{% if trip.start %}Try different dates or remove some filters.{% else %}Try removing some filters.{% endif %}</p>
-            <a href="{% url 'cars' %}" class="btn btn-gold">Show all cars</a>
+            <h2>{% if trip.start %}{% translate "No cars available for these dates" %}{% else %}{% translate "No cars match your search" %}{% endif %}</h2>
+            <p>{% if trip.start %}{% translate "Try different dates or remove some filters." %}{% else %}{% translate "Try removing some filters." %}{% endif %}</p>
+            <a href="{% url 'cars' %}" class="btn btn-gold">{% translate "Show all cars" %}</a>
         </div>
         {% endif %}
 
         <!-- FAQOSJA -->
         {% if page_obj.has_other_pages %}
-        <nav class="fleet-pages" aria-label="Pages">
+        <nav class="fleet-pages" aria-label="{% translate 'Pages' %}">
             {% if page_obj.has_previous %}
-            <a class="btn btn-nav-outline" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+            <a class="btn btn-nav-outline" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.previous_page_number }}">{% translate "Previous" %}</a>
             {% endif %}
-            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            <span>{% blocktranslate with n=page_obj.number total=page_obj.paginator.num_pages %}Page {{ n }} of {{ total }}{% endblocktranslate %}</span>
             {% if page_obj.has_next %}
-            <a class="btn btn-nav-outline" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-nav-outline" href="?{% if qs_no_page %}{{ qs_no_page }}&{% endif %}page={{ page_obj.next_page_number }}">{% translate "Next" %}</a>
             {% endif %}
         </nav>
         {% endif %}
